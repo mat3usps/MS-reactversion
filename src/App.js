@@ -1,5 +1,7 @@
+import Body from "./components/Body";
+
 function App() {
-  return <h1>Meu site - v1</h1>;
+  return <Body></Body>;
 }
 
 export default App;
