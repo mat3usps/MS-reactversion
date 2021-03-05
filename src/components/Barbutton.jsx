@@ -1,9 +1,9 @@
-function Barbutton({ linkName, buttonTitle }) {
+function Barbutton({ href, children }) {
   return (
-    <div class="col-2">
-      <a href={linkName}>
-        <div class="btn-sp btn-three">
-          <span>{buttonTitle}</span>
+    <div className="col-2">
+      <a href={href}>
+        <div className="btn-sp btn-three">
+          <span>{children}</span>
         </div>
       </a>
     </div>
