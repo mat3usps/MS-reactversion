@@ -1,11 +1,14 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 function Barbutton({ href, children }) {
   return (
     <div className="col-2">
-      <a href={href}>
+      <Link to={href}>
         <div className="btn-sp btn-three">
           <span>{children}</span>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }

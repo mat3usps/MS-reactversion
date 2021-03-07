@@ -1,6 +1,8 @@
 import Bar from "./Bar";
 import { useEffect } from "react";
 
+import SVG from "./SVG";
+
 function Body() {
   function ChangeIt() {
     const num = Math.ceil(Math.random() * 3);
@@ -26,7 +28,7 @@ function Body() {
       </div>
       <div className="loader-wrapper">
         <a href="../index.html">
-          <div className="animated-svg"></div>
+          <SVG></SVG>
         </a>
       </div>
     </div>

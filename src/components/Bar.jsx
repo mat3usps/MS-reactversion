@@ -2,12 +2,12 @@ import Barbutton from "./Barbutton";
 
 function Bar() {
   const menus = [
-    { href: "coding", title: "Coding" },
-    { href: "photos", title: "Photos" },
-    { href: "about", title: "About" },
-    { href: "games", title: "Games" },
-    { href: "paintings", title: "Paintings" },
-    { href: "musings", title: "Musings" },
+    { href: "./coding", title: "Coding" },
+    { href: "./photos", title: "Photos" },
+    { href: "./about", title: "About" },
+    { href: "./games", title: "Games" },
+    { href: "./paintings", title: "Paintings" },
+    { href: "./musings", title: "Musings" },
   ];
 
   return (
