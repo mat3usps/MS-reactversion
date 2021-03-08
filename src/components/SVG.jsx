@@ -1,10 +1,10 @@
 function SVG() {
   return (
-    <div class="animated-svg">
+    <div class="animated-svg glow-on-hover">
       <svg
         width="300"
         height="300"
-        viewBox="5 107 200 200"
+        viewBox="0 105 200 200"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
       >
