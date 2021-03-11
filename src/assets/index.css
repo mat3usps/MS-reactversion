@@ -8,15 +8,13 @@ html {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  font-family: Carter One;
 }
 
 body {
-  background-position: center center;
   background-repeat: no-repeat;
-  background-size: 135%;
+  background-size: cover;
   background-clip: padding-box;
-  padding: 100px;
+  padding: min(100px, 5vw);
   background-color: rgb(4, 106, 173);
   font-family: "Carter One", sans-serif;
 }
@@ -28,25 +26,10 @@ body {
 
 .btn {
   margin: 15px;
-  font-family: "Verdana";
   color: #e4e4e4;
   border-color: #e4e4e4;
   background-color: rgb(93, 136, 192, 0.4);
   border-width: 0.15em;
-}
-
-.container2 {
-  margin-top: 0px;
-}
-.filler {
-  height: 100px;
-}
-
-.personal-font {
-  letter-spacing: 5px;
-  color: rgb(0, 0, 0);
-  font-family: Freckle Face;
-  background-color: rgba(152, 162, 168, 0.5);
 }
 
 .buttonbar {
@@ -290,4 +273,62 @@ div[class*="box"] {
 .centraltext h1 {
   font-family: "Carter One", sans-serif;
   font-size: 2.4rem;
+}
+
+/* Games */
+
+.gamecard {
+  width: 12vw;
+  height: 12vw + 1rem;
+  background-color: #000000, 0.1;
+  align-items: center;
+}
+
+.gamecard h3 {
+  font-size: 0.75rem;
+}
+
+.allgames {
+  width: 40vw;
+  overflow: scroll;
+}
+
+/* Musings */
+
+.musing {
+  width: 100%;
+  height: fit-content;
+  padding: 15px;
+  align-items: center;
+}
+
+.musings {
+  width: 40vw;
+  overflow: scroll;
+}
+
+/* Painting */
+
+.painting {
+  width: 90vw;
+  height: 50vw;
+}
+
+.frame {
+  float: left;
+}
+
+.frameInfo {
+  float: right;
+}
+
+/* CODING */
+
+.article {
+  width: 40%;
+}
+
+.coding {
+  width: 40vw;
+  overflow: scroll;
 }
