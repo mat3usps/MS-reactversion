@@ -1,4 +1,3 @@
-import P1 from ".../public/assets/paintings/P-1.jpeg";
 import Painting from "./Painting";
 
 function Paintings() {
@@ -8,7 +7,7 @@ function Paintings() {
       description:
         "The first ever frame painted by Mateus Pereira. The range of colors depicts the exact moment in which the wish of painting became reality. The shapes and colors bring about the views from the author's porch.",
       price: "500.00",
-      image: P1,
+      image: "P1",
     },
   ];
 

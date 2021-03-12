@@ -1,9 +1,7 @@
-import { Children } from "react";
-
-function Musing(content) {
+function Musing(content, children) {
   return (
     <div className="musing">
-      <h2>{Children}</h2>
+      <h2>{children}</h2>
       <p>{content}</p>
     </div>
   );

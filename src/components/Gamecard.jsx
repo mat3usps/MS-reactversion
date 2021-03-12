@@ -1,8 +1,8 @@
-function GameCard(game, image) {
+function GameCard(children, image) {
   return (
     <div className="gamecard">
-      <img src={image} alt={game} />
-      <h3>{game}</h3>
+      <img src={image} alt={children} />
+      <h3>{children}</h3>
     </div>
   );
 }

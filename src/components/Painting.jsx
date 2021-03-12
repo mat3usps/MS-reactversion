@@ -1,5 +1,3 @@
-import { Children } from "react";
-
 function Painting(image, children, description, price) {
   return (
     <div className="painting">
@@ -7,7 +5,7 @@ function Painting(image, children, description, price) {
         <img src={image} alt={children} />
       </div>
       <div className="frameInfo">
-        <h2>{Children}</h2>
+        <h2>{children}</h2>
         <p>{description}</p>
         <h3>&dollar; {price}</h3>
       </div>

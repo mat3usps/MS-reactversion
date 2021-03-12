@@ -12,12 +12,13 @@ import Coding from "./Coding";
 function Body() {
   const location = useLocation();
 
-  function ChangeIt() {
+  function ChangeBackground() {
     const num = Math.ceil(Math.random() * 3);
+
     document.body.background = "./assets/files/" + num + ".jpg";
-    if ((location.pathname === "/paintings", "/")) {
+    if (location.pathname === "/paintings" || "/") {
       document.body.style.setProperty("--background-position", "center");
-    } else if ((location.pathname === "/about", "/games", "/coding")) {
+    } else if (location.pathname === "/about" || "/games" || "/coding") {
       document.body.style.setProperty("--background-position", "right");
     } else {
       document.body.style.setProperty("--background-position", "left");
@@ -26,7 +27,7 @@ function Body() {
 
   {
     /* -Temporizador (tempo em msContentScript no 2 parametro)
-    function ChangeIt() {
+    function ChangeBackground() {
     setInterval(() => {
       const num = Math.ceil(Math.random() * 3);
       document.body.background = "./assets/files/" + num + ".jpg";
@@ -34,7 +35,7 @@ function Body() {
   */
   }
 
-  useEffect(ChangeIt, [location]);
+  useEffect(ChangeBackground, [location]);
 
   const menus = [
     { href: "/about", title: "About" },

@@ -1,13 +1,12 @@
 import Gamecard from "./Gamecard";
-import GCicon from ".../public/assets/games/icon-gc.jpg";
 
 function Games() {
-  const games = [{ game: "GrandChase", image: GCicon }];
+  const games = [{ name: "GrandChase", image: "GCicon" }];
 
   return (
     <div className="allgames column">
-      {games.map(({ game, image }) => (
-        <Gamecard image={image} game={game}></Gamecard>
+      {games.map(({ name, image }) => (
+        <Gamecard image={image}>{name}</Gamecard>
       ))}
     </div>
   );

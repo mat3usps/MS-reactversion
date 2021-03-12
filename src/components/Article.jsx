@@ -1,9 +1,7 @@
-import { Children } from "react";
-
-function Article(description) {
+function Article(description, children) {
   return (
     <div className="article">
-      <h3>{Children}</h3>
+      <h3>{children}</h3>
       <p>{description}</p>
     </div>
   );
