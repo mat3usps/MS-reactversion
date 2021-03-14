@@ -1,14 +1,13 @@
 function About() {
   return (
-    <div className="col-8 centraltext">
-      <h1>A life based in titles</h1>
+    <div className="abouttext">
+      <h1>A life story told in titles</h1>
       <p>
-        Observador de nuvens, cantor de chuveiro, pintor de varanda, rato de
-        rave, virginiano por osmose, gaymer, dobrador de água, ex-paralover,
-        justdancer &amp; kpopper, motorista de carro alugado, unebiano,
-        comunista não-extremista, usuário de buddypoke &amp; bitmoji,
-        registrador de momentos, espectador de e-sports, niilista por escolha,
-        naturalista das horas vagas, integrante da geração-Y e cajazeirense.
+        Clouds observer, shower singer, porch painter, rave rat, pseudo-virgo,
+        gaymer, water bender, ex-paralover, justdancer &amp; kpopper, rented car
+        driver, unebiano, non-extremist communist, buddypoke &amp; bitmoji user,
+        photo-addicted, e-sports spectator, nihilist by choice, spare time
+        naturalist, generation-Y member, and cajazeirense.
       </p>
     </div>
   );

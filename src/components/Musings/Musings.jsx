@@ -5,7 +5,7 @@ function Musings() {
     {
       title: "Momentum",
       content:
-        "A concept that seems to lose meaning when translated. Momentum is sometimes perceived as the moment, and at times strength/energy. The truth is that momentum brings both of the ideas together to say that there is a moment for things to happen. There is energy in every moment that may cooperate or decrease the chances of something happening. Momentum is about observing the state of things and waiting the right moment to use the conditions in ones favor.",
+        "A Latin concept that seems to lose meaning when translated. Momentum is sometimes perceived as the moment and at times strength/energy. The truth is that momentum brings both of the ideas together to say that there is energy in every moment, an energy that may cooperate or decrease the chances of something happening. Momentum is about observing the state of things and knowing the right moment to use the conditions in one favor.",
     },
   ];
 

@@ -262,15 +262,15 @@ div[class*="box"] {
 
 /*ABOUT*/
 
-.centraltext {
+.abouttext {
   position: absolute;
-  width: min(600px, 50%);
+  width: min(550px, 50%);
   top: 35%;
   text-align: center;
   color: rgb(0, 0, 0);
 }
 
-.centraltext h1 {
+.abouttext h1 {
   font-family: "Carter One", sans-serif;
   font-size: 2.4rem;
 }
@@ -278,20 +278,28 @@ div[class*="box"] {
 /* Games */
 
 .gamecard {
-  width: 12vw;
-  height: 12vw + 1rem;
+  width: 100%;
+  height: 8rem;
   background-color: #000000, 0.1;
   align-items: center;
   justify-content: center;
   text-align: center;
+  opacity: 0.75;
+  display: inline-block;
+}
+
+.gamecard:hover {
+  opacity: 1;
 }
 
 .gamecard h3 {
   font-size: 0.75rem;
+  cursor: pointer;
 }
 
-.gameImage {
-  width: 7rem;
+.gameicon {
+  height: 8rem;
+  cursor: pointer;
 }
 
 .allgames {
@@ -300,7 +308,8 @@ div[class*="box"] {
   height: 50vh;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rem;
+  gap: 0.5rem;
+  padding: 1rem;
 }
 
 /* Musings */
@@ -317,7 +326,7 @@ div[class*="box"] {
 }
 
 .musing p {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .musings {
@@ -336,20 +345,28 @@ div[class*="box"] {
   grid-template-columns: 1fr 1fr;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  top: 20%;
+  left: 15%;
 }
 
 .paintingImage {
-  height: 25rem;
+  height: 22rem;
   margin: 2rem;
 }
 
 .frame {
-  float: left;
 }
 
+.frameInfo h2 {
+  text-align: center;
+}
 .frameInfo {
-  float: right;
   width: 15rem;
+  height: 22rem;
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 3rem;
+  padding: 1rem;
 }
 
 /* CODING */
@@ -358,14 +375,16 @@ div[class*="box"] {
   width: 100%;
   text-align: center;
   justify-content: center;
+  cursor: pointer;
+  text-decoration-line: none;
 }
 
 .article h3 {
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .article p {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .coding {
@@ -374,8 +393,11 @@ div[class*="box"] {
   height: 50vh;
   overflow-y: scroll;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 3rem;
-  padding: 2rem;
+  grid-template-columns: 1fr;
+  padding: 1rem;
+}
+
+.separator {
+  margin-top: -2rem;
+  width: 70%;
 }

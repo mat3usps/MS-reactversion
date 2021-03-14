@@ -7,7 +7,7 @@ function Painting({ image, children, description, price }) {
       <div className="frameInfo">
         <h2>{children}</h2>
         <p>{description}</p>
-        <h3> &dollar; {price}</h3>
+        <h3>{price}</h3>
       </div>
     </div>
   );
