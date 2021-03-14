@@ -2,12 +2,12 @@ import Bar from "./Bar";
 import { useEffect } from "react";
 import SVG from "./SVG";
 import { Route, useLocation } from "react-router";
-import Photos from "./Photos";
-import About from "./About";
-import Games from "./Games";
-import Paintings from "./Paintings";
-import Musings from "./Musings";
-import Coding from "./Coding";
+import Photos from "./Photos/Photos";
+import About from "./About/About";
+import Games from "./Games/Games";
+import Paintings from "./Paintings/Paintings";
+import Musings from "./Musings/Musings";
+import Coding from "./Coding/Coding";
 
 function Body() {
   const location = useLocation();
@@ -18,10 +18,10 @@ function Body() {
     document.body.background = "./assets/files/" + num + ".jpg";
     if (location.pathname === "/paintings" || "/") {
       document.body.style.setProperty("--background-position", "center");
-    } else if (location.pathname === "/about" || "/games" || "/coding") {
-      document.body.style.setProperty("--background-position", "right");
-    } else {
+    } else if (location.pathname === "/musings") {
       document.body.style.setProperty("--background-position", "left");
+    } else {
+      document.body.style.setProperty("--background-position", "right");
     }
   }
 

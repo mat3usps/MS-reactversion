@@ -282,15 +282,25 @@ div[class*="box"] {
   height: 12vw + 1rem;
   background-color: #000000, 0.1;
   align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .gamecard h3 {
   font-size: 0.75rem;
 }
 
+.gameImage {
+  width: 7rem;
+}
+
 .allgames {
+  margin-top: 2rem;
   width: 40vw;
-  overflow: scroll;
+  height: 50vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
 }
 
 /* Musings */
@@ -299,19 +309,38 @@ div[class*="box"] {
   width: 100%;
   height: fit-content;
   padding: 15px;
-  align-items: center;
+  text-align: center;
+}
+
+.musing h2 {
+  font-size: 2rem;
+}
+
+.musing p {
+  font-size: 1rem;
 }
 
 .musings {
+  margin-top: 2rem;
   width: 40vw;
-  overflow: scroll;
+  height: 50vh;
+  overflow-y: scroll;
 }
 
 /* Painting */
 
 .painting {
-  width: 90vw;
-  height: 50vw;
+  width: 100vw;
+  height: 50vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paintingImage {
+  height: 25rem;
+  margin: 2rem;
 }
 
 .frame {
@@ -320,15 +349,33 @@ div[class*="box"] {
 
 .frameInfo {
   float: right;
+  width: 15rem;
 }
 
 /* CODING */
 
 .article {
-  width: 40%;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+.article h3 {
+  font-size: 1rem;
+}
+
+.article p {
+  font-size: 0.7rem;
 }
 
 .coding {
+  margin-top: 2rem;
   width: 40vw;
-  overflow: scroll;
+  height: 50vh;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3rem;
+  padding: 2rem;
 }

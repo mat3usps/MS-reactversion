@@ -1,4 +1,4 @@
-function Article(description, children) {
+function Article({ description, children }) {
   return (
     <div className="article">
       <h3>{children}</h3>

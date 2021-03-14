@@ -1,7 +1,7 @@
 function About() {
   return (
     <div className="col-8 centraltext">
-      <h1>Uma vida baseada em títulos</h1>
+      <h1>A life based in titles</h1>
       <p>
         Observador de nuvens, cantor de chuveiro, pintor de varanda, rato de
         rave, virginiano por osmose, gaymer, dobrador de água, ex-paralover,
