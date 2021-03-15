@@ -2,6 +2,7 @@ import Bar from "./Bar";
 import { useEffect } from "react";
 import SVG from "./SVG";
 import { Route, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import Photos from "./Photos/Photos";
 import About from "./About/About";
 import Games from "./Games/Games";
@@ -12,16 +13,20 @@ import Coding from "./Coding/Coding";
 function Body() {
   const location = useLocation();
 
-  function ChangeBackground() {
+  function changeBackground() {
     const num = Math.ceil(Math.random() * 3);
 
+    function setBackgroundPosition(position) {
+      document.body.style.setProperty("background-position", position);
+    }
+
     document.body.background = "./assets/files/" + num + ".jpg";
-    if (location.pathname === "/paintings" || "/") {
-      document.body.style.setProperty("--background-position", "center");
+    if (["/paintings", "/"].includes(location.pathname)) {
+      setBackgroundPosition("center");
     } else if (location.pathname === "/musings") {
-      document.body.style.setProperty("--background-position", "left");
+      setBackgroundPosition("right");
     } else {
-      document.body.style.setProperty("--background-position", "right");
+      setBackgroundPosition("left");
     }
   }
 
@@ -35,7 +40,7 @@ function Body() {
   */
   }
 
-  useEffect(ChangeBackground, [location]);
+  useEffect(changeBackground, [location]);
 
   const menus = [
     { href: "/about", title: "About" },
@@ -78,9 +83,9 @@ function Body() {
         ))}
       </div>
       <div className="loader-wrapper">
-        <a href="../index.html">
+        <Link to="/">
           <SVG></SVG>
-        </a>
+        </Link>
       </div>
     </div>
   );
