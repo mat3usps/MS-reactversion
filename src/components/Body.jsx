@@ -20,13 +20,21 @@ function Body() {
       document.body.style.setProperty("background-position", position);
     }
 
+    function setSVGPosition(position) {
+      var elem = document.getElementById("SVG");
+      elem.style.left = position;
+    }
+
     document.body.background = "./assets/files/" + num + ".jpg";
     if (["/paintings", "/"].includes(location.pathname)) {
       setBackgroundPosition("center");
+      setSVGPosition("51%");
     } else if (location.pathname === "/musings") {
       setBackgroundPosition("right");
+      setSVGPosition("40%");
     } else {
       setBackgroundPosition("left");
+      setSVGPosition("65%");
     }
   }
 

@@ -1,6 +1,6 @@
 function SVG() {
   return (
-    <div class="animated-svg glow-on-hover">
+    <div id="SVG" className="animated-svg glow-on-hover">
       <svg
         width="300"
         height="300"

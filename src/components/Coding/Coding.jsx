@@ -22,7 +22,7 @@ function Coding() {
   return (
     <div className="coding">
       {articles.map(({ title, description, href }) => (
-        <Article description={description} href={href}>
+        <Article description={description} href={href} key={title}>
           {title}
         </Article>
       ))}
