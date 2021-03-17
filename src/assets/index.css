@@ -102,7 +102,7 @@ div[class*="box"] {
   background-color: rgb(0, 0, 0);
   border-radius: 125px;
   top: 90%;
-  left: 65%;
+  left: 51%;
   position: fixed;
   transform: translate(-50%, -50%);
 }
@@ -265,7 +265,7 @@ div[class*="box"] {
 
 .abouttext {
   position: absolute;
-  width: min(550px, 50%);
+  width: min(540px, 50%);
   top: 35%;
   text-align: center;
   color: rgb(0, 0, 0);
@@ -274,6 +274,21 @@ div[class*="box"] {
 .abouttext h1 {
   font-family: "Carter One", sans-serif;
   font-size: 2.4rem;
+}
+
+.contactbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonLink {
+  background-color: transparent;
+  margin: 0.5rem;
+}
+
+.contactButtonIcon {
+  height: 4rem;
 }
 
 /* Games */
@@ -303,6 +318,12 @@ div[class*="box"] {
   cursor: pointer;
 }
 
+.gameimages {
+  width: min(400px, 40vw);
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .allgames {
   margin-top: 2rem;
   width: 40vw;
@@ -311,6 +332,55 @@ div[class*="box"] {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 0.5rem;
   padding: 1rem;
+}
+
+.modal-overlay {
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+}
+
+.gamepresentation {
+  background: #f0f2f5;
+  border-radius: 15px;
+  padding: 1.5rem;
+  position: absolute;
+  display: inline-block;
+  height: fit-content;
+  text-align: center;
+  justify-content: space-around;
+  width: min(800px, 60vw);
+  top: 50;
+  left: 50;
+}
+
+.gamebutton {
+  padding: 0;
+  border: none;
+}
+
+.rotated-l {
+  margin: 3px;
+  transform: rotate(270deg);
+}
+
+.rotated-r {
+  margin: 3px;
+  transform: rotate(90deg);
+}
+
+.content {
+  margin: 1rem;
 }
 
 /* Musings */
@@ -327,16 +397,17 @@ div[class*="box"] {
 }
 
 .musing p {
+  margin-top: 1rem;
   font-size: 0.8rem;
 }
 
 .musings {
-  margin-top: 2rem;
-  width: 40vw;
-  height: 50vh;
+  margin: 2rem;
+  width: 35vw;
+  height: 65vh;
   overflow-y: scroll;
   position: absolute;
-  left: 50%;
+  left: 53%;
 }
 
 /* Painting */
@@ -376,7 +447,22 @@ div[class*="box"] {
   text-align: center;
   justify-content: center;
   cursor: pointer;
-  text-decoration-line: none;
+  text-decoration: none;
+}
+
+.articlepresentation {
+  background: #f0f2f5;
+  border-radius: 15px;
+  padding: 1.5rem;
+  position: absolute;
+  display: inline-block;
+  height: 70vh;
+  text-align: center;
+  justify-content: space-around;
+  width: min(800px, 60vw);
+  top: 50;
+  left: 50;
+  overflow-y: scroll;
 }
 
 .article h3 {
@@ -390,7 +476,7 @@ div[class*="box"] {
 .coding {
   margin-top: 2rem;
   width: 40vw;
-  height: 50vh;
+  height: 65vh;
   overflow-y: scroll;
   display: grid;
   grid-template-columns: 1fr;

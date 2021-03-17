@@ -31,7 +31,7 @@ function Body() {
       setSVGPosition("51%");
     } else if (location.pathname === "/musings") {
       setBackgroundPosition("right");
-      setSVGPosition("40%");
+      setSVGPosition("38.5%");
     } else {
       setBackgroundPosition("left");
       setSVGPosition("65%");
