@@ -1,6 +1,6 @@
 import { useLocation, Redirect } from "react-router";
 import Gamecard from "./Gamecard";
-import Arrow from "../income.svg";
+import Arrow from "../arrow.svg";
 import Out from "../out.svg";
 import GCicon from "./icon-gc.png";
 import GCworld from "./world-gc.png";
@@ -16,9 +16,9 @@ import { Link } from "react-router-dom";
 function Games() {
   const games = [
     {
-      name: "GrandChase",
+      name: "Grand Chase",
       icon: GCicon,
-      href: "grandchase",
+      href: "grand-chase",
       content:
         "GC as it would be called in my early teenage years, was the game to introduce me to the world of online gaming. At that time I didn't have ways to play at home so you would find me in the LAN houses around the neighborhood. To those who shared these experiences in crowded rooms and nights of non-stop playing, you'd probably remember me as that player who repaid the lack of reflexes with those so welcomed cash skills.",
       images: [GCgameplay, GCworld],
@@ -51,7 +51,20 @@ function Games() {
     return <Redirect to="/games"></Redirect>;
   }
 
-  let x = 0;
+  let image = 0;
+  function next(x, max) {
+    if (x < max.length) {
+      x += 1;
+    }
+  }
+
+  function previous(x) {
+    if (x > 0) {
+      x -= 1;
+    }
+  }
+
+  console.log(image);
 
   return (
     <div>
@@ -66,15 +79,18 @@ function Games() {
         <div className="modal-overlay">
           <div className="gamepresentation">
             <h2>{selectedGame.name}</h2>
-            <button className="gamebutton" onClick={(x -= 1)}>
+            <button
+              className="gamebutton"
+              onClick={next(image, selectedGame.images)}
+            >
               <img className="rotated-l" src={Arrow} alt="Arrow" />
             </button>
             <img
               className="gameimages"
-              src={selectedGame.images[0]}
-              alt={selectedGame.images[0]}
+              src={selectedGame.images[image]}
+              alt={selectedGame.images[image]}
             />
-            <button className="gamebutton" onClick={(x += 1)}>
+            <button className="gamebutton" onClick={previous(image)}>
               <img className="rotated-r" src={Arrow} alt="Arrow" />
             </button>
             <br />

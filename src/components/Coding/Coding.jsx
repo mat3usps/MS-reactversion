@@ -1,4 +1,4 @@
-import { Document } from "react-pdf";
+import { Document, Page } from "react-pdf";
 import { Redirect, useLocation } from "react-router";
 import Article from "./Article";
 import Out from "../out.svg";
@@ -18,16 +18,14 @@ function Coding() {
       description:
         "A quick explanation on SVG, the features that make its difference and some tips on SVG manipulation.",
       href: "./intro-on-svg",
-      content: (
-        <Document file="./A-Brief-Introduction-on-SVG-in-Web-Development.pdf"></Document>
-      ),
+      content: "./a-brief-introduction-on-svg-in-web-development.pdf",
     },
     {
       title: "The Descovery of HTML",
       description:
         "Once one enter the field of technology, its almost mandatory to know a little of html structure. This quick one brings the basics of the language the builts the web.",
       href: "descovery-html",
-      content: "",
+      content: "./the-discovery-of-html.pdf",
     },
   ];
 
@@ -54,10 +52,14 @@ function Coding() {
         <div className="modal-overlay">
           <div className="articlepresentation">
             <h2>{selectedArticle.title}</h2>
-            <p className="content">{selectedArticle.content}</p>
+            <div className="content">
+              <Document file={selectedArticle.content}>
+                <Page pagenumber={1}></Page>
+              </Document>
+            </div>
             <button className="gamebutton">
               <Link to="/coding">
-                <img src={Out} alt="Out" />
+                <img src={Out} alt="Back" />
               </Link>
             </button>
           </div>
