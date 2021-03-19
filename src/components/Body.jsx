@@ -38,16 +38,6 @@ function Body() {
     }
   }
 
-  {
-    /* -Temporizador (tempo em msContentScript no 2 parametro)
-    function ChangeBackground() {
-    setInterval(() => {
-      const num = Math.ceil(Math.random() * 3);
-      document.body.background = "./assets/files/" + num + ".jpg";
-    }, 60000);
-  */
-  }
-
   useEffect(changeBackground, [location]);
 
   const menus = [

@@ -266,14 +266,22 @@ div[class*="box"] {
 .abouttext {
   position: absolute;
   width: min(540px, 50%);
-  top: 35%;
+  top: 28%;
   text-align: center;
   color: rgb(0, 0, 0);
 }
 
-.abouttext h1 {
-  font-family: "Carter One", sans-serif;
-  font-size: 2.4rem;
+.timer {
+  display: inline-block;
+  margin: 0;
+}
+
+.abouttext p:first-child {
+  font-size: 1.2rem;
+}
+
+.abouttext p {
+  font-size: 1rem;
 }
 
 .contactbar {
@@ -350,13 +358,12 @@ div[class*="box"] {
   z-index: 999;
 }
 
-.gamepresentation {
+.modal-content {
   background: #f0f2f5;
   border-radius: 15px;
   padding: 1.5rem;
   position: absolute;
   display: inline-block;
-  height: fit-content;
   text-align: center;
   justify-content: space-around;
   width: min(800px, 60vw);
@@ -364,9 +371,23 @@ div[class*="box"] {
   left: 50;
 }
 
-.gamebutton {
+.modal-fitcontent {
+  height: fit-content;
+}
+
+.modal-scroll {
+  height: 70vh;
+  overflow-y: scroll;
+}
+
+.modal-button {
   padding: 0;
   border: none;
+  opacity: 0.3;
+}
+
+.modal-button:hover {
+  opacity: 1;
 }
 
 .rotated-l {
@@ -448,21 +469,6 @@ div[class*="box"] {
   justify-content: center;
   cursor: pointer;
   text-decoration: none;
-}
-
-.articlepresentation {
-  background: #f0f2f5;
-  border-radius: 15px;
-  padding: 1.5rem;
-  position: absolute;
-  display: inline-block;
-  height: 70vh;
-  text-align: center;
-  justify-content: space-around;
-  width: min(800px, 60vw);
-  top: 50;
-  left: 50;
-  overflow-y: scroll;
 }
 
 .article h3 {

@@ -2,6 +2,7 @@ import Contactbutton from "./Contactbutton";
 import Email from "./email.png";
 import LinkedIn from "./linkedin.png";
 import Github from "./github.png";
+import Timer from "./Timer";
 
 function About() {
   const buttons = [
@@ -21,9 +22,16 @@ function About() {
       href: "https://www.linkedin.com/in/mateuspereiras/",
     },
   ];
+
   return (
     <div className="abouttext">
-      <h1>A life story told in titles</h1>
+      <p>
+        You probably know my name, but certainly you know very little (if none)
+        of my{" "}
+        <strong>{<Timer callQueuedTime="1994-09-14T16:43:00"></Timer>}</strong>{" "}
+        seconds long history. <br /> If that is the case...
+      </p>
+      <h2>A life story told in titles</h2>
       <p>
         Clouds observer, shower singer, porch painter, rave rat, pseudo-virgo,
         gaymer, water bender, ex-paralover, justdancer &amp; kpopper, rented car

@@ -1,7 +1,6 @@
 import { useLocation, Redirect } from "react-router";
 import Gamecard from "./Gamecard";
 import Arrow from "../arrow.svg";
-import Out from "../out.svg";
 import GCicon from "./icon-gc.png";
 import GCworld from "./world-gc.png";
 import GCgameplay from "./gameplay-gc.jpg";
@@ -11,7 +10,9 @@ import TOAboss from "./boss-toa.jpg";
 import FFXIIicon from "./icon-ffxii.png";
 import FFXIIgameplay from "./gameplay-ffxii.jpg";
 import FFXIIworld from "./world-ffxii.jpg";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Modal from "../Modal/Modal";
+import { useState } from "react";
 
 function Games() {
   const games = [
@@ -42,29 +43,38 @@ function Games() {
   ];
 
   const location = useLocation();
+  const history = useHistory();
+  const [imageIndex, setImageIndex] = useState(0);
+
   const isContentShown = location.pathname !== "/games";
   const selectedGame = games.find(({ href }) =>
     location.pathname.includes(href)
   );
 
+  const didCloseModal = () => {
+    history.push("/games");
+    setImageIndex(0);
+  };
+
   if (isContentShown && !selectedGame) {
     return <Redirect to="/games"></Redirect>;
   }
 
-  let image = 0;
-  function next(x, max) {
-    if (x < max.length) {
-      x += 1;
+  const nextImage = () => {
+    if (selectedGame && imageIndex < selectedGame.images.length - 1) {
+      setImageIndex(imageIndex + 1);
+    } else {
+      setImageIndex(0);
     }
-  }
+  };
 
-  function previous(x) {
-    if (x > 0) {
-      x -= 1;
+  const previousImage = () => {
+    if (imageIndex > 0) {
+      setImageIndex(imageIndex - 1);
+    } else {
+      setImageIndex(selectedGame.images.length - 1);
     }
-  }
-
-  console.log(image);
+  };
 
   return (
     <div>
@@ -75,37 +85,28 @@ function Games() {
           </Gamecard>
         ))}
       </div>
-      {isContentShown ? (
-        <div className="modal-overlay">
-          <div className="gamepresentation">
-            <h2>{selectedGame.name}</h2>
-            <button
-              className="gamebutton"
-              onClick={next(image, selectedGame.images)}
-            >
-              <img className="rotated-l" src={Arrow} alt="Arrow" />
-            </button>
-            <img
-              className="gameimages"
-              src={selectedGame.images[image]}
-              alt={selectedGame.images[image]}
-            />
-            <button className="gamebutton" onClick={previous(image)}>
-              <img className="rotated-r" src={Arrow} alt="Arrow" />
-            </button>
-            <br />
-            <p className="content">{selectedGame.content}</p>
-            <button className="gamebutton">
-              <Link to="/games">
-                <img src={Out} alt="Out" />
-              </Link>
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div></div>
+      {selectedGame && (
+        <Modal
+          title={selectedGame.name}
+          isOpen={isContentShown}
+          didClose={didCloseModal}
+          contentRelation="fit-content"
+        >
+          <button className="modal-button" onClick={previousImage}>
+            <img className="rotated-l" src={Arrow} alt="Arrow" />
+          </button>
+          <img
+            className="gameimages"
+            src={selectedGame.images[imageIndex]}
+            alt={selectedGame.images[imageIndex]}
+          />
+          <button className="modal-button" onClick={nextImage}>
+            <img className="rotated-r" src={Arrow} alt="Arrow" />
+          </button>
+          <br />
+          <p className="content">{selectedGame.content}</p>
+        </Modal>
       )}
-      ;
     </div>
   );
 }
