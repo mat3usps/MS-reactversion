@@ -5,7 +5,7 @@ function Modal({ title, didClose, children, isOpen, contentRelation }) {
     return null;
   }
 
-  let containerClass = "modal-overlay";
+  let containerClass = "modal-content";
   if (contentRelation === "fit-content") {
     containerClass += " modal-fit-content";
   } else if (contentRelation === "scroll") {
@@ -13,8 +13,8 @@ function Modal({ title, didClose, children, isOpen, contentRelation }) {
   }
 
   return (
-    <div className={containerClass}>
-      <div className="modal-content">
+    <div className="modal-overlay">
+      <div className={containerClass}>
         {title && <h2>{title}</h2>}
         {children}
         <button className="modal-button" onClick={didClose}>

@@ -104,7 +104,7 @@ function Games() {
             <img className="rotated-r" src={Arrow} alt="Arrow" />
           </button>
           <br />
-          <p className="content">{selectedGame.content}</p>
+          <p className="game-review">{selectedGame.content}</p>
         </Modal>
       )}
     </div>

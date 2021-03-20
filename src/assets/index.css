@@ -20,21 +20,10 @@ body {
   font-family: "Carter One", sans-serif;
 }
 
-.btn-block {
-  width: 80%;
-  position: relative;
-}
-
-.btn {
-  margin: 15px;
-  color: #e4e4e4;
-  border-color: #e4e4e4;
-  background-color: rgb(93, 136, 192, 0.4);
-  border-width: 0.15em;
-}
-
 .buttonbar {
   background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
 }
 
 /* Button*/
@@ -51,7 +40,7 @@ div[class*="box"] {
   line-height: 50px;
   height: 3rem;
   text-align: center;
-  width: 10rem;
+  width: 9rem;
   cursor: pointer;
   text-decoration-line: none;
   font-size: 25px;
@@ -297,6 +286,51 @@ div[class*="box"] {
 
 .contactButtonIcon {
   height: 4rem;
+  opacity: 0.7;
+  transition: all 0.5s;
+}
+
+.contactButtonIcon:hover {
+  height: 5rem;
+  opacity: 1;
+}
+
+/* CODING */
+
+.article {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.article:hover {
+  opacity: 1;
+}
+
+.article h3 {
+  font-size: 1.5rem;
+}
+
+.article p {
+  font-size: 0.8rem;
+}
+
+.coding {
+  margin-top: 2rem;
+  width: max(35vw, 400px);
+  height: 65vh;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 1rem;
+}
+
+.separator {
+  margin-top: -2rem;
+  width: 70%;
 }
 
 /* Games */
@@ -332,76 +366,18 @@ div[class*="box"] {
   margin-right: 1rem;
 }
 
+.game-review {
+  margin: 1rem;
+}
+
 .allgames {
   margin-top: 2rem;
-  width: 40vw;
+  width: max(35vw, 400px);
   height: 50vh;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 0.5rem;
   padding: 1rem;
-}
-
-.modal-overlay {
-  width: 100%;
-  height: 100%;
-
-  background-color: rgba(0, 0, 0, 0.7);
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 999;
-}
-
-.modal-content {
-  background: #f0f2f5;
-  border-radius: 15px;
-  padding: 1.5rem;
-  position: absolute;
-  display: inline-block;
-  text-align: center;
-  justify-content: space-around;
-  width: min(800px, 60vw);
-  top: 50;
-  left: 50;
-}
-
-.modal-fitcontent {
-  height: fit-content;
-}
-
-.modal-scroll {
-  height: 70vh;
-  overflow-y: scroll;
-}
-
-.modal-button {
-  padding: 0;
-  border: none;
-  opacity: 0.3;
-}
-
-.modal-button:hover {
-  opacity: 1;
-}
-
-.rotated-l {
-  margin: 3px;
-  transform: rotate(270deg);
-}
-
-.rotated-r {
-  margin: 3px;
-  transform: rotate(90deg);
-}
-
-.content {
-  margin: 1rem;
 }
 
 /* Musings */
@@ -424,7 +400,7 @@ div[class*="box"] {
 
 .musings {
   margin: 2rem;
-  width: 35vw;
+  width: max(35vw, 400px);
   height: 65vh;
   overflow-y: scroll;
   position: absolute;
@@ -461,35 +437,104 @@ div[class*="box"] {
   padding: 1rem;
 }
 
-/* CODING */
+/* Modal */
 
-.article {
+.modal-overlay {
   width: 100%;
-  text-align: center;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
   justify-content: center;
-  cursor: pointer;
-  text-decoration: none;
+
+  z-index: 999;
 }
 
-.article h3 {
-  font-size: 1.5rem;
+.modal-content {
+  background: #f0f2f5;
+  border-radius: 15px;
+  padding: 1.5rem;
+  position: absolute;
+  display: inline-block;
+  text-align: center;
+  justify-content: space-around;
+  width: min(800px, 80vw);
+  left: 50;
 }
 
-.article p {
-  font-size: 0.8rem;
+.modal-fit-content {
+  height: fit-content;
+  top: 50;
 }
 
-.coding {
-  margin-top: 2rem;
-  width: 40vw;
-  height: 65vh;
+.modal-scroll {
+  height: 90vh;
+  top: 0;
   overflow-y: scroll;
-  display: grid;
-  grid-template-columns: 1fr;
-  padding: 1rem;
+  margin: 5vh;
 }
 
-.separator {
-  margin-top: -2rem;
-  width: 70%;
+.modal-button {
+  padding: 0;
+  border: none;
+  opacity: 0.5;
+}
+
+.modal-button:hover {
+  opacity: 1;
+}
+
+.rotated-l {
+  margin: 3px;
+  transform: rotate(270deg);
+}
+
+.rotated-r {
+  margin: 3px;
+  transform: rotate(90deg);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .btn-sp {
+    width: 8rem;
+  }
+  .musings {
+    left: 50%;
+  }
+}
+@media (max-width: 991px) {
+  html {
+    font-size: 93.75%;
+  }
+  .btn-sp {
+    width: 12rem;
+  }
+  .musings {
+    left: 45%;
+  }
+}
+@media (max-width: 767px) {
+  html {
+    font-size: 87.5%;
+  }
+  .btn-sp {
+    width: 10rem;
+  }
+  .musings {
+    left: 35%;
+  }
+}
+@media (max-width: 507px) {
+  .btn-sp {
+    width: 10rem;
+  }
+  .musings {
+    left: 0%;
+  }
 }

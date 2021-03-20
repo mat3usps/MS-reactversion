@@ -77,7 +77,9 @@ function Body() {
       <div className="container">
         <Bar menus={menus}></Bar>
         {menus.map(({ href, title }) => (
-          <Route path={href}>{renderMenuComponent(title)}</Route>
+          <Route path={href} key={title}>
+            {renderMenuComponent(title)}
+          </Route>
         ))}
       </div>
       <div className="loader-wrapper">

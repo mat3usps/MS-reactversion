@@ -153,7 +153,6 @@ function Coding() {
       </div>
       {selectedArticle && (
         <Modal
-          title={selectedArticle.title}
           isOpen={isContentShown}
           contentRelation="scroll"
           didClose={didCloseModal}
