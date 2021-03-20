@@ -1,6 +1,5 @@
 import { useLocation, Redirect } from "react-router";
 import Gamecard from "./Gamecard";
-import Arrow from "../arrow.svg";
 import GCicon from "./icon-gc.png";
 import GCworld from "./world-gc.png";
 import GCgameplay from "./gameplay-gc.jpg";
@@ -56,6 +55,15 @@ function Games() {
     setImageIndex(0);
   };
 
+  const [expandedImage, setImageExtended] = useState(false);
+  const openImage = () => {
+    setImageExtended(true);
+  };
+
+  const closeImage = () => {
+    setImageExtended(false);
+  };
+
   if (isContentShown && !selectedGame) {
     return <Redirect to="/games"></Redirect>;
   }
@@ -76,6 +84,16 @@ function Games() {
     }
   };
 
+  let previous = imageIndex - 1;
+  if (selectedGame && imageIndex === 0) {
+    previous = selectedGame.images.length - 1;
+  }
+
+  let next = imageIndex + 1;
+  if (selectedGame && imageIndex === selectedGame.images.length - 1) {
+    next = 0;
+  }
+
   return (
     <div>
       <div className="allgames column">
@@ -92,20 +110,42 @@ function Games() {
           didClose={didCloseModal}
           contentRelation="fit-content"
         >
-          <button className="modal-button" onClick={previousImage}>
-            <img className="rotated-l" src={Arrow} alt="Arrow" />
-          </button>
+          <div className="game-images-carrousel">
+            <button className="games-modal-button" onClick={previousImage}>
+              <img
+                className="side-game-image previous-game-image"
+                src={selectedGame.images[previous]}
+                alt={selectedGame.images[previous]}
+              />
+            </button>
+            <button className="central-games-modal-button" onClick={openImage}>
+              <img
+                className="central-game-image"
+                src={selectedGame.images[imageIndex]}
+                alt={selectedGame.images[imageIndex]}
+              />
+            </button>
+            <button className="games-modal-button" onClick={nextImage}>
+              <img
+                className="side-game-image next-game-image"
+                src={selectedGame.images[next]}
+                alt={selectedGame.images[next]}
+              />
+            </button>
+          </div>
+          <p className="game-review">{selectedGame.content}</p>
+        </Modal>
+      )}
+      {selectedGame && expandedImage ? (
+        <button className="games-modal-button" onClick={closeImage}>
           <img
-            className="gameimages"
+            className="game-expanded-image"
             src={selectedGame.images[imageIndex]}
             alt={selectedGame.images[imageIndex]}
           />
-          <button className="modal-button" onClick={nextImage}>
-            <img className="rotated-r" src={Arrow} alt="Arrow" />
-          </button>
-          <br />
-          <p className="game-review">{selectedGame.content}</p>
-        </Modal>
+        </button>
+      ) : (
+        <div></div>
       )}
     </div>
   );

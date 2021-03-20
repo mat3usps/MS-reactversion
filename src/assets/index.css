@@ -360,14 +360,63 @@ div[class*="box"] {
   cursor: pointer;
 }
 
-.gameimages {
-  width: min(400px, 40vw);
-  margin-left: 1rem;
-  margin-right: 1rem;
+.game-images-carrousel {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.side-game-image {
+  width: min(200px, 20vw);
+  position: relative;
+  opacity: 0.5;
+  transition: all 1s;
+}
+
+.side-game-image:hover {
+  width: min(250px, 25vw);
+  opacity: 0.9;
+}
+
+.games-modal-button {
+  padding: 0;
+  border: none;
+  height: fit-content;
+  width: fit-content;
+}
+
+.central-games-modal-button {
+  padding: 0;
+  border: none;
+  z-index: 1;
+}
+
+.previous-game-image {
+  margin-right: -7rem;
+}
+
+.next-game-image {
+  margin-left: -7rem;
+}
+
+.central-game-image {
+  height: min(40vh);
+  position: flex;
+  z-index: 1;
+  z-index: 999;
+}
+
+.game-expanded-image {
+  position: absolute;
+  height: 80vh;
+  z-index: 999;
+  margin-top: -65vh;
 }
 
 .game-review {
-  margin: 1rem;
+  margin-top: 10px;
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 
 .allgames {
@@ -487,16 +536,6 @@ div[class*="box"] {
 
 .modal-button:hover {
   opacity: 1;
-}
-
-.rotated-l {
-  margin: 3px;
-  transform: rotate(270deg);
-}
-
-.rotated-r {
-  margin: 3px;
-  transform: rotate(90deg);
 }
 
 /* Responsive */
