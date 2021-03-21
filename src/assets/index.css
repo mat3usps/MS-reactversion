@@ -484,6 +484,10 @@ div[class*="box"] {
   margin: 0;
 }
 
+.zoom-container {
+  height: 352px;
+}
+
 .arrow-button {
   padding: 0;
   border: none;

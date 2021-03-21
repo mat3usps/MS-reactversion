@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Arrow from "./arrow.svg";
+import Zoomer from "./Zoomer";
 
 function Painting({
   image,
+  largeImage,
   children,
   description,
   price,
@@ -30,7 +32,11 @@ function Painting({
           <img src={Arrow} alt="superior" />
         </button>
         <br />
-        <img className="paintingImage" src={image} alt={children} />
+        <div className="zoom-container">
+          <Zoomer image={image} largeImage={largeImage}>
+            {children}
+          </Zoomer>
+        </div>
         <br />
         <button
           className="inferior-arrow-button arrow-button"

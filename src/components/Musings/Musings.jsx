@@ -4,7 +4,7 @@ import Musing from "./Musing";
 function Musings() {
   const entrances = [
     {
-      title: "Gods",
+      title: "God",
       content:
         "The very idea of an entity with the power of the unkown. Well, most of us, humans, have a hard time trying to surrender before the unkown. The unkown causes fear, but also curiosity. That is perfect environment to give ourselves in to any creadible explanation, and the world is full of tempting atempts. Knowledge used to survive when the situation requested it, also used to control the ones who did not share its understanding though. At the end, the true gods are the ones with the power of knowing what has been hidden from most. They rather have you simply beliving, because the thirst for truth is the one idea they want you not to have.",
     },
