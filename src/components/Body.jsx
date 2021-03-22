@@ -9,12 +9,24 @@ import Games from "./Games/Games";
 import Paintings from "./Paintings/Paintings";
 import Musings from "./Musings/Musings";
 import Coding from "./Coding/Coding";
+import { useState } from "react/cjs/react.development";
 
 function Body() {
   const location = useLocation();
 
+  const [secretBG, showSecretBG] = useState(false);
+  const setSecretBG = () => {
+    showSecretBG(true);
+  };
+
   function changeBackground() {
-    const num = Math.ceil(Math.random() * 3);
+    let key = 3;
+    if (secretBG) {
+      key = 0;
+      document.body.style.setProperty("color", "white");
+      document.body.style.setProperty("background-color", "rgb(214, 158, 5)");
+    }
+    const num = Math.ceil(Math.random() * key);
 
     function setBackgroundPosition(position) {
       document.body.style.setProperty("background-position", position);
@@ -76,6 +88,11 @@ function Body() {
     <div>
       <div className="container">
         <Bar menus={menus}></Bar>
+        {location.pathname === "/" && (
+          <div className="row secretBG-row">
+            <button className="secretBG-button" onClick={setSecretBG}></button>
+          </div>
+        )}
         {menus.map(({ href, title }) => (
           <Route path={href} key={title}>
             {renderMenuComponent(title)}

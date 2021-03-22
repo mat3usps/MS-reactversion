@@ -12,8 +12,10 @@ class Zoomer extends Component {
   }
 
   render() {
-    const { image } = this.state;
-    const { largeImage } = this.state;
+    let { image } = this.state;
+    let { largeImage } = this.state;
+    console.log(image);
+    console.log(largeImage);
     return (
       <div>
         <SideBySideMagnifier

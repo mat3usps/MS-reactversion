@@ -18,6 +18,7 @@ body {
   padding: min(100px, 5vw);
   background-color: rgb(4, 106, 173);
   font-family: "Carter One", sans-serif;
+  color: rgb(0, 0, 0);
 }
 
 .buttonbar {
@@ -81,6 +82,23 @@ div[class*="box"] {
 .btn-three:hover::after {
   opacity: 1;
   transform: scale(1, 1);
+}
+
+.secretBG-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  margin-top: 33vh;
+}
+
+.secretBG-button {
+  padding: 0;
+  border: none;
+  width: 5rem;
+  height: 5rem;
+  position: absolute;
+  background-color: transparent;
 }
 
 /* Animação SVG*/
@@ -257,7 +275,6 @@ div[class*="box"] {
   width: min(540px, 50%);
   top: 28%;
   text-align: center;
-  color: rgb(0, 0, 0);
 }
 
 .timer {
@@ -596,7 +613,6 @@ div[class*="box"] {
 
 .modal-fit-content {
   height: fit-content;
-  top: 50;
 }
 
 .modal-scroll {

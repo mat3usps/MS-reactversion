@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Arrow from "./arrow.svg";
 import Zoomer from "./Zoomer";
 
@@ -21,6 +21,19 @@ function Painting({
       manipulateEgg(false);
     }
   };
+
+  const [varZoomer, setZoomer] = useState(image);
+
+  useEffect(() => {
+    const intervalId = setInterval(function () {
+      if (varZoomer !== image) setZoomer(image);
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  console.log(image);
 
   return (
     <div className="painting">
