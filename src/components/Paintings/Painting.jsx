@@ -31,7 +31,7 @@ function Painting({
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [varZoomer, image]);
 
   console.log(image);
 

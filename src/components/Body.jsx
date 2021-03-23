@@ -50,7 +50,7 @@ function Body() {
     }
   }
 
-  useEffect(changeBackground, [location]);
+  useEffect(changeBackground, [location, secretBG]);
 
   const menus = [
     { href: "/about", title: "About" },
