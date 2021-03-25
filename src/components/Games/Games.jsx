@@ -12,6 +12,7 @@ import FFXIIworld from "./world-ffxii.jpg";
 import { useHistory } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
+import Gamecomments from "./Gamecomments";
 
 function Games() {
   const games = [
@@ -134,6 +135,7 @@ function Games() {
             </button>
           </div>
           <p className="game-review">{selectedGame.content}</p>
+          <Gamecomments />
         </Modal>
       )}
       {selectedGame && expandedImage ? (

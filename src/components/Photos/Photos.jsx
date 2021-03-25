@@ -1,9 +1,9 @@
-import Instagram from "./Instagram";
+import Feed from "react-instagram-authless-feed";
 
 const Photos = () => {
   return (
-    <div>
-      <h1>loren upsum</h1>
+    <div className="instagram-feed">
+      <Feed userName="mateusp.s" />
     </div>
   );
 };
