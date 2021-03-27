@@ -2,7 +2,7 @@ import Bar from "./Bar";
 import { useEffect } from "react";
 import SVG from "./SVG";
 import { Route, Switch, useLocation } from "react-router";
-import { BrowserRouter, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Photos from "./Photos/Photos";
 import About from "./About/About";
 import Games from "./Games/Games";
@@ -11,10 +11,12 @@ import Musings from "./Musings/Musings";
 import Coding from "./Coding/Coding";
 import { useState } from "react/cjs/react.development";
 import Header from "./Header";
+import Home from "./Home";
 import Error404 from "./Error404";
 
 function Body() {
   const location = useLocation();
+  console.log("location", location);
 
   const [secretBG, showSecretBG] = useState(false);
   const setSecretBG = () => {
@@ -52,42 +54,58 @@ function Body() {
     }
   }
 
+  const isHomePage = location.pathname === "/";
+  console.log("isHomePage", isHomePage);
+
   useEffect(changeBackground, [location, secretBG]);
 
-  const menus = [
-    { href: "/about", title: "About" },
-    { href: "/coding", title: "Coding" },
-    { href: "/games", title: "Games" },
-    { href: "/musings", title: "Musings" },
-    { href: "/paintings", title: "Paintings" },
-    { href: "/photos", title: "Photos" },
+  const paths = [
+    { hideButton: true, href: "/", title: "Home" },
+    { hideButton: false, href: "/about", title: "About" },
+    { hideButton: false, href: "/coding", title: "Coding" },
+    { hideButton: false, href: "/games", title: "Games" },
+    { hideButton: false, href: "/musings", title: "Musings" },
+    { hideButton: false, href: "/paintings", title: "Paintings" },
+    { hideButton: false, href: "/photos", title: "Photos" },
+    { hideButton: true, href: "*", title: "Error 404" },
   ];
+
+  const renderMenuComponent = (title) => {
+    if (title === "Home") {
+      return <Home />;
+    } else if (title === "About") {
+      return <About />;
+    } else if (title === "Coding") {
+      return <Coding />;
+    } else if (title === "Games") {
+      return <Games />;
+    } else if (title === "Musings") {
+      return <Musings />;
+    } else if (title === "Paintings") {
+      return <Paintings />;
+    } else if (title === "Photos") {
+      return <Photos />;
+    }
+    return <Error404 />;
+  };
 
   return (
     <div>
       <div className="container">
-        <BrowserRouter>
-          <Header />
-          <Bar menus={menus}></Bar>
-          {location.pathname === "/" && (
-            <div className="row secretBG-row">
-              <button
-                className="secretBG-button"
-                onClick={setSecretBG}
-              ></button>
-            </div>
-          )}
-          <Switch>
-            <Route exact path="/" component={""} />
-            <Route path="/about" component={About} />
-            <Route path="/coding" component={Coding} />
-            <Route path="/games" component={Games} />
-            <Route path="/musings" component={Musings} />
-            <Route path="/paintings" component={Paintings} />
-            <Route path="/photos" component={Photos} />
-            <Route path="*" component={Error404} />
-          </Switch>
-        </BrowserRouter>
+        <Header />
+        <Bar paths={paths}></Bar>
+        {isHomePage && (
+          <div className="row secretBG-row">
+            <button className="secretBG-button" onClick={setSecretBG}></button>
+          </div>
+        )}
+        <Switch>
+          {paths.map(({ href, title }) => (
+            <Route exact={title === "Home"} path={href} key={title}>
+              {renderMenuComponent(title)}
+            </Route>
+          ))}
+        </Switch>
       </div>
       <div className="loader-wrapper">
         <Link to="/">

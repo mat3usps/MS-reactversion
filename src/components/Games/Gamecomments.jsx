@@ -22,6 +22,15 @@ function Gamecomments() {
     },
   ]);
 
+  useEffect(() => {
+    const lastState = localStorage.getItem("currentState");
+    setComments(JSON.parse(lastState));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("currentState", JSON.stringify(commentStorage));
+  }, [commentStorage]);
+  
   const addComment = (newComment) => {
     setComments((prevState) => {
       let comment = {
@@ -34,15 +43,6 @@ function Gamecomments() {
       return [...prevState, comment];
     });
   };
-
-  useEffect(() => {
-    const lastState = localStorage.getItem("currentState");
-    setComments(JSON.parse(lastState));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("currentState", JSON.stringify(commentStorage));
-  }, [commentStorage]);
 
   return (
     <div>

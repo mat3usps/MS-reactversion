@@ -8,10 +8,17 @@ class Gamecomment extends Component {
     };
   }
 
+  changeComment = (event) => {
+    this.setComment(event.target.value);
+  };
+
+  setComment = (comment) => this.setState({ comment });
+
   didSave = (event) => {
     const state = this.state;
     this.props.didSave(state.comment);
     event.preventDefault();
+    this.setComment("");
   };
 
   render() {
@@ -33,7 +40,7 @@ class Gamecomment extends Component {
                 name="comment"
                 placeholder="make a comment."
                 value={this.state.comment}
-                onChange={(e) => this.setState({ comment: e.target.value })}
+                onChange={this.changeComment}
               />
               <label for="submit"></label>
               <button
