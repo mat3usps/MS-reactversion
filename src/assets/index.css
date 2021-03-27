@@ -15,16 +15,36 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-clip: padding-box;
-  padding: min(100px, 5vw);
   background-color: rgb(4, 106, 173);
   font-family: "Carter One", sans-serif;
   color: rgb(0, 0, 0);
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 70px;
+}
+
+.Error404 {
+  margin: 3rem;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 74vw;
+  height: 50vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 7px;
 }
 
 .buttonbar {
   background-color: rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
+  border-radius: 7px;
 }
 
 /* Button*/

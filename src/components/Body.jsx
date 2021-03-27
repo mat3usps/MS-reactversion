@@ -1,8 +1,8 @@
 import Bar from "./Bar";
 import { useEffect } from "react";
 import SVG from "./SVG";
-import { Route, useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router";
+import { BrowserRouter, Link } from "react-router-dom";
 import Photos from "./Photos/Photos";
 import About from "./About/About";
 import Games from "./Games/Games";
@@ -10,6 +10,8 @@ import Paintings from "./Paintings/Paintings";
 import Musings from "./Musings/Musings";
 import Coding from "./Coding/Coding";
 import { useState } from "react/cjs/react.development";
+import Header from "./Header";
+import Error404 from "./Error404";
 
 function Body() {
   const location = useLocation();
@@ -61,43 +63,31 @@ function Body() {
     { href: "/photos", title: "Photos" },
   ];
 
-  const renderMenuComponent = (title) => {
-    if (title === "About") {
-      return <About />;
-    }
-    if (title === "Coding") {
-      return <Coding />;
-    }
-    if (title === "Games") {
-      return <Games />;
-    }
-    if (title === "Musings") {
-      return <Musings />;
-    }
-    if (title === "Paintings") {
-      return <Paintings />;
-    }
-    if (title === "Photos") {
-      return <Photos />;
-    }
-
-    return <h1>{title}</h1>;
-  };
-
   return (
     <div>
       <div className="container">
-        <Bar menus={menus}></Bar>
-        {location.pathname === "/" && (
-          <div className="row secretBG-row">
-            <button className="secretBG-button" onClick={setSecretBG}></button>
-          </div>
-        )}
-        {menus.map(({ href, title }) => (
-          <Route path={href} key={title}>
-            {renderMenuComponent(title)}
-          </Route>
-        ))}
+        <BrowserRouter>
+          <Header />
+          <Bar menus={menus}></Bar>
+          {location.pathname === "/" && (
+            <div className="row secretBG-row">
+              <button
+                className="secretBG-button"
+                onClick={setSecretBG}
+              ></button>
+            </div>
+          )}
+          <Switch>
+            <Route exact path="/" component={""} />
+            <Route path="/about" component={About} />
+            <Route path="/coding" component={Coding} />
+            <Route path="/games" component={Games} />
+            <Route path="/musings" component={Musings} />
+            <Route path="/paintings" component={Paintings} />
+            <Route path="/photos" component={Photos} />
+            <Route path="*" component={Error404} />
+          </Switch>
+        </BrowserRouter>
       </div>
       <div className="loader-wrapper">
         <Link to="/">

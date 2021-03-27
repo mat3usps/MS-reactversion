@@ -6,13 +6,11 @@ class Gamecomment extends Component {
     this.state = {
       comment: "",
     };
-
-    this.getComment = this.getComment.bind(this);
   }
 
-  getComment = (event) => {
+  didSave = (event) => {
     const state = this.state;
-    this.props.parentCallback(state.comment);
+    this.props.didSave(state.comment);
     event.preventDefault();
   };
 
@@ -42,7 +40,7 @@ class Gamecomment extends Component {
                 type="submit"
                 id="submit"
                 className="game-form-submit"
-                onClick={this.getComment}
+                onClick={this.didSave}
               >
                 Submit
               </button>
