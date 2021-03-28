@@ -1,10 +1,10 @@
 import Painting from "./Painting";
-import P1 from "./P1.jpg";
-import P1low from "./P1-low.jpg";
-import P1photo from "./P1-photo.jpg";
-import P2 from "./P2.jpg";
-import P2low from "./P2-low.jpg";
-import P2photo from "./P2-photo.jpg";
+import P1 from "../../assets/PaintingImages/P1.jpg";
+import P1low from "../../assets/PaintingImages/P1-low.jpg";
+import P1photo from "../../assets/PaintingImages/P1-photo.jpg";
+import P2 from "../../assets/PaintingImages/P2.jpg";
+import P2low from "../../assets/PaintingImages/P2-low.jpg";
+import P2photo from "../../assets/PaintingImages/P2-photo.jpg";
 import { useState } from "react";
 
 function Paintings() {
