@@ -4,7 +4,7 @@ import Instaimage from "./insta-placeholder.png";
 import React, { useState, useEffect } from "react";
 
 function Gamecomments() {
-  const [commentStorage, setComments] = useState([
+  const [commentStorage, setComments] = useLocalStorage("commentStorage", [
     {
       image: Instaimage,
       name: "Mateus Pereira",
@@ -22,15 +22,16 @@ function Gamecomments() {
     },
   ]);
 
-  useEffect(() => {
-    const lastState = localStorage.getItem("currentState");
-    setComments(JSON.parse(lastState));
-  }, []);
+  function useLocalStorage(key, defaultValue) {
+    const stored = localStorage.getItem(key);
+    const initial = stored ? JSON.parse(stored) : defaultValue;
+    const [value, setValue] = useState(initial);
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(value));
+    }, [value, key]);
+    return [value, setValue];
+  }
 
-  useEffect(() => {
-    localStorage.setItem("currentState", JSON.stringify(commentStorage));
-  }, [commentStorage]);
-  
   const addComment = (newComment) => {
     setComments((prevState) => {
       let comment = {

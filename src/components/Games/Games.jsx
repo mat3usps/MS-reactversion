@@ -1,18 +1,29 @@
 import { useLocation, Redirect } from "react-router";
-import Gamecard from "./Gamecard";
-import GCicon from "./icon-gc.png";
-import GCworld from "./world-gc.png";
-import GCgameplay from "./gameplay-gc.jpg";
-import TOAicon from "./icon-toa.png";
-import TOAhistory from "./history-toa.png";
-import TOAboss from "./boss-toa.jpg";
-import FFXIIicon from "./icon-ffxii.png";
-import FFXIIgameplay from "./gameplay-ffxii.jpg";
-import FFXIIworld from "./world-ffxii.jpg";
 import { useHistory } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 import Gamecomments from "./Gamecomments";
+import Gamecard from "./Gamecard";
+import GCicon from "./GamesImages/icon-gc.png";
+import GCworld from "./GamesImages/world-gc.png";
+import GCgameplay from "./GamesImages/GCbattle.gif";
+import GCpve from "./GamesImages/gameplay-gc.jpg";
+import GCpvp from "./GamesImages/GCpvp.jpg";
+import TOAicon from "./GamesImages/icon-toa.png";
+import TOAhistory from "./GamesImages/history-toa.png";
+import TOAboss from "./GamesImages/boss-toa.jpg";
+import TOAgameplay from "./GamesImages/TOAgameplay.gif";
+import FFXIIicon from "./GamesImages/icon-ffxii.png";
+import FFXIIboss from "./GamesImages/FFXIIboss.png";
+import FFXIIbattle from "./GamesImages/FFXIIbattle.gif";
+import FFXIIgameplay from "./GamesImages/gameplay-ffxii.jpg";
+import FFXIIworld from "./GamesImages/world-ffxii.jpg";
+import DDicon from "./GamesImages/icon-dd.png";
+import DDbattle from "./GamesImages/DDbattle.png";
+import DDboss from "./GamesImages/DDboss.png";
+import DDhit from "./GamesImages/DDhit.png";
+import DDgameplay from "./GamesImages/DDgameplay.gif";
+import DDworld from "./GamesImages/DD-world.png";
 
 function Games() {
   const games = [
@@ -22,7 +33,7 @@ function Games() {
       href: "grand-chase",
       content:
         "GC as it would be called in my early teenage years, was the game to introduce me to the world of online gaming. At that time I didn't have ways to play at home so you would find me in the LAN houses around the neighborhood. To those who shared these experiences in crowded rooms and nights of non-stop playing, you'd probably remember me as that player who repaid the lack of reflexes with those so welcomed cash skills.",
-      images: [GCgameplay, GCworld],
+      images: [GCgameplay, GCworld, GCpvp, GCpve],
     },
     {
       name: "Tactics Ogre: Knight of Lodis",
@@ -30,7 +41,7 @@ function Games() {
       href: "tactics-ogre-kol",
       content:
         "Tactics is the one game that first served me as a motivation for learning English. The game history is beyond involving and since it allows us to be part of the game with the editable character, it was the perfect setting for having me, a tenish kid, translating most of it. I have to admit it wasn't always fun to play at times with a dictionary aside, but I was starting to taste the power of a second language and from there, it only grew.",
-      images: [TOAhistory, TOAboss],
+      images: [TOAgameplay, TOAhistory, TOAboss],
     },
     {
       name: "Final Fantasy XII",
@@ -38,7 +49,15 @@ function Games() {
       href: "final-fantasy-xii",
       content:
         "Considered one of the greatest games of PS2 to me, FFXII is probably one of the games in which I spent the most time in life. Apart from the 100 hours normally taken to conclude the main history, the game has several extra bosses and missions to make you work hard until you complete all objectives. For the ones who played it, did you ever get all the summons? How does that feel? (I gotta say, I'll never know haha)",
-      images: [FFXIIgameplay, FFXIIworld],
+      images: [FFXIIbattle, FFXIIgameplay, FFXIIworld, FFXIIboss],
+    },
+    {
+      name: "Darkest Dungeon",
+      icon: DDicon,
+      href: "darkest-dungeon",
+      content:
+        "One of my most recent addictions, Darkest Dungeon is the perfect strategy game for whoever looks for a bit of terror. Its 2D graphics are very well elaborated and sets the scene for pretty jumpscare moments. The final blow that owned my heart is the dubbing. It has the most catching phrases that I have ever learned and can't help but repeat them together with the speaker every time it presents itself.",
+      images: [DDgameplay, DDboss, DDhit, DDbattle, DDworld],
     },
   ];
 
