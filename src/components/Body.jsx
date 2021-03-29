@@ -16,7 +16,6 @@ import Error404 from "./Error404";
 
 function Body() {
   const location = useLocation();
-  console.log("location", location);
 
   const [secretBG, showSecretBG] = useState(false);
   const setSecretBG = () => {
@@ -55,7 +54,6 @@ function Body() {
   }
 
   const isHomePage = location.pathname === "/";
-  console.log("isHomePage", isHomePage);
 
   useEffect(changeBackground, [location, secretBG]);
 

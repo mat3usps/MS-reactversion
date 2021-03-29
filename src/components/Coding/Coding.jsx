@@ -3,9 +3,10 @@ import Article from "./Article";
 import Modal from "../Modal/Modal";
 import { useHistory } from "react-router-dom";
 import Markdown from "./Markdown";
-import ABISWD from "./ABriefIntroductiononSVGinWebDevelopment.md";
-import TDHTML from "./TheDiscoverofHTML.md";
-import TISRPRC from "./TheImportanceofSRPinReactComponents.md";
+import Articlecomments from "./Articlecomments";
+import ABISWD from "../../assets/CodingArticles/ABriefIntroductiononSVGinWebDevelopment.md";
+import TDHTML from "../../assets/CodingArticles/TheDiscoverofHTML.md";
+import TISRPRC from "../../assets/CodingArticles/TheImportanceofSRPinReactComponents.md";
 
 function Coding() {
   const articles = [
@@ -24,10 +25,10 @@ function Coding() {
       content: ABISWD,
     },
     {
-      title: "The Descovery of HTML",
+      title: "The Discovery of HTML",
       description:
         "Once one enter the field of technology, its almost mandatory to know a little of html structure. This quick one brings the basics of the language the builts the web.",
-      href: "descovery-html",
+      href: "discovery-html",
       content: TDHTML,
     },
   ];
@@ -64,6 +65,7 @@ function Coding() {
           didClose={didCloseModal}
         >
           <Markdown>{selectedArticle.content}</Markdown>
+          <Articlecomments selectedArticle={selectedArticle} />
         </Modal>
       )}
     </div>

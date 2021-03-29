@@ -154,7 +154,7 @@ function Games() {
             </button>
           </div>
           <p className="game-review">{selectedGame.content}</p>
-          <Gamecomments />
+          <Gamecomments selectedGame={selectedGame} />
         </Modal>
       )}
       {selectedGame && expandedImage ? (

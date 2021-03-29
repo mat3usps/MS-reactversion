@@ -1,4 +1,4 @@
-function Gamecomment({ image, name, profile, children }) {
+function Articlecomment({ image, name, profile, children }) {
   return (
     <div className="form-comment">
       <div>
@@ -14,4 +14,4 @@ function Gamecomment({ image, name, profile, children }) {
   );
 }
 
-export default Gamecomment;
+export default Articlecomment;

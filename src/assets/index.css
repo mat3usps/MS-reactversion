@@ -471,14 +471,16 @@ img[alt="Visual explanation of a HTML tag"] {
   padding: 1rem;
 }
 
-.game-fixed-comments {
+/* Comments  */
+
+.fixed-comments {
   width: min(750px, 75vw);
   height: fit-content;
   display: flex;
   flex-direction: column;
 }
 
-.game-comment {
+.form-comment {
   display: flex;
   justify-content: center;
   width: min(750px, 75vw);
@@ -486,71 +488,71 @@ img[alt="Visual explanation of a HTML tag"] {
   margin-bottom: -10px;
 }
 
-.game-form {
+.comment-form {
   display: flex;
   justify-content: center;
   width: min(750px, 75vw);
   height: 100px;
 }
 
-.game-comment-group {
+.form-comment-group {
   text-align: left;
   width: 100%;
   height: 100%;
   padding-top: 10px;
 }
 
-.game-comment-group p {
+.form-comment-group p {
   margin-top: -5px;
   font-size: 0.8rem;
 }
 
-.game-form-image-div {
+.comment-form-image-div {
 }
 
-.game-form-image {
+.form-image {
   margin: 10px;
   width: 80px;
   height: 80px;
   border-radius: 40px;
 }
 
-.game-form-enunciate {
+.comment-form-enunciate {
   margin-top: 8px;
   width: 100%;
   text-align: left;
   margin-left: 5px;
 }
 
-.game-form {
+.comment-form {
   display: flex;
   align-items: left;
   width: 100%;
   margin-top: 5px;
 }
 
-.game-form-input-group {
+.comment-form-input-group {
   display: flex;
   height: 56px;
   width: min(600px, 60vw);
   font-size: 0.8rem;
 }
 
-.game-form-input {
+.comment-form-input {
   width: 100%;
   padding: 5px;
   border-radius: 7px;
   margin: 3px;
 }
 
-.game-form-submit {
+.comment-form-submit {
   position: relative;
   border-radius: 7px;
   margin: 3px;
   opacity: 0.7;
 }
 
-.game-form-submit:hover {
+.comment-form-submit:hover {
   opacity: 1;
 }
 
