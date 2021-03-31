@@ -8,7 +8,7 @@ class Markdown extends Component {
     this.state = { terms: null };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     fetch(this.props.children)
       .then((response) => response.text())
       .then((text) => {

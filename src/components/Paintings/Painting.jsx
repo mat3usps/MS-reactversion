@@ -67,7 +67,7 @@ function Painting({
         )}
         <p>{description}</p>
         <button className="cart-button" type="text" onClick={priceAction}>
-          {price}
+          {"$ " + price}
         </button>
       </div>
     </div>

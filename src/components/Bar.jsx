@@ -7,14 +7,13 @@ function Bar(props) {
 
   return (
     <div className="row buttonbar">
-      {props.paths.map(
-        ({ hideButton, href, title }) =>
-          !hideButton && (
-            <Barbutton href={href} key={href}>
-              {title}
-            </Barbutton>
-          )
-      )}
+      {props.paths
+        .filter(({ displayOnMenu }) => displayOnMenu)
+        .map(({ path, title }) => (
+          <Barbutton href={path} key={path}>
+            {title}
+          </Barbutton>
+        ))}
     </div>
   );
 }

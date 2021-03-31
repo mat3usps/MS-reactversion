@@ -1,44 +1,33 @@
 import { Redirect, useLocation } from "react-router";
+import { useState, useEffect } from "react";
 import Article from "./Article";
-import Modal from "../Modal/Modal";
+import Modal from "../Modal";
 import { useHistory } from "react-router-dom";
 import Markdown from "./Markdown";
-import Articlecomments from "./Articlecomments";
-import ABISWD from "../../assets/CodingArticles/ABriefIntroductiononSVGinWebDevelopment.md";
-import TDHTML from "../../assets/CodingArticles/TheDiscoverofHTML.md";
-import TISRPRC from "../../assets/CodingArticles/TheImportanceofSRPinReactComponents.md";
+import Commentsection from "../Commentsection";
+import axios from "axios";
 
 function Coding() {
-  const articles = [
-    {
-      title: "The Importance of SRP in React Components",
-      description:
-        "For the ones who are not aqcuainted to React's ins and outs, there must be a way and it surely starts with understanding SRP(the Single Responsability Principle).",
-      href: "srp-in-react",
-      content: TISRPRC,
-    },
-    {
-      title: "A Brief Introduction on SVG in Web Development",
-      description:
-        "A quick explanation on SVG, the features that make its difference and some tips on SVG manipulation.",
-      href: "./intro-on-svg",
-      content: ABISWD,
-    },
-    {
-      title: "The Discovery of HTML",
-      description:
-        "Once one enter the field of technology, its almost mandatory to know a little of html structure. This quick one brings the basics of the language the builts the web.",
-      href: "discovery-html",
-      content: TDHTML,
-    },
-  ];
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://mp-reactversion-default-rtdb.firebaseio.com/coding.json")
+      .then((response) => {
+        const items = Object.values(response.data);
+        setArticles(items);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, [articles]);
 
   const location = useLocation();
   const history = useHistory();
 
   const isContentShown = location.pathname !== "/coding";
-  const selectedArticle = articles.find(({ href }) =>
-    location.pathname.includes(href)
+  const selectedArticle = articles.find(({ path }) =>
+    location.pathname.includes(path)
   );
 
   if (isContentShown && !selectedArticle) {
@@ -49,11 +38,13 @@ function Coding() {
     history.push("/coding");
   };
 
+  console.log(selectedArticle);
+
   return (
     <div>
       <div className="coding">
-        {articles.map(({ title, description, href }) => (
-          <Article description={description} href={href} key={title}>
+        {articles.map(({ title, description, path }) => (
+          <Article description={description} path={path} key={title}>
             {title}
           </Article>
         ))}
@@ -65,7 +56,7 @@ function Coding() {
           didClose={didCloseModal}
         >
           <Markdown>{selectedArticle.content}</Markdown>
-          <Articlecomments selectedArticle={selectedArticle} />
+          <Commentsection selected={selectedArticle} pathname="coding" />
         </Modal>
       )}
     </div>

@@ -14,7 +14,7 @@ import Header from "./Header";
 import Home from "./Home";
 import Error404 from "./Error404";
 
-function Body() {
+function Body({ appRoutes }) {
   const location = useLocation();
 
   const [secretBG, showSecretBG] = useState(false);
@@ -57,17 +57,6 @@ function Body() {
 
   useEffect(changeBackground, [location, secretBG]);
 
-  const paths = [
-    { hideButton: true, href: "/", title: "Home" },
-    { hideButton: false, href: "/about", title: "About" },
-    { hideButton: false, href: "/coding", title: "Coding" },
-    { hideButton: false, href: "/games", title: "Games" },
-    { hideButton: false, href: "/musings", title: "Musings" },
-    { hideButton: false, href: "/paintings", title: "Paintings" },
-    { hideButton: false, href: "/photos", title: "Photos" },
-    { hideButton: true, href: "*", title: "Error 404" },
-  ];
-
   const renderMenuComponent = (title) => {
     if (title === "Home") {
       return <Home />;
@@ -91,15 +80,15 @@ function Body() {
     <div>
       <div className="container">
         <Header />
-        <Bar paths={paths}></Bar>
+        <Bar paths={appRoutes}></Bar>
         {isHomePage && (
           <div className="row secretBG-row">
             <button className="secretBG-button" onClick={setSecretBG}></button>
           </div>
         )}
         <Switch>
-          {paths.map(({ href, title }) => (
-            <Route exact={title === "Home"} path={href} key={title}>
+          {appRoutes.map(({ isExact, path, title }) => (
+            <Route exact={isExact} path={path} key={title}>
               {renderMenuComponent(title)}
             </Route>
           ))}

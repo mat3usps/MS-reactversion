@@ -1,27 +1,22 @@
 import Contactbutton from "./Contactbutton";
-import Email from "./email.png";
-import LinkedIn from "./linkedin.png";
-import Github from "./github.png";
 import Timer from "./Timer";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function About() {
-  const buttons = [
-    {
-      name: "email",
-      icon: Email,
-      href: "mailto:mateusp.s@outlook.com",
-    },
-    {
-      name: "Github",
-      icon: Github,
-      href: "https://github.com/mat3usps",
-    },
-    {
-      name: "linkedIn",
-      icon: LinkedIn,
-      href: "https://www.linkedin.com/in/mateuspereiras/",
-    },
-  ];
+  const [buttons, setButtons] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`https://mp-reactversion-default-rtdb.firebaseio.com/about.json`)
+      .then((response) => {
+        const buttons = Object.values(response.data);
+        setButtons(buttons);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, [buttons]);
 
   return (
     <div className="abouttext">
@@ -41,11 +36,12 @@ function About() {
       </p>
       <h3>You can reach me at:</h3>
       <div className="contactbar">
-        {buttons.map(({ name, icon, href }) => (
-          <Contactbutton img={icon} href={href}>
-            {name}
-          </Contactbutton>
-        ))}
+        {buttons.length !== 0 &&
+          buttons.map(({ name, icon, href }) => (
+            <Contactbutton img={icon} href={href}>
+              {name}
+            </Contactbutton>
+          ))}
       </div>
     </div>
   );

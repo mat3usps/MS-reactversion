@@ -1,19 +1,11 @@
-import Articlecomment from "./Articlecomment";
-import Articleform from "./Articleform";
+import Commentview from "./Commentview";
+import Commentform from "./Commentform";
 import Instaimage from "./insta-placeholder.png";
 import React, { useState, useEffect } from "react";
 import firebase from "../firebaseConnection";
 
-function Articlecomments({ selectedArticle }) {
-  const [commentStorage, setComments] = useState([
-    {
-      id: 1,
-      name: "Mateus Pereira",
-      profile: "mateusp.s",
-      image: "",
-      comment: "Joguei muito esse quando era mais novo.",
-    },
-  ]);
+function Commentsection({ selected, pathname }) {
+  const [commentStorage, setComments] = useState([]);
 
   useEffect(() => {
     refreshComments();
@@ -22,7 +14,7 @@ function Articlecomments({ selectedArticle }) {
   async function handleComment(comment) {
     await firebase
       .firestore()
-      .collection(`article/${selectedArticle.href}/comments`)
+      .collection(`comments/${pathname}/${selected.href}`)
       .add({
         id: commentStorage.length + 1,
         name: "Mateus Pereira",
@@ -34,16 +26,15 @@ function Articlecomments({ selectedArticle }) {
         console.log("Comentário gravado.");
       })
       .catch((error) => {
-        console.log("Algo deu errado", error);
+        console.log("Comentário deu errado", error);
       });
   }
 
   async function refreshComments() {
     await firebase
       .firestore()
-      .collection(`article/${selectedArticle.href}/comments`)
-      .get()
-      .then((snapshot) => {
+      .collection(`${pathname}/${selected.href}/comments`)
+      .onSnapshot((snapshot) => {
         let comments = [];
 
         snapshot.forEach((comment) => {
@@ -56,9 +47,6 @@ function Articlecomments({ selectedArticle }) {
           });
         });
         setComments(comments);
-      })
-      .catch((error) => {
-        console.log("Algo deu errado", error);
       });
   }
 
@@ -66,14 +54,14 @@ function Articlecomments({ selectedArticle }) {
     <div>
       <div className="fixed-comments">
         {commentStorage.map(({ image, name, profile, comment, id }) => (
-          <Articlecomment image={image} name={name} profile={profile} key={id}>
+          <Commentview image={image} name={name} profile={profile} key={id}>
             {comment}
-          </Articlecomment>
+          </Commentview>
         ))}
       </div>
-      <Articleform didSave={handleComment} />
+      <Commentform didSave={handleComment} />
     </div>
   );
 }
 
-export default Articlecomments;
+export default Commentsection;

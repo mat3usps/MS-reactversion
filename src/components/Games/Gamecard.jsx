@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-function GameCard({ children, icon, href }) {
+function GameCard({ children, icon, path }) {
   return (
     <Link
-      to={`/games/${href}`}
+      to={`/games/${path}`}
       style={{ color: "inherit", textDecoration: "inherit" }}
     >
       <div className="gamecard">

@@ -1,33 +1,21 @@
 import Painting from "./Painting";
-import P1 from "../../assets/PaintingImages/P1.jpg";
-import P1low from "../../assets/PaintingImages/P1-low.jpg";
-import P1photo from "../../assets/PaintingImages/P1-photo.jpg";
-import P2 from "../../assets/PaintingImages/P2.jpg";
-import P2low from "../../assets/PaintingImages/P2-low.jpg";
-import P2photo from "../../assets/PaintingImages/P2-photo.jpg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function Paintings() {
-  const paintings = [
-    {
-      name: "Varanda",
-      description:
-        "The first ever frame painted by Mateus Pereira. The shapes and colors bring about the views from the author's porch. Such venture manifest in itself a range of technique experimentation brought out of pure curiosity.",
-      price: "$ 800.00",
-      image: P1low,
-      largeImage: P1,
-      photo: P1photo,
-    },
-    {
-      name: "Pulo",
-      description:
-        "Based on the author's first jump. That's a frame to encapsulate the insanity hidden in the mind of a person who gazes down the enormous solid ground from over the clouds and throws oneself to the freeing fall.",
-      price: "$ 650.00",
-      image: P2low,
-      largeImage: P2,
-      photo: P2photo,
-    },
-  ];
+  const [paintings, setPaintings] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://mp-reactversion-default-rtdb.firebaseio.com/painting.json")
+      .then((response) => {
+        const paintings = Object.values(response.data);
+        setPaintings(paintings);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, []);
 
   const [paintingIndex, changePainting] = useState(0);
   const superiorPainting = () => {
@@ -48,20 +36,24 @@ function Paintings() {
 
   let currentPainting = paintings[paintingIndex];
 
+  console.log("current", currentPainting);
+
   return (
     <div>
-      <Painting
-        superiorAction={superiorPainting}
-        inferiorAction={inferiorPainting}
-        description={currentPainting.description}
-        price={currentPainting.price}
-        image={currentPainting.image}
-        titleEgg={currentPainting.photo}
-        priceAction={""}
-        largeImage={currentPainting.largeImage}
-      >
-        {currentPainting.name}
-      </Painting>
+      {paintings.length !== 0 && (
+        <Painting
+          superiorAction={superiorPainting}
+          inferiorAction={inferiorPainting}
+          description={currentPainting.description}
+          price={currentPainting.price.toFixed(2)}
+          image={currentPainting.image}
+          titleEgg={currentPainting.photo}
+          priceAction={""}
+          largeImage={currentPainting.largeImage}
+        >
+          {currentPainting.name}
+        </Painting>
+      )}
     </div>
   );
 }

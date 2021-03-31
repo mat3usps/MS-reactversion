@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import Separator from "./bar.png";
 
-function Article({ description, children, href }) {
+function Article({ description, children, path }) {
   return (
     <Link
-      to={`/coding/${href}`}
+      to={`/coding/${path}`}
       style={{ color: "inherit", textDecoration: "inherit" }}
     >
       <div className="article">
