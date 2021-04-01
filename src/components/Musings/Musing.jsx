@@ -1,4 +1,5 @@
-import Separator from "./bar.png";
+import Separator from "../../assets/Utility/bar.png";
+import Thumbsup from "../Thumbsup";
 
 function Musing({ content, children }) {
   return (
@@ -6,6 +7,7 @@ function Musing({ content, children }) {
       <h2>{children}</h2>
       <p>{content}</p>
       <img className="separator" src={Separator} alt="Bar" />
+      <Thumbsup />
     </div>
   );
 }

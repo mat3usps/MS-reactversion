@@ -1,6 +1,6 @@
 import { Redirect, useLocation } from "react-router";
 import { useState, useEffect } from "react";
-import Article from "./Article";
+import Article from "./Articleview";
 import Modal from "../Modal";
 import { useHistory } from "react-router-dom";
 import Markdown from "./Markdown";
@@ -44,7 +44,7 @@ function Coding() {
     <div>
       <div className="coding">
         {articles.map(({ title, description, path }) => (
-          <Article description={description} path={path} key={title}>
+          <Article description={description} path={path} key={title} likes={""}>
             {title}
           </Article>
         ))}

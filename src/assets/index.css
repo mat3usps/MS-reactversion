@@ -752,6 +752,26 @@ img[alt="Visual explanation of a HTML tag"] {
   opacity: 1;
 }
 
+/* Thumbsup */
+
+.thumbs-up-button {
+  opacity: 0.7;
+}
+
+.thumbs-up-button:hover {
+  opacity: 1;
+}
+
+.thumbs-up-div {
+  margin-top: -63px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .btn-sp {

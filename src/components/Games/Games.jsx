@@ -31,10 +31,6 @@ function Games() {
     location.pathname.includes(path)
   );
 
-  console.log("location", location);
-
-  console.log("selectedGame", selectedGame);
-
   const didCloseModal = () => {
     history.push("/games");
     setImageIndex(0);
