@@ -4,27 +4,38 @@ import Modal from "../Modal/Modal";
 import { useState, useEffect } from "react";
 import Commentsection from "../Commentsection/Commentsection";
 import Gamecard from "./Gamecard";
-import axios from "axios";
+import firebase from "../firebaseConnection";
 
 function Games() {
   const [games, setGames] = useState([]);
 
   const location = useLocation();
   const history = useHistory();
-  const [imageIndex, setImageIndex] = useState(0);
+  const [imageIndex, setImageIndex] = useState(1);
 
   const isContentShown = location.pathname !== "/games";
 
-  useEffect(() => {
-    axios
-      .get("https://mp-reactversion-default-rtdb.firebaseio.com/games.json")
-      .then((response) => {
-        const items = Object.values(response.data);
-        setGames(items);
-      })
-      .catch((error) => {
-        console.log("error", error);
+  async function refreshGames() {
+    await firebase
+      .firestore()
+      .collection(`games`)
+      .onSnapshot((doc) => {
+        let games = [];
+
+        doc.forEach((item) => {
+          games.push({
+            path: item.data().path,
+            name: item.data().name,
+            images: item.data().images,
+            content: item.data().content,
+          });
+        });
+        setGames(games);
       });
+  }
+
+  useEffect(() => {
+    refreshGames();
   }, [isContentShown]);
 
   const selectedGame = games.find(({ path }) =>
@@ -33,7 +44,7 @@ function Games() {
 
   const didCloseModal = () => {
     history.push("/games");
-    setImageIndex(0);
+    setImageIndex(1);
   };
 
   const [expandedImage, setImageExtended] = useState(false);
@@ -53,12 +64,12 @@ function Games() {
     if (selectedGame && imageIndex < selectedGame.images.length - 1) {
       setImageIndex(imageIndex + 1);
     } else {
-      setImageIndex(0);
+      setImageIndex(1);
     }
   };
 
   const previousImage = () => {
-    if (imageIndex > 0) {
+    if (imageIndex > 1) {
       setImageIndex(imageIndex - 1);
     } else {
       setImageIndex(selectedGame.images.length - 1);
@@ -66,13 +77,13 @@ function Games() {
   };
 
   let previous = imageIndex - 1;
-  if (selectedGame && imageIndex === 0) {
+  if (selectedGame && imageIndex === 1) {
     previous = selectedGame.images.length - 1;
   }
 
   let next = imageIndex + 1;
   if (selectedGame && imageIndex === selectedGame.images.length - 1) {
-    next = 0;
+    next = 1;
   }
 
   if (selectedGame) {
@@ -82,8 +93,8 @@ function Games() {
   return (
     <div>
       <div className="allgames column">
-        {games.map(({ name, icon, path }) => (
-          <Gamecard icon={icon} path={path} key={name}>
+        {games.map(({ name, images, path }) => (
+          <Gamecard icon={images[0]} path={path} key={name}>
             {name}
           </Gamecard>
         ))}

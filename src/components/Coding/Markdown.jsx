@@ -14,6 +14,12 @@ class Markdown extends Component {
       .then((text) => {
         this.setState({ terms: text });
       });
+
+    console.log("terms", this.state.terms);
+  }
+
+  componentDidUpdate() {
+    console.log("terms", this.state.terms);
   }
 
   render() {
