@@ -1,4 +1,29 @@
-function Commentview({ image, name, profile, children }) {
+import Out from "../../assets/Utility/out.svg";
+import firebase from "../firebaseConnection";
+
+function Commentview({
+  image,
+  name,
+  profile,
+  children,
+  pathname,
+  selected,
+  id,
+}) {
+  async function removeComment() {
+    await firebase
+      .firestore()
+      .collection(`comments/${pathname}/${selected.path}`)
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Comentário excluido com sucesso.");
+      })
+      .catch((error) => {
+        console.log("Erro ao apagar comentário", error);
+      });
+  }
+
   return (
     <div className="form-comment">
       <div>
@@ -9,6 +34,11 @@ function Commentview({ image, name, profile, children }) {
           {name} - {profile}
         </h6>
         <p>{children}</p>
+      </div>
+      <div className="remove-div">
+        <button className="remove-button" onClick={removeComment}>
+          <img src={Out} alt="Remove comment" />
+        </button>
       </div>
     </div>
   );

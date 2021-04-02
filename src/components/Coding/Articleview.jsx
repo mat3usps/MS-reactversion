@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
-import Thumbsup from "../Thumbsup";
+import Thumbsup from "../Thumbsup/Thumbsup";
 import Separator from "../../assets/Utility/bar.png";
 
-function Article({ description, children, path }) {
-  const storeLikes = (likes) => {};
-
+function Article({ description, children, path, didUpdateLikes }) {
   return (
     <div className="article">
       <Link
@@ -16,7 +14,7 @@ function Article({ description, children, path }) {
         <p>{description}</p>
       </Link>
       <img className="separator" src={Separator} alt="Bar" />
-      <Thumbsup />
+      <Thumbsup didUpdateLikes={didUpdateLikes} />
     </div>
   );
 }

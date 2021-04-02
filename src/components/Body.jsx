@@ -11,7 +11,7 @@ import Musings from "./Musings/Musings";
 import Coding from "./Coding/Coding";
 import { useState } from "react/cjs/react.development";
 import Header from "./Header";
-import Home from "./Home";
+import Home from "./Home/Home";
 import Error404 from "./Error404";
 
 function Body({ appRoutes }) {

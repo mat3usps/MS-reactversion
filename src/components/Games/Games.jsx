@@ -1,8 +1,8 @@
 import { useLocation, Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
-import Modal from "../Modal";
+import Modal from "../Modal/Modal";
 import { useState, useEffect } from "react";
-import Commentsection from "../Commentsection";
+import Commentsection from "../Commentsection/Commentsection";
 import Gamecard from "./Gamecard";
 import axios from "axios";
 
@@ -19,8 +19,8 @@ function Games() {
     axios
       .get("https://mp-reactversion-default-rtdb.firebaseio.com/games.json")
       .then((response) => {
-        const articles = Object.values(response.data);
-        setGames(articles);
+        const items = Object.values(response.data);
+        setGames(items);
       })
       .catch((error) => {
         console.log("error", error);

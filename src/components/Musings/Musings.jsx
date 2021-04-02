@@ -3,10 +3,15 @@ import Musing from "./Musing";
 import axios from "axios";
 
 function Musings() {
-  const [entrances, setEntrances] = useState([])
+  const [entrances, setEntrances] = useState([]);
+
+  const listRef = useRef();
 
   useEffect(() => {
-    axios.get("https://mp-reactversion-default-rtdb.firebaseio.com/musing.json")
+    listRef.current.scrollTo(0, listRef.current.scrollHeight, "auto");
+
+    axios
+      .get("https://mp-reactversion-default-rtdb.firebaseio.com/musing.json")
       .then((response) => {
         const entrances = Object.values(response.data);
         setEntrances(entrances);
@@ -14,12 +19,7 @@ function Musings() {
       .catch((error) => {
         console.log("error", error);
       });
-  })
-
-  const listRef = useRef();
-  useEffect(() => {
-    listRef.current.scrollTo(0, listRef.current.scrollHeight, "auto");
-  }, []);
+  });
 
   return (
     <div id="musings" className="musings" ref={listRef}>

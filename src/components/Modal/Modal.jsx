@@ -1,4 +1,4 @@
-import Out from "./out.svg";
+import Out from "../../assets/Utility/out.svg";
 
 function Modal({ title, didClose, children, isOpen, contentRelation }) {
   if (!isOpen && !children) {

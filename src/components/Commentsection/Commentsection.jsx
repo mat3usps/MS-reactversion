@@ -14,9 +14,8 @@ function Commentsection({ selected, pathname }) {
   async function handleComment(comment) {
     await firebase
       .firestore()
-      .collection(`comments/${pathname}/${selected.href}`)
+      .collection(`comments/${pathname}/${selected.path}`)
       .add({
-        id: commentStorage.length + 1,
         name: "Mateus Pereira",
         profile: "mateusp.s",
         image: Instaimage,
@@ -33,17 +32,19 @@ function Commentsection({ selected, pathname }) {
   async function refreshComments() {
     await firebase
       .firestore()
-      .collection(`${pathname}/${selected.href}/comments`)
-      .onSnapshot((snapshot) => {
+      .collection(`comments/${pathname}/${selected.path}`)
+      .onSnapshot((doc) => {
         let comments = [];
 
-        snapshot.forEach((comment) => {
+        doc.forEach((item) => {
           comments.push({
-            id: comment.data().id,
-            name: comment.data().name,
-            profile: comment.data().profile,
-            image: comment.data().image,
-            comment: comment.data().comment,
+            id: item.id,
+            name: item.data().name,
+            profile: item.data().profile,
+            image: item.data().image,
+            comment: item.data().comment,
+            pathname: pathname,
+            selected: selected,
           });
         });
         setComments(comments);
@@ -53,11 +54,21 @@ function Commentsection({ selected, pathname }) {
   return (
     <div>
       <div className="fixed-comments">
-        {commentStorage.map(({ image, name, profile, comment, id }) => (
-          <Commentview image={image} name={name} profile={profile} key={id}>
-            {comment}
-          </Commentview>
-        ))}
+        {commentStorage.map(
+          ({ image, name, profile, comment, id, pathname, selected }) => (
+            <Commentview
+              image={image}
+              name={name}
+              profile={profile}
+              key={id}
+              pathname={pathname}
+              selected={selected}
+              id={id}
+            >
+              {comment}
+            </Commentview>
+          )
+        )}
       </div>
       <Commentform didSave={handleComment} />
     </div>

@@ -1,10 +1,10 @@
 import { Redirect, useLocation } from "react-router";
 import { useState, useEffect } from "react";
-import Article from "./Articleview";
-import Modal from "../Modal";
+import Articleview from "./Articleview";
+import Modal from "../Modal/Modal";
 import { useHistory } from "react-router-dom";
 import Markdown from "./Markdown";
-import Commentsection from "../Commentsection";
+import Commentsection from "../Commentsection/Commentsection";
 import axios from "axios";
 
 function Coding() {
@@ -38,15 +38,21 @@ function Coding() {
     history.push("/coding");
   };
 
-  console.log(selectedArticle);
+  const didUpdateLikes = (currentLikes) => {};
 
   return (
     <div>
       <div className="coding">
         {articles.map(({ title, description, path }) => (
-          <Article description={description} path={path} key={title} likes={""}>
+          <Articleview
+            didUpdateLikes={didUpdateLikes}
+            description={description}
+            path={path}
+            key={title}
+            likes={""}
+          >
             {title}
-          </Article>
+          </Articleview>
         ))}
       </div>
       {selectedArticle && (

@@ -10,13 +10,17 @@ class Thumbsup extends Component {
   }
 
   addLikes = (event) => {
-    const current = this.state;
-    current.likes += 1;
-    {
-      /*this.props.likes(current.likes);*/
-    }
-    this.setState(current);
     event.preventDefault();
+    this.setState(
+      (prevState) => ({
+        likes: prevState.likes + 1,
+      }),
+      () => {
+        if (this.props.didUpdateLikes) {
+          this.props.didUpdateLikes(this.state.likes);
+        }
+      }
+    );
   };
 
   render() {

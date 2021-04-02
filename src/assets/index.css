@@ -556,6 +556,19 @@ img[alt="Visual explanation of a HTML tag"] {
   opacity: 1;
 }
 
+.remove-button {
+  margin-top: 27px;
+  padding: 0;
+  border: none;
+  opacity: 0.5;
+  height: fit-content;
+  width: fit-content;
+}
+
+.remove-button:hover {
+  opacity: 1;
+}
+
 /* Musings */
 
 .musing {
@@ -755,7 +768,7 @@ img[alt="Visual explanation of a HTML tag"] {
 /* Thumbsup */
 
 .thumbs-up-button {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .thumbs-up-button:hover {
