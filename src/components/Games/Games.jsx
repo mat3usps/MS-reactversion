@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Commentsection from "../Commentsection/Commentsection";
 import Gamecard from "./Gamecard";
 import firebase from "../firebaseConnection";
+import Thumbsup from "../Thumbsup/Thumbsup";
+import Bar from "../../assets/Utility/bar.png";
 
 function Games() {
   const [games, setGames] = useState([]);
@@ -86,10 +88,6 @@ function Games() {
     next = 1;
   }
 
-  if (selectedGame) {
-    console.log("images", selectedGame.images);
-  }
-
   return (
     <div>
       <div className="allgames column">
@@ -130,6 +128,8 @@ function Games() {
             </button>
           </div>
           <p className="game-review">{selectedGame.content}</p>
+          <img className="separator" src={Bar} alt="Bar" />
+          <Thumbsup />
           <Commentsection selected={selectedGame} pathname="games" />
         </Modal>
       )}

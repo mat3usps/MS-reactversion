@@ -10,21 +10,30 @@ import Paintings from "./Paintings/Paintings";
 import Musings from "./Musings/Musings";
 import Coding from "./Coding/Coding";
 import { useState } from "react/cjs/react.development";
-import Header from "./Header";
+import Header from "./Header/Header";
 import Home from "./Home/Home";
 import Error404 from "./Error404";
+import firebase from "./firebaseConnection";
+import "firebase/auth";
 
 function Body({ appRoutes }) {
   const location = useLocation();
 
-  const [secretBG, showSecretBG] = useState(false);
-  const setSecretBG = () => {
-    showSecretBG(true);
-  };
+  const [userLogged, setUserLogged] = useState(false);
+
+  async function checkLogin() {
+    await firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setUserLogged(true);
+      } else {
+        setUserLogged(false);
+      }
+    });
+  }
 
   function changeBackground() {
     let key = 3;
-    if (secretBG) {
+    if (userLogged) {
       key = 0;
       document.body.style.setProperty("color", "white");
       document.body.style.setProperty("background-color", "rgb(214, 158, 5)");
@@ -53,13 +62,11 @@ function Body({ appRoutes }) {
     }
   }
 
-  const isHomePage = location.pathname === "/";
-
-  useEffect(changeBackground, [location, secretBG]);
+  useEffect(changeBackground, [location, userLogged]);
 
   const renderMenuComponent = (title) => {
     if (title === "Home") {
-      return <Home />;
+      return <Home userLogged={userLogged} vipLogin={""} />;
     } else if (title === "About") {
       return <About />;
     } else if (title === "Coding") {
@@ -79,13 +86,8 @@ function Body({ appRoutes }) {
   return (
     <div>
       <div className="container">
-        <Header />
+        <Header userLogged={userLogged} />
         <Bar paths={appRoutes}></Bar>
-        {isHomePage && (
-          <div className="row secretBG-row">
-            <button className="secretBG-button" onClick={setSecretBG}></button>
-          </div>
-        )}
         <Switch>
           {appRoutes.map(({ isExact, path, title }) => (
             <Route exact={isExact} path={path} key={title}>

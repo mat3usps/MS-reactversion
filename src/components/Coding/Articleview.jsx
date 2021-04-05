@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Thumbsup from "../Thumbsup/Thumbsup";
-import Separator from "../../assets/Utility/bar.png";
+import Bar from "../../assets/Utility/bar.png";
 
 function Article({ description, children, path, didUpdateLikes }) {
   return (
@@ -13,7 +13,7 @@ function Article({ description, children, path, didUpdateLikes }) {
 
         <p>{description}</p>
       </Link>
-      <img className="separator" src={Separator} alt="Bar" />
+      <img className="separator" src={Bar} alt="Bar" />
       <Thumbsup didUpdateLikes={didUpdateLikes} />
     </div>
   );

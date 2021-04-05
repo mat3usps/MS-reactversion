@@ -21,8 +21,8 @@ function About() {
   return (
     <div className="abouttext">
       <p>
-        You probably know my name, but certainly you know very little (if none)
-        of my{" "}
+        You probably know my name, but certainly you know very little (maybe
+        nothing) of my{" "}
         <strong>{<Timer callQueuedTime="1994-09-14T16:43:00"></Timer>}</strong>{" "}
         seconds long history. <br /> If that is the case...
       </p>
@@ -34,7 +34,7 @@ function About() {
         photo-addicted, e-sports spectator, nihilist by choice, spare time
         naturalist, generation-Y member, and cajazeirense.
       </p>
-      <h3>You can reach me at:</h3>
+      <h3>Find me here:</h3>
       <div className="contactbar">
         {buttons.length !== 0 &&
           buttons.map(({ name, icon, href }) => (
