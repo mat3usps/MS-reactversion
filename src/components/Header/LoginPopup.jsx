@@ -25,11 +25,54 @@ function LoginPopUp(props) {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         console.log("login realizado com sucesso");
+        document.getElementById("authentication-error").innerHTML = "";
       })
       .catch((error) => {
-        console.log("error", error);
+        document.getElementById("authentication-error").innerHTML =
+          error.message;
+        setInterval(() => {
+          document.getElementById("authentication-error").innerHTML = "";
+        }, 5000);
       });
   }
+
+  const emailValidation = () => {
+    const userEmail = document.getElementById("Email");
+    const emailError = document.getElementById("email-error");
+
+    if (userEmail) {
+      userEmail.addEventListener("input", function (event) {
+        const pattern = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
+        const currentValue = event.target.value;
+        const valid = pattern.test(currentValue);
+
+        if (valid) {
+          emailError.style.display = "none";
+        } else {
+          emailError.style.display = "block";
+        }
+      });
+    }
+  };
+
+  const passwordValidation = () => {
+    const userPassword = document.getElementById("Password");
+    const passwordError = document.getElementById("password-error");
+
+    if (userPassword) {
+      userPassword.addEventListener("input", function (event) {
+        const pattern = /^[\w@-]{8,20}$/;
+        const currentValue = event.target.value;
+        const valid = pattern.test(currentValue);
+
+        if (valid) {
+          passwordError.style.display = "none";
+        } else {
+          passwordError.style.display = "block";
+        }
+      });
+    }
+  };
 
   const userDidSignIn = (event) => {
     event.preventDefault();
@@ -41,13 +84,20 @@ function LoginPopUp(props) {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(async (value) => {
-        let nome = value.user.email.split("@");
+        let name = value.user.email.split("@");
         await firebase.firestore().collection("users").doc(value.user.uid).set({
-          nome: nome[0],
+          name: name[0],
           photo: photo,
         });
+        document.getElementById("authentication-error").innerHTML = "";
       })
-      .catch((error) => {});
+      .catch((error) => {
+        document.getElementById("authentication-error").innerHTML =
+          error.message;
+        setInterval(() => {
+          document.getElementById("authentication-error").innerHTML = "";
+        }, 5000);
+      });
   }
 
   useEffect(() => {
@@ -85,9 +135,10 @@ function LoginPopUp(props) {
           id="Email"
           type="text"
           onChange={(e) => setEmail(e.target.value)}
+          onFocus={showSignIn && emailValidation}
         />
-        <p id="email-error" className="input-error">
-          This email is not valid.
+        <p id="email-error" className="input-error validation">
+          This is not a valid email.
         </p>
         <br />
         <label for="Password">Password: </label>
@@ -97,10 +148,12 @@ function LoginPopUp(props) {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onFocus={showSignIn && passwordValidation}
         ></input>
-        <p id="password-error" className="input-error">
-          This password is not valid.
+        <p id="password-error" className="input-error validation">
+          This is not a valid password.
         </p>
+        <p id="authentication-error" className="input-error"></p>
         {showSignIn ? (
           <div>
             <div className="login-button-div">
@@ -111,9 +164,6 @@ function LoginPopUp(props) {
               >
                 Sign In
               </button>
-            </div>
-            <div>
-              <p>{"errorReason"}</p>
             </div>
           </div>
         ) : (
