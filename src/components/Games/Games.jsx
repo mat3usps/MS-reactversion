@@ -29,6 +29,7 @@ function Games() {
             path: item.data().path,
             name: item.data().name,
             images: item.data().images,
+            icon: item.data().icon,
             content: item.data().content,
           });
         });
@@ -91,8 +92,8 @@ function Games() {
   return (
     <div>
       <div className="allgames column">
-        {games.map(({ name, images, path }) => (
-          <Gamecard icon={images[0]} path={path} key={name}>
+        {games.map(({ name, icon, path }) => (
+          <Gamecard icon={icon} path={path} key={name}>
             {name}
           </Gamecard>
         ))}
@@ -102,7 +103,7 @@ function Games() {
           title={selectedGame.name}
           isOpen={isContentShown}
           didClose={didCloseModal}
-          contentRelation="fit-content"
+          contentRelation="scroll"
         >
           <div className="game-images-carrousel">
             <button className="games-modal-button" onClick={previousImage}>

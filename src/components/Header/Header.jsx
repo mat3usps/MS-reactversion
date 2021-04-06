@@ -4,33 +4,27 @@ import LoginPopup from "./LoginPopup";
 import Barbutton from "../Barbutton";
 import firebase from "../firebaseConnection";
 import "firebase/auth";
-import { useHistory, useLocation } from "react-router";
 import { useEffect } from "react";
 
 function Header({ userLogged }) {
-  const location = useLocation();
-  const history = useHistory();
+  const [loginStatus, setLoginStatus] = useState(null);
 
-  const [showModal, setModal] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false);
-
-  async function logout() {
-    await firebase.auth().signOut();
-  }
-
-  useEffect(() => {
-    if (location.pathname === "/login") {
-      setModal(true);
-    } else if (location.pathname === "/signin") {
-      setShowSignIn(true);
-      setModal(true);
-    }
-  }, [location]);
+  const logout = () => {
+    firebase.auth().signOut();
+  };
 
   const didClose = () => {
-    setModal(false);
-    setShowSignIn(false);
-    history.push("/");
+    setLoginStatus(null);
+  };
+
+  useEffect(didClose, [userLogged]);
+
+  const displaySignIn = () => {
+    setLoginStatus("signin");
+  };
+
+  const displayLogin = () => {
+    setLoginStatus("login");
   };
 
   return (
@@ -43,29 +37,23 @@ function Header({ userLogged }) {
         {userLogged ? (
           <div className="header-login-state-button">
             <Barbutton href={"profile"}>{"Profile"}</Barbutton>
-            <button type="button" onClick={() => logout}>
-              <div className="btn-sp btn-three">
-                <span>{"Logout"}</span>
-              </div>
-            </button>
+            <Barbutton onClick={logout}>Logout</Barbutton>
           </div>
         ) : (
           <div className="header-login-state-button">
-            <Barbutton href={"login"}>{"Login"}</Barbutton>
-            <Barbutton href={"signin"}>{"SignIn"}</Barbutton>
+            <Barbutton onClick={displayLogin}>Login</Barbutton>
+            <Barbutton onClick={displaySignIn}>Sign In</Barbutton>
           </div>
         )}
       </div>
-      {showModal && (
-        <Modal
-          title={""}
-          isOpen={showModal}
-          didClose={didClose}
-          contentRelation="fit-content"
-        >
-          <LoginPopup signInMethod={showSignIn} />
-        </Modal>
-      )}
+      <Modal
+        title={""}
+        isOpen={loginStatus}
+        didClose={didClose}
+        contentRelation="fill-content"
+      >
+        <LoginPopup signInMethod={loginStatus === "signin"} />
+      </Modal>
     </header>
   );
 }

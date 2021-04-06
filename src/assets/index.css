@@ -61,6 +61,12 @@ body {
 
 /* Button*/
 
+.clean-button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
 div[class*="box"] {
   height: 33.33%;
   width: 100%;
@@ -335,9 +341,9 @@ div[class*="box"] {
 }
 
 .login-popup {
-  width: 250px;
+  width: 100%;
   height: 250px;
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -348,11 +354,22 @@ div[class*="box"] {
   text-align: center;
 }
 
+.input-error {
+  color: tomato;
+  margin-top: 0;
+  margin-bottom: 0px;
+  display: none;
+}
+
 .login-input {
   width: 100%;
   margin-bottom: 5px;
-  opacity: 0.5;
+  opacity: 0.7;
   border-radius: 5px;
+}
+
+.login-input:focus {
+  opacity: 1;
 }
 
 .login-button-div {
@@ -620,9 +637,6 @@ img[alt="Visual explanation of a HTML tag"] {
   font-size: 0.8rem;
 }
 
-.comment-form-image-div {
-}
-
 .form-image {
   margin: 10px;
   width: 80px;
@@ -851,27 +865,23 @@ img[alt="Visual explanation of a HTML tag"] {
   position: absolute;
   display: inline-block;
   text-align: center;
-  justify-content: space-around;
+  justify-content: center;
   width: min(800px, 80vw);
-  left: 50;
-}
-
-.modal-fit-content {
-  height: 80vh;
   overflow-y: auto;
 }
 
+.modal-fit-content {
+  height: fit-content;
+}
+
 .modal-scroll {
-  height: 90vh;
-  top: 0;
-  overflow-y: scroll;
-  margin: 5vh;
+  height: 80vh;
 }
 
 .modal-button {
   position: relative;
   margin: 10px;
-  padding: 0;
+  padding: 5px;
   border: none;
   opacity: 0.5;
 }

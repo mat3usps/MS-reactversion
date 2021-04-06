@@ -1,7 +1,5 @@
 import { Component } from "react";
 import Glasses from "./Glasses.png";
-import firebase from "../firebaseConnection";
-import "firebase/auth";
 
 class Home extends Component {
   constructor(props) {

@@ -19,17 +19,15 @@ import "firebase/auth";
 function Body({ appRoutes }) {
   const location = useLocation();
 
-  const [userLogged, setUserLogged] = useState(false);
+  const [userLogged, setUserLogged] = useState(null);
 
   async function checkLogin() {
     await firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUserLogged(true);
-      } else {
-        setUserLogged(false);
-      }
+      setUserLogged(user);
     });
   }
+
+  checkLogin();
 
   function changeBackground() {
     let key = 3;
@@ -62,7 +60,7 @@ function Body({ appRoutes }) {
     }
   }
 
-  useEffect(changeBackground, [location, userLogged]);
+  useEffect(changeBackground, [location]);
 
   const renderMenuComponent = (title) => {
     if (title === "Home") {

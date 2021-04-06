@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
+import axios from "axios";
 
 class Markdown extends Component {
   constructor(props) {
@@ -9,17 +10,14 @@ class Markdown extends Component {
   }
 
   componentDidMount() {
-    fetch(this.props.children)
-      .then((response) => response.text())
-      .then((text) => {
-        this.setState({ terms: text });
-      });
-
-    console.log("terms", this.state.terms);
-  }
-
-  componentDidUpdate() {
-    console.log("terms", this.state.terms);
+    axios({
+      url: this.props.children,
+      method: "GET",
+      responseType: "blob",
+    }).then((response) => {
+      //const url = window.URL.createObjectURL(new Blob([response.data]))
+      this.setState({ terms: response.data });
+    });
   }
 
   render() {

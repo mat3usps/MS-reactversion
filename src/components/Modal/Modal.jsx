@@ -1,7 +1,7 @@
 import Out from "../../assets/Utility/out.svg";
 
 function Modal({ title, didClose, children, isOpen, contentRelation }) {
-  if (!isOpen && !children) {
+  if (!isOpen || !children) {
     return null;
   }
 
