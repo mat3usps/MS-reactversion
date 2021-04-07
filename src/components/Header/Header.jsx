@@ -9,15 +9,17 @@ import { useEffect } from "react";
 function Header({ userLogged }) {
   const [loginStatus, setLoginStatus] = useState(null);
 
+  console.log(userLogged);
+
   const logout = () => {
     firebase.auth().signOut();
   };
 
-  const didClose = () => {
+  const didCloseModal = () => {
     setLoginStatus(null);
   };
 
-  useEffect(didClose, [userLogged]);
+  useEffect(didCloseModal, [userLogged]);
 
   const displaySignIn = () => {
     setLoginStatus("signin");
@@ -31,13 +33,15 @@ function Header({ userLogged }) {
     <header className="header">
       <div></div>
       <div>
-        <h4>Welcome!</h4>
+        <h4>Welcome! {userLogged ? userLogged.name : ""}</h4>
       </div>
       <div className="header-login-state">
         {userLogged ? (
           <div className="header-login-state-button">
             <Barbutton href={"profile"}>{"Profile"}</Barbutton>
-            <Barbutton onClick={logout}>Logout</Barbutton>
+            <button className="header-profile-button btn-three">
+              {userLogged.photo}
+            </button>
           </div>
         ) : (
           <div className="header-login-state-button">
@@ -49,10 +53,13 @@ function Header({ userLogged }) {
       <Modal
         title={""}
         isOpen={loginStatus}
-        didClose={didClose}
+        didClose={didCloseModal}
         contentRelation="fill-content"
       >
-        <LoginPopup signInMethod={loginStatus === "signin"} />
+        <LoginPopup
+          signInMethod={loginStatus === "signin"}
+          userLogged={userLogged}
+        />
       </Modal>
     </header>
   );

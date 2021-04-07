@@ -30,13 +30,21 @@ body {
 }
 
 .header-login-state {
-  width: 20vw;
+  width: fit-content;
 }
 
 .header-login-state-button {
   display: flex;
   align-items: flex-end;
   justify-content: space-evenly;
+}
+
+.header-profile-button {
+  font-size: 2rem;
+  width: 50px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
 }
 
 .error {

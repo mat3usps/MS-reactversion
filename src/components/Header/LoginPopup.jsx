@@ -17,22 +17,26 @@ function LoginPopUp(props) {
   const userDidLogin = (event) => {
     event.preventDefault();
     signInWithEmailAndPassword();
+    setEmail("");
+    setPassword("");
   };
+
+  const authetificationErrorWarning = document.getElementById(
+    "authentication-error"
+  );
 
   async function signInWithEmailAndPassword() {
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        console.log("login realizado com sucesso");
-        document.getElementById("authentication-error").innerHTML = "";
+        console.log("usuário logou");
       })
       .catch((error) => {
-        document.getElementById("authentication-error").innerHTML =
-          error.message;
+        authetificationErrorWarning.innerHTML = error.message;
         setInterval(() => {
-          document.getElementById("authentication-error").innerHTML = "";
-        }, 5000);
+          authetificationErrorWarning.innerHTML = "";
+        }, 7000);
       });
   }
 
@@ -40,7 +44,7 @@ function LoginPopUp(props) {
     const userEmail = document.getElementById("Email");
     const emailError = document.getElementById("email-error");
 
-    if (userEmail) {
+    if (userEmail && authetificationErrorWarning) {
       userEmail.addEventListener("input", function (event) {
         const pattern = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
         const currentValue = event.target.value;
@@ -59,7 +63,7 @@ function LoginPopUp(props) {
     const userPassword = document.getElementById("Password");
     const passwordError = document.getElementById("password-error");
 
-    if (userPassword) {
+    if (userPassword && authetificationErrorWarning) {
       userPassword.addEventListener("input", function (event) {
         const pattern = /^[\w@-]{8,20}$/;
         const currentValue = event.target.value;
@@ -77,6 +81,8 @@ function LoginPopUp(props) {
   const userDidSignIn = (event) => {
     event.preventDefault();
     createUserWithEmailAndPassword();
+    setEmail("");
+    setPassword("");
   };
 
   async function createUserWithEmailAndPassword() {
@@ -85,18 +91,22 @@ function LoginPopUp(props) {
       .createUserWithEmailAndPassword(email, password)
       .then(async (value) => {
         let name = value.user.email.split("@");
-        await firebase.firestore().collection("users").doc(value.user.uid).set({
-          name: name[0],
-          photo: photo,
-        });
-        document.getElementById("authentication-error").innerHTML = "";
+        await firebase
+          .firestore()
+          .collection("users")
+          .doc(value.user.uid)
+          .set({
+            name: name[0],
+            photo: name[0][0],
+            email: value.user.email,
+          })
+          .then(console.log("cadastrado com sucesso."));
       })
       .catch((error) => {
-        document.getElementById("authentication-error").innerHTML =
-          error.message;
+        authetificationErrorWarning.innerHTML = error.message;
         setInterval(() => {
-          document.getElementById("authentication-error").innerHTML = "";
-        }, 5000);
+          authetificationErrorWarning.innerHTML = "";
+        }, 7000);
       });
   }
 

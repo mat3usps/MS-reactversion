@@ -22,16 +22,28 @@ function Body({ appRoutes }) {
   const [userLogged, setUserLogged] = useState(null);
 
   async function checkLogin() {
-    await firebase.auth().onAuthStateChanged((user) => {
-      setUserLogged(user);
+    await firebase.auth().onAuthStateChanged(async (value) => {
+      value &&
+        (await firebase
+          .firestore()
+          .collection("users")
+          .doc(value.uid)
+          .get()
+          .then((snapshot) => {
+            setUserLogged({
+              ...snapshot.data(),
+            });
+          }));
     });
   }
+
+  console.log("user", userLogged);
 
   checkLogin();
 
   function changeBackground() {
     let key = 3;
-    if (userLogged) {
+    if (key === 0) {
       key = 0;
       document.body.style.setProperty("color", "white");
       document.body.style.setProperty("background-color", "rgb(214, 158, 5)");
