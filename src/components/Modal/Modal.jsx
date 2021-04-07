@@ -15,8 +15,10 @@ function Modal({ title, didClose, children, isOpen, contentRelation }) {
   return (
     <div className="modal-overlay">
       <div className={containerClass}>
-        {title && <h2>{title}</h2>}
-        {children}
+        <div>
+          {title && <h2>{title}</h2>}
+          {children}
+        </div>
         <button className="modal-button" onClick={didClose}>
           <img src={Out} alt="Out" />
         </button>

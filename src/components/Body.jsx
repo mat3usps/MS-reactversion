@@ -37,8 +37,6 @@ function Body({ appRoutes }) {
     });
   }
 
-  console.log("user", userLogged);
-
   checkLogin();
 
   function changeBackground() {

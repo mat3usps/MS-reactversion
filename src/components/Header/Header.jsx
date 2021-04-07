@@ -5,21 +5,21 @@ import Barbutton from "../Barbutton";
 import firebase from "../firebaseConnection";
 import "firebase/auth";
 import { useEffect } from "react";
+import ProfileManager from "./ProfileManager";
 
 function Header({ userLogged }) {
   const [loginStatus, setLoginStatus] = useState(null);
+  const [profileManager, setprofileManager] = useState(false);
 
-  console.log(userLogged);
-
-  const logout = () => {
+  const didLogout = () => {
     firebase.auth().signOut();
   };
 
-  const didCloseModal = () => {
+  const didCloseLoginPopup = () => {
     setLoginStatus(null);
   };
 
-  useEffect(didCloseModal, [userLogged]);
+  useEffect(didCloseLoginPopup, [userLogged]);
 
   const displaySignIn = () => {
     setLoginStatus("signin");
@@ -27,6 +27,23 @@ function Header({ userLogged }) {
 
   const displayLogin = () => {
     setLoginStatus("login");
+  };
+
+  const displayHiddenDiv = () => {
+    const hiddenDiv = document.getElementById("hiddendiv");
+    if (hiddenDiv.style.getPropertyValue("display") === "none") {
+      hiddenDiv.style.display = "block";
+    } else {
+      hiddenDiv.style.display = "none";
+    }
+  };
+
+  const displayProfileManager = () => {
+    setprofileManager(true);
+  };
+
+  const didCloseProfileManager = () => {
+    setprofileManager(false);
   };
 
   return (
@@ -38,10 +55,16 @@ function Header({ userLogged }) {
       <div className="header-login-state">
         {userLogged ? (
           <div className="header-login-state-button">
-            <Barbutton href={"profile"}>{"Profile"}</Barbutton>
-            <button className="header-profile-button btn-three">
-              {userLogged.photo}
+            <button
+              className="header-profile-button btn-three"
+              onClick={displayHiddenDiv}
+            >
+              {String(userLogged.photo).toUpperCase()}
             </button>
+            <div id="hiddendiv" className="header-profile-hidden-div">
+              <Barbutton onClick={displayProfileManager}>Profile</Barbutton>
+              <Barbutton onClick={didLogout}>Logout</Barbutton>
+            </div>
           </div>
         ) : (
           <div className="header-login-state-button">
@@ -51,15 +74,21 @@ function Header({ userLogged }) {
         )}
       </div>
       <Modal
-        title={""}
         isOpen={loginStatus}
-        didClose={didCloseModal}
+        didClose={didCloseLoginPopup}
         contentRelation="fill-content"
       >
         <LoginPopup
           signInMethod={loginStatus === "signin"}
           userLogged={userLogged}
         />
+      </Modal>
+      <Modal
+        isOpen={profileManager}
+        didClose={didCloseProfileManager}
+        contentRelation="fill-content"
+      >
+        <ProfileManager userLogged={userLogged} />
       </Modal>
     </header>
   );

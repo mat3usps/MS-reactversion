@@ -8,6 +8,9 @@ function LoginPopUp(props) {
   const [password, setPassword] = useState("");
   const [photo, setPhoto] = useState(null);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [firstTry, setFirstTry] = useState(true);
+
+  console.log("first", firstTry);
 
   const photoHandler = (event) => {
     event.preventDefault();
@@ -21,7 +24,7 @@ function LoginPopUp(props) {
     setPassword("");
   };
 
-  const authetificationErrorWarning = document.getElementById(
+  const authenticationErrorWarning = document.getElementById(
     "authentication-error"
   );
 
@@ -33,9 +36,10 @@ function LoginPopUp(props) {
         console.log("usuário logou");
       })
       .catch((error) => {
-        authetificationErrorWarning.innerHTML = error.message;
+        authenticationErrorWarning.innerHTML = error.message;
+        setFirstTry(false);
         setInterval(() => {
-          authetificationErrorWarning.innerHTML = "";
+          authenticationErrorWarning.innerHTML = "";
         }, 7000);
       });
   }
@@ -44,7 +48,7 @@ function LoginPopUp(props) {
     const userEmail = document.getElementById("Email");
     const emailError = document.getElementById("email-error");
 
-    if (userEmail && authetificationErrorWarning) {
+    if (userEmail && !firstTry) {
       userEmail.addEventListener("input", function (event) {
         const pattern = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
         const currentValue = event.target.value;
@@ -63,7 +67,7 @@ function LoginPopUp(props) {
     const userPassword = document.getElementById("Password");
     const passwordError = document.getElementById("password-error");
 
-    if (userPassword && authetificationErrorWarning) {
+    if (userPassword && !firstTry) {
       userPassword.addEventListener("input", function (event) {
         const pattern = /^[\w@-]{8,20}$/;
         const currentValue = event.target.value;
@@ -99,13 +103,15 @@ function LoginPopUp(props) {
             name: name[0],
             photo: name[0][0],
             email: value.user.email,
+            uid: value.user.uid,
           })
           .then(console.log("cadastrado com sucesso."));
       })
       .catch((error) => {
-        authetificationErrorWarning.innerHTML = error.message;
+        authenticationErrorWarning.innerHTML = error.message;
+        setFirstTry(false);
         setInterval(() => {
-          authetificationErrorWarning.innerHTML = "";
+          authenticationErrorWarning.innerHTML = "";
         }, 7000);
       });
   }
@@ -140,7 +146,7 @@ function LoginPopUp(props) {
         )}
         <label for="Email">Email: </label>
         <input
-          className="login-input"
+          className="modal-input"
           value={email}
           id="Email"
           type="text"
@@ -153,7 +159,7 @@ function LoginPopUp(props) {
         <br />
         <label for="Password">Password: </label>
         <input
-          className="login-input"
+          className="modal-input"
           id="Password"
           type="password"
           value={password}
@@ -169,7 +175,7 @@ function LoginPopUp(props) {
             <div className="login-button-div">
               <button
                 type="submit"
-                className="modal-login-button"
+                className="modal-input-button"
                 onClick={userDidSignIn}
               >
                 Sign In
@@ -181,7 +187,7 @@ function LoginPopUp(props) {
             <div className="login-button-div">
               <button
                 type="submit"
-                className="modal-login-button"
+                className="modal-input-button"
                 onClick={userDidLogin}
               >
                 Login
