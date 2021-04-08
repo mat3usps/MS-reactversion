@@ -934,6 +934,10 @@ img[alt="Visual explanation of a HTML tag"] {
 }
 
 .thumbs-up-button:hover {
+  opacity: 0.9;
+}
+
+.thumbs-up-button-activated {
   opacity: 1;
 }
 

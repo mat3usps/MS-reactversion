@@ -4,7 +4,7 @@ import Instaimage from "./insta-placeholder.png";
 import React, { useState, useEffect } from "react";
 import firebase from "../firebaseConnection";
 
-function CommentSection({ selected, pathname }) {
+function CommentSection({ selected, pathname, userLogged }) {
   const [commentStorage, setComments] = useState([]);
 
   useEffect(() => {
@@ -16,10 +16,10 @@ function CommentSection({ selected, pathname }) {
       .firestore()
       .collection(`comments/${pathname}/${selected.path}`)
       .add({
-        name: "Mateus Pereira",
-        profile: "mateusp.s",
-        image: Instaimage,
+        name: userLogged.name,
+        photo: userLogged.photo,
         comment: comment,
+        user: userLogged.uid,
       })
       .then(() => {
         console.log("Comentário gravado.");
@@ -40,8 +40,7 @@ function CommentSection({ selected, pathname }) {
           comments.push({
             id: item.id,
             name: item.data().name,
-            profile: item.data().profile,
-            image: item.data().image,
+            photo: item.data().photo,
             comment: item.data().comment,
             pathname: pathname,
             selected: selected,

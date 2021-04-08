@@ -3,15 +3,15 @@ import { useEffect } from "react";
 import SVG from "./SVG";
 import { Route, Switch, useLocation } from "react-router";
 import { Link } from "react-router-dom";
-import Photos from "./Photos/Photos";
-import About from "./About/About";
-import Games from "./Games/Games";
-import Paintings from "./Paintings/Paintings";
-import Musings from "./Musings/Musings";
-import Coding from "./Coding/Coding";
+import Photos from "../pages/Photos/Photos";
+import About from "../pages/About/About";
+import Games from "../pages/Games/Games";
+import Paintings from "../pages/Paintings/Paintings";
+import Musings from "../pages/Musings/Musings";
+import Coding from "../pages/Coding/Coding";
 import { useState } from "react/cjs/react.development";
-import Header from "./Header/Header";
-import Home from "./Home/Home";
+import Header from "../pages/Header/Header";
+import Home from "../pages/Home/Home";
 import Error404 from "./Error404";
 import firebase from "./firebaseConnection";
 import "firebase/auth";
@@ -76,19 +76,19 @@ function Body({ appRoutes }) {
     if (title === "Home") {
       return <Home userLogged={userLogged} vipLogin={""} />;
     } else if (title === "About") {
-      return <About />;
+      return <About userLogged={userLogged} />;
     } else if (title === "Coding") {
-      return <Coding />;
+      return <Coding userLogged={userLogged} />;
     } else if (title === "Games") {
-      return <Games />;
+      return <Games userLogged={userLogged} />;
     } else if (title === "Musings") {
-      return <Musings />;
+      return <Musings userLogged={userLogged} />;
     } else if (title === "Paintings") {
-      return <Paintings />;
+      return <Paintings userLogged={userLogged} />;
     } else if (title === "Photos") {
-      return <Photos />;
+      return <Photos userLogged={userLogged} />;
     }
-    return <Error404 />;
+    return <Error404 userLogged={userLogged} />;
   };
 
   return (

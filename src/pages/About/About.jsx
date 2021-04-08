@@ -1,4 +1,4 @@
-import Contactbutton from "./Contactbutton";
+import Contactbutton from "./ContactButton";
 import Timer from "../../components/Timer";
 import { useState, useEffect } from "react";
 import axios from "axios";

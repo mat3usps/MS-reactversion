@@ -1,6 +1,6 @@
 import { useLocation, Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
-import Modal from "../Modal/Modal";
+import Modal from "../../components/Modal";
 import { useState, useEffect } from "react";
 import CommentSection from "../../components/CommentSection/CommentSection";
 import Gamecard from "./Gamecard";
@@ -8,7 +8,7 @@ import firebase from "../../components/firebaseConnection";
 import Thumbsup from "../../components/ThumbsUp";
 import Bar from "../../assets/Utility/bar.png";
 
-function Games() {
+function Games({ userLogged }) {
   const [games, setGames] = useState([]);
 
   const location = useLocation();
@@ -130,8 +130,16 @@ function Games() {
           </div>
           <p className="game-review">{selectedGame.content}</p>
           <img className="separator" src={Bar} alt="Bar" />
-          <Thumbsup />
-          <CommentSection selected={selectedGame} pathname="games" />
+          <Thumbsup
+            userLogged={userLogged}
+            page="games"
+            title={selectedGame.path}
+          />
+          <CommentSection
+            selected={selectedGame}
+            userLogged={userLogged}
+            pathname="games"
+          />
         </Modal>
       )}
       {selectedGame && expandedImage ? (

@@ -7,7 +7,7 @@ import Markdown from "../../components/Markdown";
 import CommentSection from "../../components/CommentSection/CommentSection";
 import axios from "axios";
 
-function Coding() {
+function Coding({ userLogged }) {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
@@ -44,7 +44,8 @@ function Coding() {
     <div>
       <div className="coding">
         {articles.map(({ title, description, path }) => (
-          <Articleview
+          <ArticleView
+            userLogged={userLogged}
             didUpdateLikes={didUpdateLikes}
             description={description}
             path={path}
@@ -52,7 +53,7 @@ function Coding() {
             likes={""}
           >
             {title}
-          </Articleview>
+          </ArticleView>
         ))}
       </div>
       {selectedArticle && (
@@ -62,7 +63,11 @@ function Coding() {
           didClose={didCloseModal}
         >
           <Markdown>{selectedArticle.content}</Markdown>
-          <CommentSection selected={selectedArticle} pathname="coding" />
+          <CommentSection
+            selected={selectedArticle}
+            userLogged={userLogged}
+            pathname="coding"
+          />
         </Modal>
       )}
     </div>
