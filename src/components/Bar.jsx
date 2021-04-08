@@ -1,4 +1,4 @@
-import Barbutton from "./Barbutton";
+import BarButton from "./BarButton";
 
 function Bar(props) {
   if (!props.paths) {
@@ -10,9 +10,9 @@ function Bar(props) {
       {props.paths
         .filter(({ displayOnMenu }) => displayOnMenu)
         .map(({ path, title }) => (
-          <Barbutton href={path} key={path}>
+          <BarButton href={path} key={path}>
             {title}
-          </Barbutton>
+          </BarButton>
         ))}
     </div>
   );

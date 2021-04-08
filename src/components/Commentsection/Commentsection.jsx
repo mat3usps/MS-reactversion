@@ -1,6 +1,5 @@
 import Commentview from "./CommentView";
 import Commentform from "./CommentForm";
-import Instaimage from "./insta-placeholder.png";
 import React, { useState, useEffect } from "react";
 import firebase from "../firebaseConnection";
 

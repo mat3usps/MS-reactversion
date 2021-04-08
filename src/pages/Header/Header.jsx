@@ -46,6 +46,7 @@ function Header({ userLogged }) {
     setprofileManager(false);
   };
 
+
   return (
     <header className="header">
       <div></div>
@@ -63,7 +64,9 @@ function Header({ userLogged }) {
             </button>
             <div id="hiddendiv" className="header-profile-hidden-div">
               <BarButton onClick={displayProfileManager}>Profile</BarButton>
-              <BarButton onClick={didLogout}>Logout</BarButton>
+              <BarButton onClick={didLogout} dontPrevent={true}>
+                Logout
+              </BarButton>
             </div>
           </div>
         ) : (

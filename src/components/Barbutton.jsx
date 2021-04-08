@@ -1,15 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Barbutton({ href, children, onClick }) {
+function Barbutton({ href, children, onClick, dontPrevent }) {
   if (!href && !onClick) {
     return null;
   }
 
-  const clickEvent = (event) => {
-    event.preventDefault();
-    onClick();
-  };
+  const clickEvent = dontPrevent
+    ? () => onClick()
+    : (event) => {
+        event.preventDefault();
+        onClick();
+      };
 
   const renderChildren = (
     <div className="btn-sp btn-three">

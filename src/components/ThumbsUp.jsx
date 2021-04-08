@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import Like from "../assets/Utility/thumbsup.svg";
 import firebase from "./firebaseConnection";
-
 function Thumbsup({ userLogged, page, title }) {
   const [totalLikes, setTotalLikes] = useState([]);
 
+  const liked = userLogged? totalLikes.find(({ user }) => userLogged.uid.includes(user)) : null 
+
   useEffect(() => {
     refreshLikes();
-  }, [totalLikes]);
-
-  const liked = totalLikes.find(({ user }) => userLogged.uid.includes(user));
-
-  console.log("total", totalLikes);
-  console.log("liked", liked);
+  }, [totalLikes, liked]);
 
   const thumbsUpClass = liked
     ? "thumbs-up-button-activated"
@@ -49,10 +45,12 @@ function Thumbsup({ userLogged, page, title }) {
     }
   }
 
-  const didLike = (event) => {
-    event.preventDefault();
-    handleLike();
-  };
+  const didLike = userLogged
+    ? (event) => {
+        event.preventDefault();
+        handleLike();
+      }
+    : null;
 
   async function refreshLikes() {
     await firebase
@@ -63,7 +61,7 @@ function Thumbsup({ userLogged, page, title }) {
 
         doc.forEach((item) => {
           likes.push({
-            uid: item.data().uid,
+            user: item.data().user,
             name: item.data().name,
             photo: item.data().photo,
           });

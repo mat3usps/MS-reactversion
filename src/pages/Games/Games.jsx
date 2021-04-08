@@ -67,12 +67,12 @@ function Games({ userLogged }) {
     if (selectedGame && imageIndex < selectedGame.images.length - 1) {
       setImageIndex(imageIndex + 1);
     } else {
-      setImageIndex(1);
+      setImageIndex(0);
     }
   };
 
   const previousImage = () => {
-    if (imageIndex > 1) {
+    if (imageIndex > 0) {
       setImageIndex(imageIndex - 1);
     } else {
       setImageIndex(selectedGame.images.length - 1);
@@ -80,13 +80,13 @@ function Games({ userLogged }) {
   };
 
   let previous = imageIndex - 1;
-  if (selectedGame && imageIndex === 1) {
+  if (selectedGame && imageIndex === 0) {
     previous = selectedGame.images.length - 1;
   }
 
   let next = imageIndex + 1;
   if (selectedGame && imageIndex === selectedGame.images.length - 1) {
-    next = 1;
+    next = 0;
   }
 
   return (

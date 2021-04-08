@@ -19,7 +19,7 @@ function Musings({ userLogged }) {
       .catch((error) => {
         console.log("error", error);
       });
-  });
+  }, []);
 
   return (
     <div id="musings" className="musings" ref={listRef}>

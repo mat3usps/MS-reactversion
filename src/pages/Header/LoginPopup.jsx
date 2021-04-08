@@ -37,7 +37,6 @@ function LoginPopUp(props) {
       })
       .catch((error) => {
         authenticationErrorWarning.innerHTML = error.message;
-        setFirstTry(false);
         setInterval(() => {
           authenticationErrorWarning.innerHTML = "";
         }, 7000);
