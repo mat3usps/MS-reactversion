@@ -1,5 +1,5 @@
 import { Component } from "react";
-import Glasses from "./Glasses.png";
+import Glasses from "../../assets/Utility/Glasses.png";
 
 class Home extends Component {
   constructor(props) {

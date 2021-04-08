@@ -1,10 +1,10 @@
 import { Redirect, useLocation } from "react-router";
 import { useState, useEffect } from "react";
-import Articleview from "./Articleview";
-import Modal from "../Modal/Modal";
+import ArticleView from "./ArticleView";
+import Modal from "../../components/Modal";
 import { useHistory } from "react-router-dom";
-import Markdown from "./Markdown";
-import Commentsection from "../Commentsection/Commentsection";
+import Markdown from "../../components/Markdown";
+import CommentSection from "../../components/CommentSection/CommentSection";
 import axios from "axios";
 
 function Coding() {
@@ -62,7 +62,7 @@ function Coding() {
           didClose={didCloseModal}
         >
           <Markdown>{selectedArticle.content}</Markdown>
-          <Commentsection selected={selectedArticle} pathname="coding" />
+          <CommentSection selected={selectedArticle} pathname="coding" />
         </Modal>
       )}
     </div>

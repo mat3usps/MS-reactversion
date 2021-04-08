@@ -1,7 +1,7 @@
 import Out from "../../assets/Utility/out.svg";
 import firebase from "../firebaseConnection";
 
-function Commentview({
+function CommentView({
   image,
   name,
   profile,
@@ -44,4 +44,4 @@ function Commentview({
   );
 }
 
-export default Commentview;
+export default CommentView;

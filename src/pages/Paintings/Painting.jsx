@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Arrow from "./arrow.svg";
-import Zoomer from "./Zoomer";
+import Arrow from "../../assets/Utility/arrow.svg";
+import Zoomer from "../../components/Zoomer";
 
 function Painting({
   image,

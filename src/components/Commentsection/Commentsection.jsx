@@ -1,10 +1,10 @@
-import Commentview from "./Commentview";
-import Commentform from "./Commentform";
+import Commentview from "./CommentView";
+import Commentform from "./CommentForm";
 import Instaimage from "./insta-placeholder.png";
 import React, { useState, useEffect } from "react";
 import firebase from "../firebaseConnection";
 
-function Commentsection({ selected, pathname }) {
+function CommentSection({ selected, pathname }) {
   const [commentStorage, setComments] = useState([]);
 
   useEffect(() => {
@@ -75,4 +75,4 @@ function Commentsection({ selected, pathname }) {
   );
 }
 
-export default Commentsection;
+export default CommentSection;

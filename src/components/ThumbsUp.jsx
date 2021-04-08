@@ -1,5 +1,5 @@
 import { Component } from "react";
-import Like from "../../assets/Utility/thumbsup.svg";
+import Like from "../assets/Utility/thumbsup.svg";
 
 class Thumbsup extends Component {
   constructor(props) {

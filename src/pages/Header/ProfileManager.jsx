@@ -1,5 +1,5 @@
 import { useState } from "react";
-import firebase from "../firebaseConnection";
+import firebase from "../../components/firebaseConnection";
 
 function ProfileManager({ userLogged }) {
   const [nameUpdate, setNameUpdate] = useState("");

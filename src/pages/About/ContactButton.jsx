@@ -1,4 +1,4 @@
-function Contactbutton({ img, children, href }) {
+function ContactButton({ img, children, href }) {
   return (
     <a className="buttonLink" href={href} target="_blank" rel="noreferrer">
       <div>
@@ -8,4 +8,4 @@ function Contactbutton({ img, children, href }) {
   );
 }
 
-export default Contactbutton;
+export default ContactButton;

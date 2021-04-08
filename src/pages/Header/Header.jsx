@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Modal from "../Modal/Modal";
+import Modal from "../../components/Modal";
 import LoginPopup from "./LoginPopup";
-import Barbutton from "../Barbutton";
-import firebase from "../firebaseConnection";
+import BarButton from "../../components/BarButton";
+import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 import { useEffect } from "react";
 import ProfileManager from "./ProfileManager";
@@ -62,14 +62,14 @@ function Header({ userLogged }) {
               {String(userLogged.photo).toUpperCase()}
             </button>
             <div id="hiddendiv" className="header-profile-hidden-div">
-              <Barbutton onClick={displayProfileManager}>Profile</Barbutton>
-              <Barbutton onClick={didLogout}>Logout</Barbutton>
+              <BarButton onClick={displayProfileManager}>Profile</BarButton>
+              <BarButton onClick={didLogout}>Logout</BarButton>
             </div>
           </div>
         ) : (
           <div className="header-login-state-button">
-            <Barbutton onClick={displayLogin}>Login</Barbutton>
-            <Barbutton onClick={displaySignIn}>Sign In</Barbutton>
+            <BarButton onClick={displayLogin}>Login</BarButton>
+            <BarButton onClick={displaySignIn}>Sign In</BarButton>
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
 import Separator from "../../assets/Utility/bar.png";
-import Thumbsup from "../Thumbsup/Thumbsup";
+import Thumbsup from "../../components/ThumbsUp";
 
 function Musing({ content, children, didUpdateLikes }) {
   return (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Barbutton from "../Barbutton";
-import firebase from "../firebaseConnection";
+import Barbutton from "../../components/BarButton";
+import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 
 function LoginPopUp(props) {

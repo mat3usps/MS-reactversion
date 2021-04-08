@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Thumbsup from "../Thumbsup/Thumbsup";
+import Thumbsup from "../../components/Thumbsup";
 import Bar from "../../assets/Utility/bar.png";
 
-function Article({ description, children, path, didUpdateLikes }) {
+function ArticleView({ description, children, path, didUpdateLikes }) {
   return (
     <div className="article">
       <Link
@@ -19,4 +19,4 @@ function Article({ description, children, path, didUpdateLikes }) {
   );
 }
 
-export default Article;
+export default ArticleView;

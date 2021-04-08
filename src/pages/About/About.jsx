@@ -1,5 +1,5 @@
 import Contactbutton from "./Contactbutton";
-import Timer from "./Timer";
+import Timer from "../../components/Timer";
 import { useState, useEffect } from "react";
 import axios from "axios";
 

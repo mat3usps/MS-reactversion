@@ -2,10 +2,10 @@ import { useLocation, Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { useState, useEffect } from "react";
-import Commentsection from "../Commentsection/Commentsection";
+import CommentSection from "../../components/CommentSection/CommentSection";
 import Gamecard from "./Gamecard";
-import firebase from "../firebaseConnection";
-import Thumbsup from "../Thumbsup/Thumbsup";
+import firebase from "../../components/firebaseConnection";
+import Thumbsup from "../../components/ThumbsUp";
 import Bar from "../../assets/Utility/bar.png";
 
 function Games() {
@@ -131,7 +131,7 @@ function Games() {
           <p className="game-review">{selectedGame.content}</p>
           <img className="separator" src={Bar} alt="Bar" />
           <Thumbsup />
-          <Commentsection selected={selectedGame} pathname="games" />
+          <CommentSection selected={selectedGame} pathname="games" />
         </Modal>
       )}
       {selectedGame && expandedImage ? (
