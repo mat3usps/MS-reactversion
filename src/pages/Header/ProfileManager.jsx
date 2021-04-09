@@ -5,6 +5,14 @@ function ProfileManager({ userLogged }) {
   const [nameUpdate, setNameUpdate] = useState("");
   const [passwordUpdate, setPasswordUpdate] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  function updateConfirmation(message) {
+    setSuccessMessage(message);
+    setInterval(() => {
+      setSuccessMessage("");
+    }, 5000);
+  }
 
   const updatingName = (event) => setNameUpdate(event.target.value);
   const updatingPassword = (event) => setPasswordUpdate(event.target.value);
@@ -18,9 +26,6 @@ function ProfileManager({ userLogged }) {
   };
 
   async function nameUpdateSubmit() {
-    let updateConfirmation = document.getElementById(
-      "name-update-confirmation"
-    );
     await firebase
       .firestore()
       .collection("users")
@@ -29,16 +34,10 @@ function ProfileManager({ userLogged }) {
         name: nameUpdate,
       })
       .then(() => {
-        updateConfirmation.innerHTML = "Name successfully updated.";
-        setInterval(() => {
-          updateConfirmation.innerHTML = "";
-        }, 3000);
+        updateConfirmation("Name was updated");
       })
       .catch((error) => {
-        updateConfirmation.innerHTML = error.message;
-        setInterval(() => {
-          updateConfirmation.innerHTML = "";
-        }, 5000);
+        updateConfirmation(error.message);
       });
   }
 
@@ -61,11 +60,10 @@ function ProfileManager({ userLogged }) {
               onChange={updatingName}
               placeholder={userLogged.name}
             ></input>
-            <button className="modal-input-button" onclick={nameChanger}>
+            <button className="modal-input-button" onClick={nameChanger}>
               Update
             </button>
           </div>
-          <p id="name-update-confirmation"></p>
         </div>
         <div className="profile-password-field">
           <input
@@ -84,6 +82,8 @@ function ProfileManager({ userLogged }) {
             value={passwordConfirmation}
             onChange={confirmingPassword}
           ></input>
+          <hr />
+          <p>{successMessage}</p>
         </div>
       </form>
     </div>

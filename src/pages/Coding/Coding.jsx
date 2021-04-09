@@ -1,16 +1,14 @@
 import { Redirect, useLocation } from "react-router";
-import { useState, useEffect } from "react";
 import ArticleView from "./ArticleView";
 import Modal from "../../components/Modal";
 import { useHistory } from "react-router-dom";
 import Markdown from "../../components/Markdown";
 import CommentSection from "../../components/CommentSection/CommentSection";
-import axios from "axios";
 import ABISWD from "./ABriefIntroductiononSVGinWebDevelopment.md";
 import TDHTML from "./TheDiscoverofHTML.md";
 import TISRPRC from "./TheImportanceofSRPinReactComponents.md";
 
-function Coding({userLogged}) {
+function Coding({ userLogged }) {
   const articles = [
     {
       title: "The Importance of SRP in React Components",
@@ -34,7 +32,7 @@ function Coding({userLogged}) {
       content: TDHTML,
     },
   ];
-  
+
   /*const [articles, setArticles] = useState([]);
 
   useEffect(() => {

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import Like from "../assets/Utility/thumbsup.svg";
 import firebase from "./firebaseConnection";
+
 function Thumbsup({ userLogged, page, title }) {
   const [totalLikes, setTotalLikes] = useState([]);
 
-  const liked = userLogged? totalLikes.find(({ user }) => userLogged.uid.includes(user)) : null 
+  const liked = userLogged
+    ? totalLikes.find(({ user }) => userLogged.uid === user)
+    : null;
 
   useEffect(() => {
     refreshLikes();
@@ -15,11 +18,13 @@ function Thumbsup({ userLogged, page, title }) {
     : "thumbs-up-button";
 
   async function handleLike() {
+    const ref = firebase
+      .firestore()
+      .collection(`likes/${page}/${title}`)
+      .doc(userLogged.uid);
+
     if (!liked) {
-      await firebase
-        .firestore()
-        .collection(`likes/${page}/${title}`)
-        .doc(`${userLogged.uid}`)
+      await ref
         .set({
           name: userLogged.name,
           photo: userLogged.photo,
@@ -32,9 +37,7 @@ function Thumbsup({ userLogged, page, title }) {
           console.log("Algo deu errado", error.message);
         });
     } else {
-      await firebase.firestore
-        .collection(`likes/${page}/${title}`)
-        .doc(`${userLogged.uid}`)
+      await ref
         .delete()
         .then(() => {
           console.log("Curtida excluida.");

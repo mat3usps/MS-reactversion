@@ -9,8 +9,7 @@ function LoginPopUp(props) {
   const [photo, setPhoto] = useState(null);
   const [showSignIn, setShowSignIn] = useState(false);
   const [firstTry, setFirstTry] = useState(true);
-
-  console.log("first", firstTry);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   const photoHandler = (event) => {
     event.preventDefault();
@@ -24,9 +23,12 @@ function LoginPopUp(props) {
     setPassword("");
   };
 
-  const authenticationErrorWarning = document.getElementById(
-    "authentication-error"
-  );
+  function displayConfirmationMessage(message) {
+    setConfirmationMessage(message);
+    setInterval(() => {
+      setConfirmationMessage("");
+    }, 5000);
+  }
 
   async function signInWithEmailAndPassword() {
     await firebase
@@ -36,10 +38,7 @@ function LoginPopUp(props) {
         console.log("usuário logou");
       })
       .catch((error) => {
-        authenticationErrorWarning.innerHTML = error.message;
-        setInterval(() => {
-          authenticationErrorWarning.innerHTML = "";
-        }, 7000);
+        displayConfirmationMessage(error.message);
       });
   }
 
@@ -107,11 +106,8 @@ function LoginPopUp(props) {
           .then(console.log("cadastrado com sucesso."));
       })
       .catch((error) => {
-        authenticationErrorWarning.innerHTML = error.message;
         setFirstTry(false);
-        setInterval(() => {
-          authenticationErrorWarning.innerHTML = "";
-        }, 7000);
+        displayConfirmationMessage(error.message);
       });
   }
 
@@ -121,7 +117,7 @@ function LoginPopUp(props) {
     } else {
       setShowSignIn(false);
     }
-  }, []);
+  }, [props.signInMethod]);
 
   const displaySignIn = () => {
     setShowSignIn(true);
@@ -168,7 +164,7 @@ function LoginPopUp(props) {
         <p id="password-error" className="input-error validation">
           This is not a valid password.
         </p>
-        <p id="authentication-error" className="input-error"></p>
+        <p className="input-error">{confirmationMessage}</p>
         {showSignIn ? (
           <div>
             <div className="login-button-div">

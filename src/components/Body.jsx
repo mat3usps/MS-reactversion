@@ -23,17 +23,24 @@ function Body({ appRoutes }) {
 
   async function checkLogin() {
     await firebase.auth().onAuthStateChanged(async (value) => {
-      value &&
-        (await firebase
-          .firestore()
-          .collection("users")
-          .doc(value.uid)
-          .get()
-          .then((snapshot) => {
-            setUserLogged({
-              ...snapshot.data(),
-            });
-          }));
+      let user = value;
+      if (value) {
+        try {
+          const snapshot = await firebase
+            .firestore()
+            .collection("users")
+            .doc(value.uid)
+            .get();
+
+          user = {
+            ...value,
+            ...snapshot.data(),
+          };
+        } catch (error) {
+          console.error("onAuthStateChanged", error);
+        }
+      }
+      setUserLogged(user);
     });
   }
 
