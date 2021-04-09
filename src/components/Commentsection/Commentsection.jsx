@@ -24,7 +24,7 @@ function CommentSection({ selected, pathname, userLogged }) {
         console.log("Comentário gravado.");
       })
       .catch((error) => {
-        console.log("Comentário deu errado", error);
+        console.log("Comentário não foi postado", error);
       });
   }
 

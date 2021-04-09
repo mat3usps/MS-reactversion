@@ -6,6 +6,8 @@ function ProfileManager({ userLogged }) {
   const [passwordUpdate, setPasswordUpdate] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [fileName, setFileName] = useState();
+  const [selectedFile, setSelectedFile] = useState();
 
   function updateConfirmation(message) {
     setSuccessMessage(message);
@@ -49,7 +51,7 @@ function ProfileManager({ userLogged }) {
             <img src={"props.userLogged.photo"} alt="" />
           </div>
           <br />
-          <input type="file"></input>
+          <input type="file" onChange={(e) => uploadFile(e)}></input>
         </div>
         <div className="profile-name-field">
           <div className="input-group">
@@ -60,6 +62,7 @@ function ProfileManager({ userLogged }) {
               onChange={updatingName}
               placeholder={userLogged.name}
             ></input>
+            <br />
             <button className="modal-input-button" onClick={nameChanger}>
               Update
             </button>

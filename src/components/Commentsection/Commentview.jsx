@@ -20,7 +20,7 @@ function CommentView({
         console.log("Comentário excluido com sucesso.");
       })
       .catch((error) => {
-        console.log("Erro ao apagar comentário", error);
+        console.log("Erro ao tentar apagar comentário", error);
       });
   }
 

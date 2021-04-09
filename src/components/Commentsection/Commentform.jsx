@@ -38,7 +38,7 @@ class CommentForm extends Component {
                 id="comment"
                 className="comment-form-input"
                 name="comment"
-                placeholder="make a comment."
+                placeholder="Make a comment."
                 value={this.state.comment}
                 onChange={this.changeComment}
               />
