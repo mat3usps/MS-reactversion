@@ -51,7 +51,7 @@ function ProfileManager({ userLogged }) {
             <img src={"props.userLogged.photo"} alt="" />
           </div>
           <br />
-          <input type="file" onChange={(e) => uploadFile(e)}></input>
+          <input type="file" onChange={""}></input>
         </div>
         <div className="profile-name-field">
           <div className="input-group">
