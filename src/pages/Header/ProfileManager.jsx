@@ -6,8 +6,6 @@ function ProfileManager({ userLogged }) {
   const [passwordUpdate, setPasswordUpdate] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [fileName, setFileName] = useState();
-  const [selectedFile, setSelectedFile] = useState();
 
   function updateConfirmation(message) {
     setSuccessMessage(message);
