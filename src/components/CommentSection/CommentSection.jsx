@@ -8,7 +8,7 @@ function CommentSection({ selected, pathname, userLogged }) {
 
   useEffect(() => {
     refreshComments();
-  }, [commentStorage]);
+  });
 
   async function handleComment(comment) {
     await firebase

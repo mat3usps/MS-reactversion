@@ -11,7 +11,7 @@ function Thumbsup({ userLogged, page, title }) {
 
   useEffect(() => {
     refreshLikes();
-  }, [totalLikes, liked]);
+  });
 
   const thumbsUpClass = liked
     ? "thumbs-up-button-activated"
