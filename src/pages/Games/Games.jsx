@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import Modal from "../../components/Modal";
 import { useState, useEffect } from "react";
 import CommentSection from "../../components/CommentSection/CommentSection";
-import Gamecard from "./Gamecard";
+import GameCard from "./GameCard";
 import firebase from "../../components/firebaseConnection";
 import Thumbsup from "../../components/ThumbsUp";
 import Bar from "../../assets/Utility/bar.png";
@@ -93,9 +93,9 @@ function Games({ userLogged }) {
     <div>
       <div className="allgames column">
         {games.map(({ name, icon, path }) => (
-          <Gamecard icon={icon} path={path} key={name}>
+          <GameCard icon={icon} path={path} key={name}>
             {name}
-          </Gamecard>
+          </GameCard>
         ))}
       </div>
       {selectedGame && (
