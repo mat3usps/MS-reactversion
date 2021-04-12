@@ -2,44 +2,21 @@ import { useState, useEffect } from "react";
 import Barbutton from "../../components/BarButton";
 import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
+import LoadingSVG from "../../components/LoadingSVG";
 
 function LoginPopUp(props) {
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [photo, setPhoto] = useState(null);
   const [showSignIn, setShowSignIn] = useState(false);
   const [firstTry, setFirstTry] = useState(true);
   const [confirmationMessage, setConfirmationMessage] = useState("");
-
-  const photoHandler = (event) => {
-    event.preventDefault();
-    setPhoto(event.target.files[0]);
-  };
-
-  const userDidLogin = (event) => {
-    event.preventDefault();
-    signInWithEmailAndPassword();
-    setEmail("");
-    setPassword("");
-  };
 
   function displayConfirmationMessage(message) {
     setConfirmationMessage(message);
     setInterval(() => {
       setConfirmationMessage("");
     }, 5000);
-  }
-
-  async function signInWithEmailAndPassword() {
-    await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log("usuário logou");
-      })
-      .catch((error) => {
-        displayConfirmationMessage(error.message);
-      });
   }
 
   const emailValidation = () => {
@@ -80,8 +57,29 @@ function LoginPopUp(props) {
     }
   };
 
+  const userDidLogin = (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    signInWithEmailAndPassword();
+    setEmail("");
+    setPassword("");
+  };
+
+  async function signInWithEmailAndPassword() {
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log("usuário logou");
+      })
+      .catch((error) => {
+        displayConfirmationMessage(error.message);
+      });
+  }
+
   const userDidSignIn = (event) => {
     event.preventDefault();
+    setIsLoading(true);
     createUserWithEmailAndPassword();
     setEmail("");
     setPassword("");
@@ -111,6 +109,40 @@ function LoginPopUp(props) {
       });
   }
 
+  const didLoginAnonymously = () => {
+    loginAnonymously();
+    setIsLoading(true);
+  };
+
+  async function loginAnonymously() {
+    firebase.auth().signInAnonymously();
+  }
+
+  const didProvideAuthentication = (event) => {
+    event.preventDefault();
+    var credential = firebase
+      .auth()
+      .EmailAuthProvider()
+      .credential(email, password);
+    provideAuthentication(credential);
+  };
+
+  async function provideAuthentication(credential) {
+    firebase
+      .auth()
+      .currentUser()
+      .linkWithCredential(credential)
+      .then((usercred) => {
+        var user = usercred.user;
+        console.log("Anonymous account successfully upgraded", user);
+      })
+      .catch((error) => {
+        setFirstTry(false);
+        displayConfirmationMessage(error.message);
+        console.log("Error upgrading anonymous account", error);
+      });
+  }
+
   useEffect(() => {
     if (props.signInMethod) {
       setShowSignIn(true);
@@ -125,77 +157,73 @@ function LoginPopUp(props) {
 
   return (
     <div className="login-popup">
-      <form>
-        {showSignIn && (
-          <div>
-            <label for="Photo">Photo: </label>
-            <br />
-            <input
-              id="Photo"
-              value={photo}
-              type="file"
-              enctype="multipart/form-data"
-              onChange={photoHandler}
-            ></input>
-          </div>
-        )}
-        <label for="Email">Email: </label>
-        <input
-          className="modal-input"
-          value={email}
-          id="Email"
-          type="text"
-          onChange={(e) => setEmail(e.target.value)}
-          onFocus={showSignIn && emailValidation}
-        />
-        <p id="email-error" className="input-error validation">
-          This is not a valid email.
-        </p>
-        <br />
-        <label for="Password">Password: </label>
-        <input
-          className="modal-input"
-          id="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onFocus={showSignIn && passwordValidation}
-        ></input>
-        <p id="password-error" className="input-error validation">
-          This is not a valid password.
-        </p>
-        <p className="input-error">{confirmationMessage}</p>
-        {showSignIn ? (
-          <div>
-            <div className="login-button-div">
-              <button
-                type="submit"
-                className="modal-input-button"
-                onClick={userDidSignIn}
-              >
-                Sign In
-              </button>
+      {!isLoading ? (
+        <form>
+          <label for="Email">Email: </label>
+          <input
+            className="modal-input"
+            value={email}
+            id="Email"
+            type="text"
+            onChange={(e) => setEmail(e.target.value)}
+            onFocus={showSignIn && emailValidation}
+          />
+          <p id="email-error" className="input-error validation">
+            This is not a valid email.
+          </p>
+          <br />
+          <label for="Password">Password: </label>
+          <input
+            className="modal-input"
+            id="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onFocus={showSignIn && passwordValidation}
+          ></input>
+          <p id="password-error" className="input-error validation">
+            This is not a valid password.
+          </p>
+          <p className="input-error">{confirmationMessage}</p>
+          {showSignIn ? (
+            <div>
+              <div className="login-button-div">
+                <button
+                  type="submit"
+                  className="modal-input-button"
+                  onClick={
+                    props.userLogged.isAnonymous
+                      ? didProvideAuthentication
+                      : userDidSignIn
+                  }
+                >
+                  Sign In
+                </button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div>
-            <div className="login-button-div">
-              <button
-                type="submit"
-                className="modal-input-button"
-                onClick={userDidLogin}
-              >
-                Login
-              </button>
+          ) : (
+            <div>
+              <div className="login-button-div">
+                <button
+                  type="submit"
+                  className="modal-input-button"
+                  onClick={userDidLogin}
+                >
+                  Login
+                </button>
+              </div>
+              <hr />
+              <p className="login-popup-options">Does not have an account?</p>
+              <div className="other-login-options">
+                <Barbutton onClick={displaySignIn}>Sign In</Barbutton>
+                <Barbutton onClick={didLoginAnonymously}>Anonymous</Barbutton>
+              </div>
             </div>
-            <hr />
-            <di>
-              <p>Does not have an account?</p>
-              <Barbutton onClick={displaySignIn}>Sign In</Barbutton>
-            </di>
-          </div>
-        )}
-      </form>
+          )}
+        </form>
+      ) : (
+        <LoadingSVG />
+      )}
     </div>
   );
 }

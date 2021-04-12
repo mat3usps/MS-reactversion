@@ -10,6 +10,8 @@ import ProfileManager from "./ProfileManager";
 function Header({ userLogged }) {
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
+  const [headerProfileOptions, setHeaderProfileOptions] = useState(false);
+  const [anonymousAuthentication, setAnonymousAuthentication] = useState(false);
 
   const didLogout = () => {
     firebase.auth().signOut();
@@ -30,11 +32,10 @@ function Header({ userLogged }) {
   };
 
   const displayHiddenDiv = () => {
-    const hiddenDiv = document.getElementById("hiddendiv");
-    if (hiddenDiv.style.getPropertyValue("display") === "none") {
-      hiddenDiv.style.display = "block";
+    if (!headerProfileOptions) {
+      setHeaderProfileOptions(true);
     } else {
-      hiddenDiv.style.display = "none";
+      setHeaderProfileOptions(false);
     }
   };
 
@@ -46,25 +47,43 @@ function Header({ userLogged }) {
     setprofileManager(false);
   };
 
+  const provideAuthentication = () => {
+    setAnonymousAuthentication(true);
+  };
+
+  const didCloseAnonymousAuthentication = () => {
+    setAnonymousAuthentication(false);
+  };
+
   return (
     <header className="header">
       <div></div>
       <div>
-        <h4>Welcome! {userLogged ? userLogged.name : ""}</h4>
+        <h4>Welcome{userLogged ? `, ${userLogged.name}!` : ""}</h4>
       </div>
       <div className="header-login-state">
         {userLogged ? (
           <div className="header-login-state-button">
+            {userLogged.isAnonymous && (
+              <BarButton onClick={provideAuthentication}>Sign In</BarButton>
+            )}
             <button
               className="header-profile-button btn-three"
               onClick={displayHiddenDiv}
             >
-              {String(userLogged.photo).toUpperCase()}
+              <img
+                src={userLogged.photo}
+                alt={userLogged.name ? userLogged.name[0] : "A"}
+              />
             </button>
-            <div id="hiddendiv" className="header-profile-hidden-div">
-              <BarButton onClick={displayProfileManager}>Profile</BarButton>
-              <BarButton onClick={didLogout}>Logout</BarButton>
-            </div>
+            {headerProfileOptions && (
+              <div className="header-profile-hidden-div">
+                {!userLogged.isAnonymous && (
+                  <BarButton onClick={displayProfileManager}>Profile</BarButton>
+                )}
+                <BarButton onClick={didLogout}>Logout</BarButton>
+              </div>
+            )}
           </div>
         ) : (
           <div className="header-login-state-button">
@@ -86,9 +105,16 @@ function Header({ userLogged }) {
       <Modal
         isOpen={profileManager}
         didClose={didCloseProfileManager}
-        contentRelation="fill-content"
+        contentRelation="scroll"
       >
         <ProfileManager userLogged={userLogged} />
+      </Modal>
+      <Modal
+        isOpen={anonymousAuthentication}
+        didClose={didCloseAnonymousAuthentication}
+        contentRelation="fill-content"
+      >
+        <LoginPopup signInMethod={true} userLogged={userLogged} />
       </Modal>
     </header>
   );

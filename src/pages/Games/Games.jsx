@@ -47,7 +47,7 @@ function Games({ userLogged }) {
 
   const didCloseModal = () => {
     history.push("/games");
-    setImageIndex(1);
+    setImageIndex(0);
   };
 
   const [expandedImage, setImageExtended] = useState(false);
