@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Body from "./components/Body";
 import axios from "axios";
 import SVG from "./components/SVG";
+import UserProvider from "./contexts/user";
 
 class App extends Component {
   constructor(props) {
@@ -32,7 +33,11 @@ class App extends Component {
         </div>
       );
     }
-    return <Body appRoutes={this.state.appRoutes}></Body>;
+    return (
+      <UserProvider>
+        <Body appRoutes={this.state.appRoutes} />;
+      </UserProvider>
+    );
   }
 }
 

@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import Thumbsup from "../../components/ThumbsUp";
 import Bar from "../../assets/Utility/bar.png";
+import { UserContext } from "../../contexts/user";
 
-function ArticleView({ description, children, path, userLogged }) {
+function ArticleView({ description, children, path }) {
+  const { userLogged } = useContext(UserContext);
+
   return (
     <div className="article">
       <Link

@@ -8,7 +8,7 @@ import ABISWD from "./ABriefIntroductiononSVGinWebDevelopment.md";
 import TDHTML from "./TheDiscoverofHTML.md";
 import TISRPRC from "./TheImportanceofSRPinReactComponents.md";
 
-function Coding({ userLogged }) {
+function Coding() {
   const articles = [
     {
       title: "The Importance of SRP in React Components",
@@ -70,7 +70,6 @@ function Coding({ userLogged }) {
       <div className="coding">
         {articles.map(({ title, description, path }) => (
           <ArticleView
-            userLogged={userLogged}
             didUpdateLikes={didUpdateLikes}
             description={description}
             path={path}
@@ -88,11 +87,7 @@ function Coding({ userLogged }) {
           didClose={didCloseModal}
         >
           <Markdown>{selectedArticle.content}</Markdown>
-          <CommentSection
-            selected={selectedArticle}
-            userLogged={userLogged}
-            pathname="coding"
-          />
+          <CommentSection selected={selectedArticle} pathname="coding" />
         </Modal>
       )}
     </div>

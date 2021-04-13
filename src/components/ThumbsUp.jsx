@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Like from "../assets/Utility/thumbsup.svg";
 import firebase from "./firebaseConnection";
+import { UserContext } from "../contexts/user";
 
-function Thumbsup({ userLogged, page, title }) {
+function Thumbsup({ page, title }) {
   const [totalLikes, setTotalLikes] = useState([]);
+  const { userLogged } = useContext(UserContext);
 
   const liked = userLogged
     ? totalLikes.find(({ user }) => userLogged.uid === user)

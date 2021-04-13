@@ -8,7 +8,7 @@ import firebase from "../../components/firebaseConnection";
 import Thumbsup from "../../components/ThumbsUp";
 import Bar from "../../assets/Utility/bar.png";
 
-function Games({ userLogged }) {
+function Games() {
   const [games, setGames] = useState([]);
 
   const location = useLocation();
@@ -130,16 +130,8 @@ function Games({ userLogged }) {
           </div>
           <p className="game-review">{selectedGame.content}</p>
           <img className="separator" src={Bar} alt="Bar" />
-          <Thumbsup
-            userLogged={userLogged}
-            page="games"
-            title={selectedGame.path}
-          />
-          <CommentSection
-            selected={selectedGame}
-            userLogged={userLogged}
-            pathname="games"
-          />
+          <Thumbsup page="games" title={selectedGame.path} />
+          <CommentSection selected={selectedGame} pathname="games" />
         </Modal>
       )}
       {selectedGame && expandedImage ? (

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import firebase from "../../components/firebaseConnection";
 import LoadingSVG from "../../components/LoadingSVG";
+import { UserContext } from "../../contexts/user";
 
-function ProfileManager({ userLogged }) {
+function ProfileManager() {
+  const { userLogged } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [nameUpdate, setNameUpdate] = useState("");
   const [passwordUpdate, setPasswordUpdate] = useState("");
@@ -16,6 +18,8 @@ function ProfileManager({ userLogged }) {
       setSuccessMessage("");
     }, 5000);
   }
+
+  const uploadRef = firebase.storage().ref(`userPhotos/${userLogged.uid}`);
 
   const updateRef = firebase
     .firestore()
@@ -34,41 +38,33 @@ function ProfileManager({ userLogged }) {
 
   const didUpdatePhoto = () => {
     setIsLoading(true);
-    const uploadTask = firebase
-      .storage()
-      .ref(`userPhotos/${userLogged.uid}`)
-      .put(photoUpdate);
-    uploadTask.on(
-      "state_changed",
-      () => {
-        console.log("photoUpdated");
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        firebase
-          .storage()
-          .ref("userPhotos")
-          .child(photoUpdate.uid)
-          .getDownloadURL()
-          .then((url) => {
-            updateRef
-              .update({
-                photo: url,
-              })
-              .then(() => {
-                setIsLoading(false);
-                updateConfirmation("Photo was updated");
-              })
-              .catch((error) => {
-                setIsLoading(false);
-                updateConfirmation(error.message);
-              });
-          });
-      }
-    );
+    photoUpdateSubmit();
   };
+
+  async function photoUpdateSubmit() {
+    uploadRef
+      .put(photoUpdate)
+      .then(() => {
+        console.log("Photo was successfully uploaded.");
+      })
+      .catch(() => {
+        console.log("Photo wasn't uploaded");
+      });
+    uploadRef.getDownloadURL().then((url) => {
+      updateRef
+        .update({
+          photo: url,
+        })
+        .then(() => {
+          setIsLoading(false);
+          updateConfirmation("Photo was updated");
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          updateConfirmation("error", error.message);
+        });
+    });
+  }
 
   const didUpdateName = (event) => {
     event.preventDefault();

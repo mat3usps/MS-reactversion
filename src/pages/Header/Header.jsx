@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import Modal from "../../components/Modal";
 import LoginPopup from "./LoginPopup";
 import BarButton from "../../components/BarButton";
 import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
-import { useEffect } from "react";
 import ProfileManager from "./ProfileManager";
+import { UserContext } from "../../contexts/user";
 
-function Header({ userLogged }) {
+function Header() {
+  const { userLogged } = useContext(UserContext);
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
   const [headerProfileOptions, setHeaderProfileOptions] = useState(false);
@@ -97,24 +98,21 @@ function Header({ userLogged }) {
         didClose={didCloseLoginPopup}
         contentRelation="fill-content"
       >
-        <LoginPopup
-          signInMethod={loginStatus === "signin"}
-          userLogged={userLogged}
-        />
+        <LoginPopup signInMethod={loginStatus === "signin"} />
       </Modal>
       <Modal
         isOpen={profileManager}
         didClose={didCloseProfileManager}
         contentRelation="scroll"
       >
-        <ProfileManager userLogged={userLogged} />
+        <ProfileManager />
       </Modal>
       <Modal
         isOpen={anonymousAuthentication}
         didClose={didCloseAnonymousAuthentication}
         contentRelation="fill-content"
       >
-        <LoginPopup signInMethod={true} userLogged={userLogged} />
+        <LoginPopup signInMethod={true} />
       </Modal>
     </header>
   );

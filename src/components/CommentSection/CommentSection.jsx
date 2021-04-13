@@ -1,10 +1,12 @@
 import Commentview from "./CommentView";
 import Commentform from "./CommentForm";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import firebase from "../firebaseConnection";
+import { UserContext } from "../../contexts/user";
 
-function CommentSection({ selected, pathname, userLogged }) {
+function CommentSection({ selected, pathname }) {
   const [commentStorage, setComments] = useState([]);
+  const { userLogged } = useContext(UserContext);
 
   useEffect(() => {
     refreshComments();

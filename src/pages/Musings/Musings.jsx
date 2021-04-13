@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Musing from "./Musing";
 import axios from "axios";
 
-function Musings({ userLogged }) {
+function Musings() {
   const [entrances, setEntrances] = useState([]);
 
   const listRef = useRef();
@@ -24,7 +24,7 @@ function Musings({ userLogged }) {
   return (
     <div id="musings" className="musings" ref={listRef}>
       {entrances.map(({ title, content }) => (
-        <Musing content={content} key={title} userLogged={userLogged}>
+        <Musing content={content} key={title}>
           {title}
         </Musing>
       ))}

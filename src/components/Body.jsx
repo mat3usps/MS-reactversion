@@ -9,42 +9,12 @@ import Games from "../pages/Games/Games";
 import Paintings from "../pages/Paintings/Paintings";
 import Musings from "../pages/Musings/Musings";
 import Coding from "../pages/Coding/Coding";
-import { useState } from "react/cjs/react.development";
 import Header from "../pages/Header/Header";
 import Home from "../pages/Home/Home";
 import Error404 from "./Error404";
-import firebase from "./firebaseConnection";
-import "firebase/auth";
 
 function Body({ appRoutes }) {
   const location = useLocation();
-
-  const [userLogged, setUserLogged] = useState(null);
-
-  async function checkLogin() {
-    await firebase.auth().onAuthStateChanged(async (value) => {
-      let user = value;
-      if (value) {
-        try {
-          const snapshot = await firebase
-            .firestore()
-            .collection("users")
-            .doc(value.uid)
-            .get();
-
-          user = {
-            ...value,
-            ...snapshot.data(),
-          };
-        } catch (error) {
-          console.error("onAuthStateChanged", error);
-        }
-      }
-      setUserLogged(user);
-    });
-  }
-
-  checkLogin();
 
   function changeBackground() {
     let key = 3;
@@ -81,27 +51,27 @@ function Body({ appRoutes }) {
 
   const renderMenuComponent = (title) => {
     if (title === "Home") {
-      return <Home userLogged={userLogged} vipLogin={""} />;
+      return <Home />;
     } else if (title === "About") {
-      return <About userLogged={userLogged} />;
+      return <About />;
     } else if (title === "Coding") {
-      return <Coding userLogged={userLogged} />;
+      return <Coding />;
     } else if (title === "Games") {
-      return <Games userLogged={userLogged} />;
+      return <Games />;
     } else if (title === "Musings") {
-      return <Musings userLogged={userLogged} />;
+      return <Musings />;
     } else if (title === "Paintings") {
-      return <Paintings userLogged={userLogged} />;
+      return <Paintings />;
     } else if (title === "Photos") {
-      return <Photos userLogged={userLogged} />;
+      return <Photos />;
     }
-    return <Error404 userLogged={userLogged} />;
+    return <Error404 />;
   };
 
   return (
     <div>
       <div className="container">
-        <Header userLogged={userLogged} />
+        <Header />
         <Bar paths={appRoutes}></Bar>
         <Switch>
           {appRoutes.map(({ isExact, path, title }) => (

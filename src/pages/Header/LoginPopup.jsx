@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Barbutton from "../../components/BarButton";
 import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 import LoadingSVG from "../../components/LoadingSVG";
+import { UserContext } from "../../contexts/user";
 
 function LoginPopUp(props) {
+  const { userLogged } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -120,18 +122,17 @@ function LoginPopUp(props) {
 
   const didProvideAuthentication = (event) => {
     event.preventDefault();
-    var credential = firebase
-      .auth()
-      .EmailAuthProvider()
-      .credential(email, password);
+    var credential = firebase.auth.EmailAuthProvider.credential(
+      email,
+      password
+    );
     provideAuthentication(credential);
   };
 
   async function provideAuthentication(credential) {
     firebase
       .auth()
-      .currentUser()
-      .linkWithCredential(credential)
+      .currentUser.linkWithCredential(credential)
       .then((usercred) => {
         var user = usercred.user;
         console.log("Anonymous account successfully upgraded", user);
@@ -192,7 +193,7 @@ function LoginPopUp(props) {
                   type="submit"
                   className="modal-input-button"
                   onClick={
-                    props.userLogged.isAnonymous
+                    userLogged.isAnonymous
                       ? didProvideAuthentication
                       : userDidSignIn
                   }
