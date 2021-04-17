@@ -9975,7 +9975,7 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-"react-instagram-authless-feed@github:jamesmoriarty/react-instagram-authless-feed#v2.0.0":
+"react-instagram-authless-feed@*":
   "resolved" "git+ssh://git@github.com/jamesmoriarty/react-instagram-authless-feed.git#14e9820fb4c5c54d44bd673139b33e4fe49786b5"
 
 "react-is@^16.6.0", "react-is@^16.7.0", "react-is@^16.8.1", "react-is@^16.8.6":
