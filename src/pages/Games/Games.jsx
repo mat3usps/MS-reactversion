@@ -13,7 +13,7 @@ function Games() {
 
   const location = useLocation();
   const history = useHistory();
-  const [imageIndex, setImageIndex] = useState(1);
+  const [imageIndex, setImageIndex] = useState(0);
 
   const isContentShown = location.pathname !== "/games";
 

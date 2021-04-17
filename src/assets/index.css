@@ -47,6 +47,10 @@ body {
   background-color: transparent;
 }
 
+.header-login-state-button img {
+  object-fit: cover;
+}
+
 .header-profile-hidden-div {
   display: flex;
   width: fit-content;
@@ -83,34 +87,41 @@ body {
   z-index: 10;
 }
 
-.photo-field {
+.label-avatar {
+  width: 280px;
+  height: 280px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  cursor: pointer;
 }
 
-.photo-input {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.label-avatar input {
+  display: none;
 }
 
-.current-profile-photo-div {
-  width: 300px;
-  height: 300px;
-  border-radius: 150px;
+.label-avatar span {
+  z-index: 99;
+  position: absolute;
+  opacity: 0.7;
+  transition: all 0.5s;
+}
+
+.label-avatar span:hover {
+  opacity: 1;
+  transform: scale(1.4);
+}
+
+.form-profile img {
+  margin-bottom: 1em;
+  border-radius: 50%;
   object-fit: cover;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.profile-current-photo {
-  width: 100%;
-  width: 100%;
-  border-radius: 100px;
+.form-profile label {
+  margin-bottom: 0.5em;
+  font-size: 1.4em;
 }
 
 .input-group {

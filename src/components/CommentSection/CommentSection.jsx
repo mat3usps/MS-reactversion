@@ -1,12 +1,14 @@
 import Commentview from "./CommentView";
 import Commentform from "./CommentForm";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import firebase from "../firebaseConnection";
-import { UserContext } from "../../contexts/user";
+import { observer } from "mobx-react";
+import { useUserStoreContext } from "../../contexts/userStoreContext";
 
-function CommentSection({ selected, pathname }) {
+const CommentSection = observer(({ selected, pathname }) => {
+  const { loggedUser } = useUserStoreContext();
+
   const [commentStorage, setComments] = useState([]);
-  const { userLogged } = useContext(UserContext);
 
   useEffect(() => {
     refreshComments();
@@ -17,10 +19,10 @@ function CommentSection({ selected, pathname }) {
       .firestore()
       .collection(`comments/${pathname}/${selected.path}`)
       .add({
-        name: userLogged.name,
-        photo: userLogged.photo,
+        name: loggedUser.name,
+        photo: loggedUser.photo,
         comment: comment,
-        user: userLogged.uid,
+        user: loggedUser.uid,
       })
       .then(() => {
         console.log("Comentário gravado.");
@@ -73,6 +75,6 @@ function CommentSection({ selected, pathname }) {
       <Commentform didSave={handleComment} />
     </div>
   );
-}
+});
 
 export default CommentSection;

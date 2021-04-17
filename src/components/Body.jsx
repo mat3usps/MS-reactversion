@@ -13,7 +13,7 @@ import Header from "../pages/Header/Header";
 import Home from "../pages/Home/Home";
 import Error404 from "./Error404";
 
-function Body({ appRoutes }) {
+const Body = ({ appRoutes }) => {
   const location = useLocation();
 
   function changeBackground() {
@@ -88,6 +88,6 @@ function Body({ appRoutes }) {
       </div>
     </div>
   );
-}
+};
 
 export default Body;

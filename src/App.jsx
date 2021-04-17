@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Body from "./components/Body";
 import axios from "axios";
 import SVG from "./components/SVG";
-import UserProvider from "./contexts/user";
 
 class App extends Component {
   constructor(props) {
@@ -28,16 +27,12 @@ class App extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <div className="loader-wrapper">
+        <div className="loader-wrapper" style={{ animation: "none" }}>
           <SVG></SVG>
         </div>
       );
     }
-    return (
-      <UserProvider>
-        <Body appRoutes={this.state.appRoutes} />;
-      </UserProvider>
-    );
+    return <Body appRoutes={this.state.appRoutes} />;
   }
 }
 

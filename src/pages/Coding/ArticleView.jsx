@@ -1,11 +1,8 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import Thumbsup from "../../components/ThumbsUp";
 import Bar from "../../assets/Utility/bar.png";
-import { UserContext } from "../../contexts/user";
 
 function ArticleView({ description, children, path }) {
-  const { userLogged } = useContext(UserContext);
 
   return (
     <div className="article">
@@ -18,7 +15,7 @@ function ArticleView({ description, children, path }) {
         <p>{description}</p>
       </Link>
       <img className="separator" src={Bar} alt="Bar" />
-      <Thumbsup userLogged={userLogged} page="coding" title={path} />
+      <Thumbsup page="coding" title={path} />
     </div>
   );
 }

@@ -1,12 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Barbutton from "../../components/BarButton";
 import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 import LoadingSVG from "../../components/LoadingSVG";
-import { UserContext } from "../../contexts/user";
+import { observer } from "mobx-react";
+import { useUserStoreContext } from "../../contexts/userStoreContext";
 
-function LoginPopUp(props) {
-  const { userLogged } = useContext(UserContext);
+const LoginPopUp = observer(({ signInMethod }) => {
+  const { loggedUser } = useUserStoreContext();
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -117,7 +119,15 @@ function LoginPopUp(props) {
   };
 
   async function loginAnonymously() {
-    firebase.auth().signInAnonymously();
+    firebase
+      .auth()
+      .signInAnonymously()
+      .then(() => {
+        console.log("User logged in anonymously successfully");
+      })
+      .catch((error) => {
+        console.log("User didn't log in", error);
+      });
   }
 
   const didProvideAuthentication = (event) => {
@@ -145,12 +155,12 @@ function LoginPopUp(props) {
   }
 
   useEffect(() => {
-    if (props.signInMethod) {
+    if (signInMethod) {
       setShowSignIn(true);
     } else {
       setShowSignIn(false);
     }
-  }, [props.signInMethod]);
+  }, [signInMethod]);
 
   const displaySignIn = () => {
     setShowSignIn(true);
@@ -193,7 +203,7 @@ function LoginPopUp(props) {
                   type="submit"
                   className="modal-input-button"
                   onClick={
-                    userLogged.isAnonymous
+                    loggedUser.isAnonymous
                       ? didProvideAuthentication
                       : userDidSignIn
                   }
@@ -227,6 +237,6 @@ function LoginPopUp(props) {
       )}
     </div>
   );
-}
+});
 
 export default LoginPopUp;

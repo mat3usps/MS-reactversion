@@ -1,13 +1,23 @@
-import { useState, createContext } from "react";
+import { makeObservable, observable, action } from "mobx";
 import firebase from "../components/firebaseConnection";
 import "firebase/auth";
 
-export const UserContext = createContext({});
+class UserStore {
+  loggedUser = null;
 
-function UserProvider({ children }) {
-  const [userLogged, setUserLogged] = useState(null);
+  constructor() {
+    makeObservable(this, {
+      loggedUser: observable,
+      setLoggedUser: action,
+    });
+    this.checkLogin();
+  }
 
-  async function checkLogin() {
+  setLoggedUser = (user) => {
+    this.loggedUser = user;
+  };
+
+  async checkLogin() {
     await firebase.auth().onAuthStateChanged(async (value) => {
       let user = value;
       if (value) {
@@ -25,18 +35,11 @@ function UserProvider({ children }) {
         } catch (error) {
           console.error("onAuthStateChanged", error);
         }
+
+        this.setLoggedUser(user);
       }
-      setUserLogged(user);
     });
   }
-
-  checkLogin();
-
-  return (
-    <UserContext.Provider value={{ userLogged }}>
-      {children}
-    </UserContext.Provider>
-  );
 }
 
-export default UserProvider;
+export default UserStore;

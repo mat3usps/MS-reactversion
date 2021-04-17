@@ -63,14 +63,11 @@ function Coding() {
     history.push("/coding");
   };
 
-  const didUpdateLikes = (currentLikes) => {};
-
   return (
     <div>
       <div className="coding">
         {articles.map(({ title, description, path }) => (
           <ArticleView
-            didUpdateLikes={didUpdateLikes}
             description={description}
             path={path}
             key={title}

@@ -1,16 +1,28 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import avatar from "../../assets/Utility/avatar.png";
 import firebase from "../../components/firebaseConnection";
 import LoadingSVG from "../../components/LoadingSVG";
-import { UserContext } from "../../contexts/user";
+import { observer } from "mobx-react";
+import { useUserStoreContext } from "../../contexts/userStoreContext";
 
-function ProfileManager() {
-  const { userLogged } = useContext(UserContext);
+const ProfileManager = observer(() => {
+  const { loggedUser } = useUserStoreContext();
+
   const [isLoading, setIsLoading] = useState(false);
-  const [nameUpdate, setNameUpdate] = useState("");
+
+  const [nameToUpdate, setNameToUpdate] = useState(
+    loggedUser && loggedUser.name
+  );
+  const [photoToUpdate, setPhotoToUpdate] = useState(
+    loggedUser && loggedUser.photo
+  );
+  const [currentPhoto, setCurrentPhoto] = useState(
+    loggedUser && loggedUser.photo
+  );
+
+  const [successMessage, setSuccessMessage] = useState("");
   const [passwordUpdate, setPasswordUpdate] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [photoUpdate, setPhotoUpdate] = useState("");
 
   function updateConfirmation(message) {
     setSuccessMessage(message);
@@ -19,120 +31,128 @@ function ProfileManager() {
     }, 5000);
   }
 
-  const uploadRef = firebase.storage().ref(`userPhotos/${userLogged.uid}`);
-
-  const updateRef = firebase
-    .firestore()
-    .collection("users")
-    .doc(userLogged.uid);
-
-  const updatingName = (event) => setNameUpdate(event.target.value);
   const updatingPassword = (event) => setPasswordUpdate(event.target.value);
   const confirmingPassword = (event) =>
     setPasswordConfirmation(event.target.value);
-  const updatingPhoto = (event) => {
-    if (event.target.files[0]) {
-      setPhotoUpdate(event.target.files[0]);
+
+  function handleFile(e) {
+    e.preventDefault();
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+
+      if (image.type === "image/jpeg" || image.type === "image/png") {
+        setPhotoToUpdate(image);
+        setCurrentPhoto(URL.createObjectURL(e.target.files[0]));
+      } else {
+        alert("Envie uma imagem do tipo PNG ou JPEG");
+        setPhotoToUpdate(null);
+        return null;
+      }
     }
-  };
-
-  const didUpdatePhoto = () => {
-    setIsLoading(true);
-    photoUpdateSubmit();
-  };
-
-  async function photoUpdateSubmit() {
-    uploadRef
-      .put(photoUpdate)
-      .then(() => {
-        console.log("Photo was successfully uploaded.");
-      })
-      .catch(() => {
-        console.log("Photo wasn't uploaded");
-      });
-    uploadRef.getDownloadURL().then((url) => {
-      updateRef
-        .update({
-          photo: url,
-        })
-        .then(() => {
-          setIsLoading(false);
-          updateConfirmation("Photo was updated");
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          updateConfirmation("error", error.message);
-        });
-    });
   }
 
-  const didUpdateName = (event) => {
-    event.preventDefault();
+  async function handleUpload() {
     setIsLoading(true);
-    nameUpdateSubmit();
-    setNameUpdate("");
-  };
+    const currentUid = loggedUser.uid;
+    await firebase
+      .storage()
+      .ref(`userPhotos/${currentUid}/${photoToUpdate.name}`)
+      .put(photoToUpdate)
+      .then(async () => {
+        await firebase
+          .storage()
+          .ref(`userPhotos/${currentUid}`)
+          .child(photoToUpdate.name)
+          .getDownloadURL()
+          .then(async (url) => {
+            let urlPhoto = url;
 
-  async function nameUpdateSubmit() {
-    updateRef
-      .update({
-        name: nameUpdate,
-      })
-      .then(() => {
-        setIsLoading(false);
-        updateConfirmation("Name was updated");
+            await firebase
+              .firestore()
+              .collection("users")
+              .doc(loggedUser.uid)
+              .update({
+                photo: urlPhoto,
+                name: nameToUpdate,
+              })
+              .then(() => {
+                setIsLoading(false);
+                updateConfirmation("User successfully updated");
+              })
+              .catch((error) => {
+                setIsLoading(false);
+                updateConfirmation("Error, user wasn't updated");
+                console.log("error", error);
+              });
+          })
+          .catch((error) => {
+            setIsLoading(false);
+            updateConfirmation("Error, couldn't get URL");
+            console.log("error", error);
+          });
       })
       .catch((error) => {
         setIsLoading(false);
-        updateConfirmation(error.message);
+        updateConfirmation("Error, couldn't upload file");
+        console.log("error", error);
       });
+  }
+
+  async function handleSave(e) {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (photoToUpdate === null && nameToUpdate !== "") {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(loggedUser.uid)
+        .update({
+          name: nameToUpdate,
+        })
+        .then(() => {
+          setIsLoading(false);
+          updateConfirmation("Name was successfully updated");
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          updateConfirmation("Name wasn't updated");
+          console.log(error);
+        });
+    } else if (nameToUpdate !== "" && photoToUpdate !== null) {
+      handleUpload();
+    }
   }
 
   return (
     <div className="profile-manager">
       {!isLoading ? (
-        <form>
-          <div className="photo-field">
-            <div className="current-profile-photo-div">
-              <img
-                className="profile-current-photo"
-                src={userLogged.photo}
-                alt={userLogged.name}
-              />
-            </div>
-            <div className="photo-input">
-              <input
-                className="modal-input"
-                type="file"
-                onChange={updatingPhoto}
-              ></input>
-              <button
-                type="button"
-                className="modal-input-button"
-                onClick={didUpdatePhoto}
-              >
-                Update Photo
-              </button>
-            </div>
-          </div>
-          <div className="profile-name-field">
+        <div>
+          <form className="form-profile" onSubmit={handleSave}>
+            <label className="label-avatar">
+              <input type="file" accept="image/*" onChange={handleFile} />
+              <br />
+              {loggedUser.photo === null ? (
+                <img src={avatar} width="300" height="300" alt="User's" />
+              ) : (
+                <img src={currentPhoto} width="300" height="300" alt="User's" />
+              )}
+            </label>
+
+            <label>Name</label>
             <input
-              className="modal-input"
               type="text"
-              value={nameUpdate}
-              onChange={updatingName}
-              placeholder={userLogged.name}
-            ></input>
-            <button
-              type="button"
-              className="modal-input-button"
-              onClick={didUpdateName}
-            >
-              Update Name
-            </button>
-          </div>
+              value={nameToUpdate}
+              onChange={(e) => {
+                setNameToUpdate(e.target.value);
+              }}
+            />
+
+            <button type="submit">Salvar</button>
+          </form>
           <div className="profile-password-field">
             <input
+              disabled={true}
               id="password"
               className="modal-input"
               type="password"
@@ -142,6 +162,7 @@ function ProfileManager() {
             ></input>
             <br />
             <input
+              disabled={true}
               type="password"
               className="modal-input"
               placeholder="Confirm password"
@@ -151,12 +172,12 @@ function ProfileManager() {
             <hr />
             <p>{successMessage}</p>
           </div>
-        </form>
+        </div>
       ) : (
         <LoadingSVG />
       )}
     </div>
   );
-}
+});
 
 export default ProfileManager;

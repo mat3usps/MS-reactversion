@@ -1,14 +1,15 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../../components/Modal";
 import LoginPopup from "./LoginPopup";
 import BarButton from "../../components/BarButton";
 import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 import ProfileManager from "./ProfileManager";
-import { UserContext } from "../../contexts/user";
+import { observer } from "mobx-react";
+import { useUserStoreContext } from "../../contexts/userStoreContext";
 
-function Header() {
-  const { userLogged } = useContext(UserContext);
+const Header = observer(() => {
+  const { loggedUser } = useUserStoreContext();
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
   const [headerProfileOptions, setHeaderProfileOptions] = useState(false);
@@ -22,7 +23,7 @@ function Header() {
     setLoginStatus(null);
   };
 
-  useEffect(didCloseLoginPopup, [userLogged]);
+  useEffect(didCloseLoginPopup, [loggedUser]);
 
   const displaySignIn = () => {
     setLoginStatus("signin");
@@ -60,12 +61,12 @@ function Header() {
     <header className="header">
       <div></div>
       <div>
-        <h4>Welcome{userLogged ? `, ${userLogged.name}!` : ""}</h4>
+        <h4>Welcome{loggedUser ? `, ${loggedUser.name}!` : ""}</h4>
       </div>
       <div className="header-login-state">
-        {userLogged ? (
+        {loggedUser ? (
           <div className="header-login-state-button">
-            {userLogged.isAnonymous && (
+            {loggedUser.isAnonymous && (
               <BarButton onClick={provideAuthentication}>Sign In</BarButton>
             )}
             <button
@@ -73,13 +74,13 @@ function Header() {
               onClick={displayHiddenDiv}
             >
               <img
-                src={userLogged.photo}
-                alt={userLogged.name ? userLogged.name[0] : "A"}
+                src={loggedUser.photo}
+                alt={loggedUser.name ? loggedUser.name[0] : "A"}
               />
             </button>
             {headerProfileOptions && (
               <div className="header-profile-hidden-div">
-                {!userLogged.isAnonymous && (
+                {!loggedUser.isAnonymous && (
                   <BarButton onClick={displayProfileManager}>Profile</BarButton>
                 )}
                 <BarButton onClick={didLogout}>Logout</BarButton>
@@ -116,6 +117,6 @@ function Header() {
       </Modal>
     </header>
   );
-}
+});
 
 export default Header;
