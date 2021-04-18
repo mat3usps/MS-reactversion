@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import avatar from "../../assets/Utility/avatar.png";
 import Modal from "../../components/Modal";
 import LoginPopup from "./LoginPopup";
 import BarButton from "../../components/BarButton";
@@ -9,7 +10,7 @@ import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const Header = observer(() => {
-  const { loggedUser } = useUserStoreContext();
+  const { loggedUser, setLoggedUser } = useUserStoreContext();
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
   const [headerProfileOptions, setHeaderProfileOptions] = useState(false);
@@ -17,6 +18,8 @@ const Header = observer(() => {
 
   const didLogout = () => {
     firebase.auth().signOut();
+    localStorage.removeItem("loggedUser");
+    setLoggedUser(null);
   };
 
   const didCloseLoginPopup = () => {
@@ -42,6 +45,7 @@ const Header = observer(() => {
   };
 
   const displayProfileManager = () => {
+    setHeaderProfileOptions(false);
     setprofileManager(true);
   };
 
@@ -61,7 +65,12 @@ const Header = observer(() => {
     <header className="header">
       <div></div>
       <div>
-        <h4>Welcome{loggedUser ? `, ${loggedUser.name}!` : ""}</h4>
+        <h4>
+          Welcome
+          {loggedUser && loggedUser !== undefined
+            ? `, ${loggedUser.name}!`
+            : ""}
+        </h4>
       </div>
       <div className="header-login-state">
         {loggedUser ? (
@@ -73,10 +82,11 @@ const Header = observer(() => {
               className="header-profile-button btn-three"
               onClick={displayHiddenDiv}
             >
-              <img
-                src={loggedUser.photo}
-                alt={loggedUser.name ? loggedUser.name[0] : "A"}
-              />
+              {loggedUser.photo === null ? (
+                <img src={avatar} alt="User's" />
+              ) : (
+                <img src={loggedUser.photo} alt="User's" />
+              )}
             </button>
             {headerProfileOptions && (
               <div className="header-profile-hidden-div">

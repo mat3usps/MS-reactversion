@@ -1,5 +1,6 @@
 import { useState } from "react";
 import avatar from "../../assets/Utility/avatar.png";
+import upload from "../../assets/Utility/upload.svg";
 import firebase from "../../components/firebaseConnection";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
@@ -131,6 +132,9 @@ const ProfileManager = observer(() => {
           <form className="form-profile" onSubmit={handleSave}>
             <label className="label-avatar">
               <input type="file" accept="image/*" onChange={handleFile} />
+              <span>
+                <img src={upload} alt="" />
+              </span>
               <br />
               {loggedUser.photo === null ? (
                 <img src={avatar} width="300" height="300" alt="User's" />
@@ -139,8 +143,12 @@ const ProfileManager = observer(() => {
               )}
             </label>
 
-            <label>Name</label>
+            <label for="name" className="nodisplay">
+              Name
+            </label>
             <input
+              id="name"
+              className="modal-input"
               type="text"
               value={nameToUpdate}
               onChange={(e) => {
@@ -148,7 +156,9 @@ const ProfileManager = observer(() => {
               }}
             />
 
-            <button type="submit">Salvar</button>
+            <button className="modal-input-button" type="submit">
+              Salvar
+            </button>
           </form>
           <div className="profile-password-field">
             <input

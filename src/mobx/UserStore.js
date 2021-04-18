@@ -18,27 +18,11 @@ class UserStore {
   };
 
   async checkLogin() {
-    await firebase.auth().onAuthStateChanged(async (value) => {
-      let user = value;
-      if (value) {
-        try {
-          const snapshot = await firebase
-            .firestore()
-            .collection("users")
-            .doc(value.uid)
-            .get();
+    const storageUser = localStorage.getItem("loggedUser");
 
-          user = {
-            ...value,
-            ...snapshot.data(),
-          };
-        } catch (error) {
-          console.error("onAuthStateChanged", error);
-        }
-
-        this.setLoggedUser(user);
-      }
-    });
+    if (storageUser) {
+      this.setLoggedUser(JSON.parse(storageUser));
+    }
   }
 }
 

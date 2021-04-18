@@ -20,6 +20,10 @@ body {
   color: rgb(0, 0, 0);
 }
 
+.nodisplay {
+  display: none;
+}
+
 /* Main */
 
 .header {
@@ -48,7 +52,11 @@ body {
 }
 
 .header-login-state-button img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   object-fit: cover;
+  margin: 5px;
 }
 
 .header-profile-hidden-div {
@@ -88,8 +96,6 @@ body {
 }
 
 .label-avatar {
-  width: 280px;
-  height: 280px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,20 +103,22 @@ body {
   cursor: pointer;
 }
 
-.label-avatar input {
-  display: none;
-}
-
 .label-avatar span {
+  width: 60px;
   z-index: 99;
   position: absolute;
   opacity: 0.7;
   transition: all 0.5s;
+  border: 10px;
 }
 
 .label-avatar span:hover {
   opacity: 1;
   transform: scale(1.4);
+}
+
+.label-avatar input {
+  display: none;
 }
 
 .form-profile img {

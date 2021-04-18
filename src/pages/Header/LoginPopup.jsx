@@ -7,9 +7,10 @@ import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const LoginPopUp = observer(({ signInMethod }) => {
-  const { loggedUser } = useUserStoreContext();
+  const { loggedUser, setLoggedUser } = useUserStoreContext();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showSignIn, setShowSignIn] = useState(false);
@@ -61,55 +62,87 @@ const LoginPopUp = observer(({ signInMethod }) => {
     }
   };
 
+  function storageUser(object) {
+    localStorage.setItem("loggedUser", JSON.stringify(object));
+  }
+
   const userDidLogin = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    signInWithEmailAndPassword();
+    signIn(email, password);
     setEmail("");
     setPassword("");
   };
 
-  async function signInWithEmailAndPassword() {
+  async function signIn() {
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log("usuário logou");
+      .then(async (value) => {
+        let uid = value.user.uid;
+
+        const userProfile = await firebase
+          .firestore()
+          .collection("users")
+          .doc(uid)
+          .get();
+
+        let data = {
+          uid: uid,
+          name: userProfile.data().name,
+          photo: userProfile.data().photo,
+          email: value.user.email,
+        };
+
+        setLoggedUser(data);
+        storageUser(data);
+        setIsLoading(false);
       })
       .catch((error) => {
-        displayConfirmationMessage(error.message);
+        console.log("erro ao logar", error);
+        setIsLoading(false);
       });
   }
 
   const userDidSignIn = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    createUserWithEmailAndPassword();
+    createUser(email, password, name);
     setEmail("");
     setPassword("");
   };
 
-  async function createUserWithEmailAndPassword() {
+  async function createUser(email, password, name) {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(async (value) => {
-        let name = value.user.email.split("@");
+        let uid = value.user.uid;
+
         await firebase
           .firestore()
           .collection("users")
-          .doc(value.user.uid)
+          .doc(uid)
           .set({
-            name: name[0],
-            photo: name[0][0],
-            email: value.user.email,
-            uid: value.user.uid,
+            name: name,
+            photo: null,
           })
-          .then(console.log("cadastrado com sucesso."));
-      })
-      .catch((error) => {
-        setFirstTry(false);
-        displayConfirmationMessage(error.message);
+          .then(() => {
+            let data = {
+              uid: uid,
+              name: name,
+              email: value.user.email,
+              photo: null,
+            };
+
+            setLoggedUser(data);
+            storageUser(data);
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.log("erro ao criar cadastro", error);
+            setIsLoading(false);
+          });
       });
   }
 
@@ -130,7 +163,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
       });
   }
 
-  const didProvideAuthentication = (event) => {
+  /*const didProvideAuthentication = (event) => {
     event.preventDefault();
     var credential = firebase.auth.EmailAuthProvider.credential(
       email,
@@ -152,7 +185,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
         displayConfirmationMessage(error.message);
         console.log("Error upgrading anonymous account", error);
       });
-  }
+  }*/
 
   useEffect(() => {
     if (signInMethod) {
@@ -170,6 +203,19 @@ const LoginPopUp = observer(({ signInMethod }) => {
     <div className="login-popup">
       {!isLoading ? (
         <form>
+          {showSignIn && (
+            <div>
+              <label for="Name">Name: </label>
+              <input
+                className="modal-input"
+                id="Name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></input>
+              <br />
+            </div>
+          )}
           <label for="Email">Email: </label>
           <input
             className="modal-input"
@@ -202,11 +248,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
                 <button
                   type="submit"
                   className="modal-input-button"
-                  onClick={
-                    loggedUser.isAnonymous
-                      ? didProvideAuthentication
-                      : userDidSignIn
-                  }
+                  onClick={userDidSignIn}
                 >
                   Sign In
                 </button>
@@ -224,7 +266,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
                 </button>
               </div>
               <hr />
-              <p className="login-popup-options">Does not have an account?</p>
+              <p className="login-popup-options">Do not have an account?</p>
               <div className="other-login-options">
                 <Barbutton onClick={displaySignIn}>Sign In</Barbutton>
                 <Barbutton onClick={didLoginAnonymously}>Anonymous</Barbutton>
