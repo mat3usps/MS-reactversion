@@ -7,10 +7,11 @@ import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const LoginPopUp = observer(({ signInMethod }) => {
-  const { loggedUser, setLoggedUser } = useUserStoreContext();
+  const { loggedUser, setLoggedUser, storageUser } = useUserStoreContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showSignIn, setShowSignIn] = useState(false);
@@ -62,16 +63,10 @@ const LoginPopUp = observer(({ signInMethod }) => {
     }
   };
 
-  function storageUser(object) {
-    localStorage.setItem("loggedUser", JSON.stringify(object));
-  }
-
   const userDidLogin = (event) => {
     event.preventDefault();
     setIsLoading(true);
     signIn(email, password);
-    setEmail("");
-    setPassword("");
   };
 
   async function signIn() {
@@ -90,6 +85,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
         let data = {
           uid: uid,
           name: userProfile.data().name,
+          surname: userProfile.data().surname,
           photo: userProfile.data().photo,
           email: value.user.email,
         };
@@ -107,12 +103,10 @@ const LoginPopUp = observer(({ signInMethod }) => {
   const userDidSignIn = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    createUser(email, password, name);
-    setEmail("");
-    setPassword("");
+    createUser(email, password, name, surname);
   };
 
-  async function createUser(email, password, name) {
+  async function createUser(email, password, name, surname) {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -125,12 +119,14 @@ const LoginPopUp = observer(({ signInMethod }) => {
           .doc(uid)
           .set({
             name: name,
+            surname: surname,
             photo: null,
           })
           .then(() => {
             let data = {
               uid: uid,
               name: name,
+              surname: surname,
               email: value.user.email,
               photo: null,
             };
@@ -205,23 +201,43 @@ const LoginPopUp = observer(({ signInMethod }) => {
         <form>
           {showSignIn && (
             <div>
-              <label for="Name">Name: </label>
-              <input
-                className="modal-input"
-                id="Name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></input>
-              <br />
+              <div className="name-input-group">
+                <label for="Name" className="nodisplay">
+                  Name:
+                </label>
+                <input
+                  className="modal-input"
+                  id="Name"
+                  type="text"
+                  value={name}
+                  placeholder="Name"
+                  onChange={(e) => setName(e.target.value)}
+                ></input>
+              </div>
+              <div className="name-input-group">
+                <label for="Surname" className="nodisplay">
+                  Surname:
+                </label>
+                <input
+                  className="modal-input"
+                  id="Surname"
+                  type="text"
+                  value={surname}
+                  placeholder="Surname"
+                  onChange={(e) => setSurname(e.target.value)}
+                ></input>
+              </div>
             </div>
           )}
-          <label for="Email">Email: </label>
+          <label for="Email" className="nodisplay">
+            Email:{" "}
+          </label>
           <input
             className="modal-input"
             value={email}
             id="Email"
             type="text"
+            placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             onFocus={showSignIn && emailValidation}
           />
@@ -229,11 +245,14 @@ const LoginPopUp = observer(({ signInMethod }) => {
             This is not a valid email.
           </p>
           <br />
-          <label for="Password">Password: </label>
+          <label for="Password" className="nodisplay">
+            Password:{" "}
+          </label>
           <input
             className="modal-input"
             id="Password"
             type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onFocus={showSignIn && passwordValidation}

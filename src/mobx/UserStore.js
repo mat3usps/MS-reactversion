@@ -17,6 +17,10 @@ class UserStore {
     this.loggedUser = user;
   };
 
+  storageUser = (object) => {
+    localStorage.setItem("loggedUser", JSON.stringify(object));
+  };
+
   async checkLogin() {
     const storageUser = localStorage.getItem("loggedUser");
 

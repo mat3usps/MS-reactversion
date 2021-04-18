@@ -87,12 +87,14 @@ body {
 }
 
 .profile-manager {
-  width: 400px;
+  width: 700px;
+  position: relative;
   height: fit-content;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   margin: 10px;
-  z-index: 10;
 }
 
 .label-avatar {
@@ -132,10 +134,106 @@ body {
   font-size: 1.4em;
 }
 
-.input-group {
+.name-input-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 50%;
+  padding: 0;
+  margin: 0;
+}
+
+.profile-input-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.CEP {
+  width: 230px;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
+  margin-bottom: 30px;
+}
+
+.CEP p {
+  color: rgb(170, 35, 11);
+  position: absolute;
+  margin-top: 70px;
+  padding: 0;
+}
+
+.CEP input {
+  margin: 5px;
+  border-radius: 7px;
+  width: 120px;
+}
+
+.CEP div {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cepError {
+  display: block;
+}
+
+.profile-secondary-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+}
+
+.profile-secondary-info input {
+  margin: 5px;
+  display: inline-block;
+  border-radius: 7px;
+}
+
+.profile-secondary-info form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.street {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.adress-number {
+  width: 20%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.neighborhood {
+  width: 40%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.city {
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.state {
+  width: 50%;
+  display: flex;
+  align-items: center;
 }
 
 .error {
@@ -473,7 +571,7 @@ div[class*="box"] {
 }
 
 .input-error {
-  color: tomato;
+  color: rgb(170, 35, 11);
   margin-top: 0;
   margin-bottom: 0px;
 }
@@ -981,9 +1079,9 @@ img[alt="Visual explanation of a HTML tag"] {
 
 .modal-input {
   width: 100%;
-  margin: 5px;
+  margin: 5px 1px 5px;
   opacity: 0.7;
-  border-radius: 7px;
+  border-radius: 7px 7px 7px 7px;
 }
 
 .modal-input:focus {
