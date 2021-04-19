@@ -1,6 +1,4 @@
 import { makeObservable, observable, action } from "mobx";
-import firebase from "../components/firebaseConnection";
-import "firebase/auth";
 
 class UserStore {
   loggedUser = null;

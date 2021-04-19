@@ -7,7 +7,7 @@ import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const LoginPopUp = observer(({ signInMethod }) => {
-  const { loggedUser, setLoggedUser, storageUser } = useUserStoreContext();
+  const { setLoggedUser, storageUser } = useUserStoreContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
@@ -95,7 +95,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log("erro ao logar", error);
+        displayConfirmationMessage(error.message);
         setIsLoading(false);
       });
   }
@@ -103,6 +103,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
   const userDidSignIn = (event) => {
     event.preventDefault();
     setIsLoading(true);
+    setFirstTry(false);
     createUser(email, password, name, surname);
   };
 

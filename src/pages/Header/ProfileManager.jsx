@@ -139,24 +139,25 @@ const ProfileManager = observer(() => {
     }
   }
 
-  const shouldLoad = (value) => {
-    setIsLoading(value);
-  };
-
-  {
-    if (isLoading) {
-      return (
-        <div className="profile-manager">
-          <LoadingSVG />
-        </div>
-      );
-    }
+  if (isLoading) {
+    return (
+      <div className="profile-manager">
+        <LoadingSVG />
+      </div>
+    );
   }
 
   return (
     <div className="profile-manager">
       {!displaySecondaryInfo ? (
         <div>
+          <button
+            className="modal-input-button"
+            type="button"
+            onClick={(e) => setSecondaryInfo(true)}
+          >
+            More Info
+          </button>
           <form className="form-profile" onSubmit={handleSave}>
             <label className="label-avatar">
               <input type="file" accept="image/*" onChange={handleFile} />
@@ -227,7 +228,14 @@ const ProfileManager = observer(() => {
         </div>
       ) : (
         <div>
-          <SecondaryInfo isLoading={shouldLoad} />
+          <button
+            className="modal-input-button"
+            type="button"
+            onClick={(e) => setSecondaryInfo(false)}
+          >
+            Main Info
+          </button>
+          <SecondaryInfo />
         </div>
       )}
     </div>

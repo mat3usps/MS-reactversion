@@ -162,9 +162,8 @@ body {
 }
 
 .CEP p {
-  color: rgb(170, 35, 11);
   position: absolute;
-  margin-top: 70px;
+  margin-top: 75px;
   padding: 0;
 }
 
@@ -196,6 +195,11 @@ body {
   margin: 5px;
   display: inline-block;
   border-radius: 7px;
+  opacity: 0.5;
+}
+
+.profile-secondary-info input:focus {
+  opacity: 1;
 }
 
 .profile-secondary-info form {

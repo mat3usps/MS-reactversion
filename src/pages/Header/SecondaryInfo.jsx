@@ -4,12 +4,12 @@ import firebase from "../../components/firebaseConnection";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
-const SecondaryInfo = observer(({ IsLoading }) => {
+const SecondaryInfo = observer(() => {
   const { loggedUser, setLoggedUser, storageUser } = useUserStoreContext();
 
   const [cep, setCEP] = useState(loggedUser && loggedUser.cep);
   const [firstTry, setFirstTry] = useState(true);
-  const [cepValidation, setCEPValidation] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   const [state, setState] = useState(loggedUser && loggedUser.state);
   const [city, setCity] = useState(loggedUser && loggedUser.city);
@@ -51,23 +51,10 @@ const SecondaryInfo = observer(({ IsLoading }) => {
       });
   };
 
-  const cepValidating = (cep) => {
-    if (cep !== null && !firstTry) {
-      const pattern = /^\d{8}$/;
-      const valid = pattern.test(cep);
-
-      if (valid) {
-        setCEPValidation("");
-      } else {
-        setCEPValidation("Use 8 numbers only.");
-      }
-    }
-  };
-
   const numberFormatting = (number) => {
     if (number) {
       const rawNumber = number;
-      const noHyphenNumber = rawNumber.replace(/\-/g, "");
+      const noHyphenNumber = rawNumber.replace(/-/g, "");
 
       const isCelphone = noHyphenNumber.length === 9;
       let formattedNumber;
@@ -127,6 +114,10 @@ const SecondaryInfo = observer(({ IsLoading }) => {
 
         setLoggedUser(data);
         storageUser(data);
+        setAlertMessage("Successfully updated.");
+        setInterval(() => {
+          setAlertMessage("");
+        }, [3000]);
       })
       .catch((error) => {
         console.log(error);
@@ -139,8 +130,20 @@ const SecondaryInfo = observer(({ IsLoading }) => {
   };
 
   useEffect(() => {
+    const cepValidating = (cep) => {
+      if (cep !== null && !firstTry) {
+        const pattern = /^\d{8}$/;
+        const valid = pattern.test(cep);
+
+        if (valid) {
+          setAlertMessage("");
+        } else {
+          setAlertMessage("Use 8 numbers only.");
+        }
+      }
+    };
     cepValidating(cep);
-  }, [cep]);
+  }, [cep, firstTry]);
 
   return (
     <div className="profile-secondary-info">
@@ -165,7 +168,7 @@ const SecondaryInfo = observer(({ IsLoading }) => {
             </button>
           </div>
 
-          <p>{cepValidation}</p>
+          <p>{alertMessage}</p>
         </div>
 
         <div className="profile-input-group">
