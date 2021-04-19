@@ -91,7 +91,7 @@ function Games() {
 
   return (
     <div>
-      <div className="allgames column">
+      <div className="games column">
         {games.map(({ name, icon, path }) => (
           <GameCard icon={icon} path={path} key={name}>
             {name}

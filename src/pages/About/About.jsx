@@ -19,7 +19,7 @@ function About() {
   }, [buttons]);
 
   return (
-    <div className="abouttext">
+    <div className="about">
       <p>
         You probably know my name, but certainly you know very little (maybe
         nothing) of my{" "}

@@ -1,10 +1,10 @@
-function SVG() {
+function SVG({ width, height, viewBox }) {
   return (
     <div id="SVG" className="animated-svg glow-on-hover">
       <svg
-        width="300"
-        height="300"
-        viewBox="0 105 200 200"
+        width={width ? width : "300"}
+        height={height ? height : "300"}
+        viewBox={viewBox ? viewBox : "0 105 200 200"}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
       >

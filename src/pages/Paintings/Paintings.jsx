@@ -36,10 +36,8 @@ function Paintings() {
 
   let currentPainting = paintings[paintingIndex];
 
-  console.log("current", currentPainting);
-
   return (
-    <div>
+    <div className="paintings">
       {paintings.length !== 0 && (
         <Painting
           superiorAction={superiorPainting}

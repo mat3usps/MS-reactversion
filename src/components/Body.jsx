@@ -16,14 +16,37 @@ import Error404 from "./Error404";
 const Body = ({ appRoutes }) => {
   const location = useLocation();
 
+  let widthSVG = "300";
+  let heightSVG = "300";
+  let viewBoxSVG = "0 105 200 200";
+
+  let query = window.matchMedia("(max-width: 507px)");
+
+  if (query.matches) {
+    widthSVG = "140";
+    heightSVG = "140";
+    viewBoxSVG = "0 105 200 200";
+  }
+
   function changeBackground() {
     let key = 3;
+    let responsiveness = 1;
+
+    if (query.matches) {
+      responsiveness = 5;
+    }
+
     if (key === 0) {
       key = 0;
       document.body.style.setProperty("color", "white");
       document.body.style.setProperty("background-color", "rgb(214, 158, 5)");
     }
-    const num = Math.ceil(Math.random() * key);
+
+    if (query.matches && key === 0) {
+      num = 7;
+    }
+
+    const num = responsiveness * Math.ceil(Math.random() * key);
 
     function setBackgroundPosition(position) {
       document.body.style.setProperty("background-position", position);
@@ -34,17 +57,23 @@ const Body = ({ appRoutes }) => {
       elem.style.left = position;
     }
 
-    document.body.background = "./assets/files/" + num + ".jpg";
-    if (["/paintings", "/"].includes(location.pathname)) {
+    if (query.matches) {
       setBackgroundPosition("center");
-      setSVGPosition("51%");
-    } else if (location.pathname === "/musings") {
-      setBackgroundPosition("right");
-      setSVGPosition("38.5%");
+      setSVGPosition("50%");
     } else {
-      setBackgroundPosition("left");
-      setSVGPosition("65%");
+      if (["/paintings", "/"].includes(location.pathname)) {
+        setBackgroundPosition("center");
+        setSVGPosition("51%");
+      } else if (location.pathname === "/musings") {
+        setBackgroundPosition("right");
+        setSVGPosition("38.5%");
+      } else {
+        setBackgroundPosition("left");
+        setSVGPosition("65%");
+      }
     }
+
+    document.body.background = "./assets/files/" + num + ".jpg";
   }
 
   useEffect(changeBackground, [location]);
@@ -83,7 +112,7 @@ const Body = ({ appRoutes }) => {
       </div>
       <div className="loader-wrapper">
         <Link to="/">
-          <SVG></SVG>
+          <SVG width={widthSVG} height={heightSVG} viewBox={viewBoxSVG}></SVG>
         </Link>
       </div>
     </div>
