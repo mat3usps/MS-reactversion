@@ -27,9 +27,7 @@ const Body = ({ appRoutes }) => {
     widthSVG = "140";
     heightSVG = "140";
     viewBoxSVG = "0 105 200 200";
-  }
-
-  if (query2.matches) {
+  } else if (query2.matches) {
     widthSVG = "200";
     heightSVG = "200";
     viewBoxSVG = "0 105 200 200";

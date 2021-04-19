@@ -46,7 +46,6 @@ function Paintings() {
           price={currentPainting.price.toFixed(2)}
           image={currentPainting.image}
           titleEgg={currentPainting.photo}
-          priceAction={""}
           largeImage={currentPainting.largeImage}
         >
           {currentPainting.name}

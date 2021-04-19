@@ -1187,6 +1187,14 @@ img[alt="Visual explanation of a HTML tag"] {
     transform: translate(-50%, -50%);
   }
 
+  .profile-manager {
+    width: 100%;
+    left: -2%;
+  }
+  .profile-secondary-info {
+    width: 350px;
+  }
+
   .about {
     width: 65%;
     left: 17.5%;
@@ -1264,6 +1272,17 @@ img[alt="Visual explanation of a HTML tag"] {
     width: 25vw;
   }
 
+  .profile-manager {
+    width: 100%;
+    position: relative;
+    height: fit-content;
+    margin: 10px;
+  }
+  .profile-secondary-info {
+    width: 350px;
+    left: -2%;
+  }
+
   .animated-svg {
     width: 150px;
     height: 100px;
@@ -1316,8 +1335,7 @@ img[alt="Visual explanation of a HTML tag"] {
     width: 100%;
     height: 30%;
     top: 25vh;
-    left: 4vw;
-    margin-bottom: -100px;
+    left: 10%;
   }
   .frame {
     display: flex;
@@ -1332,7 +1350,7 @@ img[alt="Visual explanation of a HTML tag"] {
     height: 120px;
   }
   .frameInfo {
-    position: fixed;
+    position: right;
     left: 50%;
     top: 20vh;
     display: flex;

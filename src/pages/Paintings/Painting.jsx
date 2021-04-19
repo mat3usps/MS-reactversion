@@ -33,8 +33,6 @@ function Painting({
     };
   }, [varZoomer, image]);
 
-  console.log(image);
-
   return (
     <div className="painting">
       <div className="frame">
