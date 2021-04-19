@@ -1178,8 +1178,82 @@ img[alt="Visual explanation of a HTML tag"] {
   .btn-sp {
     width: 10rem;
   }
+  .animated-svg {
+    width: 210px;
+    height: 140px;
+    border-radius: 70px;
+    top: 92%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .about {
+    width: 65%;
+    left: 17.5%;
+    height: 20%;
+    top: 27%;
+  }
+  .contactButtonIcon {
+    height: 3rem;
+  }
+  .about p:first-child {
+    font-size: 1rem;
+  }
+  .about p {
+    font-size: 1rem;
+  }
+
+  .coding {
+    width: 100%;
+    height: 25vh;
+  }
+
+  .games {
+    width: 100%;
+    height: 20vh;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .separator {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    width: 250px;
+  }
+
   .musings {
-    left: 35%;
+    width: 70%;
+    left: 12%;
+    height: 35%;
+    top: 22vh;
+  }
+
+  .painting {
+    width: 100%;
+    height: 30%;
+    top: 27vh;
+  }
+  .frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    height: 250px;
+    justify-content: center;
+    position: left;
+  }
+  .paintingImage {
+    height: 120px;
+  }
+  .frameInfo {
+    position: right;
+    left: 50%;
+    top: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 150px;
+    height: 250px;
+    overflow-y: scroll;
   }
 }
 @media (max-width: 507px) {
@@ -1187,13 +1261,12 @@ img[alt="Visual explanation of a HTML tag"] {
     font-size: 75%;
   }
   .btn-sp {
-    width: 7rem;
+    width: 25vw;
   }
 
   .animated-svg {
     width: 150px;
     height: 100px;
-    background-color: rgb(0, 0, 0);
     border-radius: 50px;
     top: 95%;
     left: 50%;
@@ -1265,7 +1338,7 @@ img[alt="Visual explanation of a HTML tag"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     width: 150px;
     height: 250px;
     overflow-y: scroll;

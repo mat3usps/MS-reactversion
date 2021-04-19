@@ -20,11 +20,18 @@ const Body = ({ appRoutes }) => {
   let heightSVG = "300";
   let viewBoxSVG = "0 105 200 200";
 
-  let query = window.matchMedia("(max-width: 507px)");
+  let query1 = window.matchMedia("(max-width: 507px)");
+  let query2 = window.matchMedia("(max-width: 767px)");
 
-  if (query.matches) {
+  if (query1.matches) {
     widthSVG = "140";
     heightSVG = "140";
+    viewBoxSVG = "0 105 200 200";
+  }
+
+  if (query2.matches) {
+    widthSVG = "200";
+    heightSVG = "200";
     viewBoxSVG = "0 105 200 200";
   }
 
@@ -32,7 +39,7 @@ const Body = ({ appRoutes }) => {
     let key = 3;
     let responsiveness = 1;
 
-    if (query.matches) {
+    if (query1.matches) {
       responsiveness = 5;
     }
 
@@ -42,11 +49,11 @@ const Body = ({ appRoutes }) => {
       document.body.style.setProperty("background-color", "rgb(214, 158, 5)");
     }
 
-    if (query.matches && key === 0) {
+    let num = responsiveness * Math.ceil(Math.random() * key);
+
+    if (query1.matches && key === 0) {
       num = 7;
     }
-
-    const num = responsiveness * Math.ceil(Math.random() * key);
 
     function setBackgroundPosition(position) {
       document.body.style.setProperty("background-position", position);
@@ -57,7 +64,7 @@ const Body = ({ appRoutes }) => {
       elem.style.left = position;
     }
 
-    if (query.matches) {
+    if (query1.matches) {
       setBackgroundPosition("center");
       setSVGPosition("50%");
     } else {
@@ -76,7 +83,7 @@ const Body = ({ appRoutes }) => {
     document.body.background = "./assets/files/" + num + ".jpg";
   }
 
-  useEffect(changeBackground, [location]);
+  useEffect(changeBackground, [location, query1.matches, query2.matches]);
 
   const renderMenuComponent = (title) => {
     if (title === "Home") {
