@@ -236,6 +236,18 @@ body {
   align-items: center;
 }
 
+.contactDDD {
+  width: 13%;
+  display: flex;
+  align-items: center;
+}
+
+.contactNumber {
+  width: 42%;
+  display: flex;
+  align-items: center;
+}
+
 .error {
   margin: 3rem;
   color: #ffffff;

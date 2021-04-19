@@ -24,6 +24,9 @@ const SecondaryInfo = observer(({ IsLoading }) => {
   const [contactNumber, setContactNumber] = useState(
     loggedUser && loggedUser.contactNumber
   );
+  const [contactDDD, setContactDDD] = useState(
+    loggedUser && loggedUser.contactDDD
+  );
 
   const searchCEP = (event) => {
     event.preventDefault();
@@ -61,6 +64,34 @@ const SecondaryInfo = observer(({ IsLoading }) => {
     }
   };
 
+  const numberFormatting = (number) => {
+    if (number) {
+      const rawNumber = number;
+      const noHyphenNumber = rawNumber.replace(/\-/g, "");
+
+      const isCelphone = noHyphenNumber.length === 9;
+      let formattedNumber;
+
+      if (isCelphone) {
+        const part1 = noHyphenNumber.slice(0, 1);
+        const part2 = noHyphenNumber.slice(1, 5);
+        const part3 = noHyphenNumber.slice(5, 9);
+        formattedNumber = `${part1} ${part2}-${part3}`;
+      } else {
+        const part1 = noHyphenNumber.slice(0, 4);
+        const part2 = noHyphenNumber.slice(4, 8);
+        formattedNumber = `${part1}-${part2}`;
+      }
+
+      setContactNumber(formattedNumber);
+    }
+  };
+
+  const dddFormatting = (ddd) => {
+    const formattedDDD = `(${ddd})`;
+    setContactDDD(formattedDDD);
+  };
+
   async function updateProfile(
     cep,
     street,
@@ -90,14 +121,14 @@ const SecondaryInfo = observer(({ IsLoading }) => {
           neighborhood: neighborhood,
           city: city,
           state: state,
+          cantactDDD: contactDDD,
+          contactNumber: contactNumber,
         };
 
-        IsLoading(false);
         setLoggedUser(data);
         storageUser(data);
       })
       .catch((error) => {
-        IsLoading(false);
         console.log(error);
       });
   }
@@ -120,7 +151,7 @@ const SecondaryInfo = observer(({ IsLoading }) => {
             <input
               value={cep}
               id="CEP"
-              type="number"
+              type="text"
               placeholder={loggedUser.cep}
               maxLength="9"
               onChange={(e) => setCEP(e.target.value)}
@@ -155,7 +186,7 @@ const SecondaryInfo = observer(({ IsLoading }) => {
             className="adress-number"
             value={adressNumber}
             id="adressNumber"
-            type="number"
+            type="text"
             maxLength="5"
             placeholder={loggedUser.adressNumber}
             onChange={(e) => setAdressNumber(e.target.value)}
@@ -197,14 +228,26 @@ const SecondaryInfo = observer(({ IsLoading }) => {
         <br />
 
         <div className="profile-input-group">
-          <label for="contactNumber">Contact: </label>
+          <label for="contactNumber">Contact Number: </label>
+          <input
+            className="contactDDD"
+            value={contactDDD}
+            id="contactDDD"
+            type="text"
+            maxLength="2"
+            placeholder={loggedUser.contactDDD}
+            onChange={(e) => setContactDDD(e.target.value)}
+            onBlur={() => dddFormatting(contactDDD)}
+          />
           <input
             className="contactNumber"
             value={contactNumber}
             id="contactNumber"
-            type="number"
+            type="text"
+            maxLength="9"
             placeholder={loggedUser.contactNumber}
             onChange={(e) => setContactNumber(e.target.value)}
+            onBlur={() => numberFormatting(contactNumber)}
           />
         </div>
 
