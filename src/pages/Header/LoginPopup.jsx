@@ -4,16 +4,16 @@ import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const LoginPopUp = observer(({ signInMethod }) => {
-  const { setLoggedUser, storageUser } = useUserStoreContext();
-
   const [isLoading, setIsLoading] = useState(false);
+
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [showSignIn, setShowSignIn] = useState(false);
   const [firstTry, setFirstTry] = useState(true);
   const [confirmationMessage, setConfirmationMessage] = useState("");
@@ -67,31 +67,16 @@ const LoginPopUp = observer(({ signInMethod }) => {
     event.preventDefault();
     setIsLoading(true);
     signIn(email, password);
+    setEmail("");
+    setPassword("");
   };
 
   async function signIn() {
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(async (value) => {
-        let uid = value.user.uid;
-
-        const userProfile = await firebase
-          .firestore()
-          .collection("users")
-          .doc(uid)
-          .get();
-
-        let data = {
-          uid: uid,
-          name: userProfile.data().name,
-          surname: userProfile.data().surname,
-          photo: userProfile.data().photo,
-          email: value.user.email,
-        };
-
-        setLoggedUser(data);
-        storageUser(data);
+      .then(() => {
+        console.log("User, did login.");
         setIsLoading(false);
       })
       .catch((error) => {
@@ -100,89 +85,67 @@ const LoginPopUp = observer(({ signInMethod }) => {
       });
   }
 
-  const userDidSignIn = (event) => {
+  const userDidAuthenticate = (event) => {
     event.preventDefault();
     setIsLoading(true);
     setFirstTry(false);
-    createUser(email, password, name, surname);
+    authenticateUser(email, password, name, surname);
   };
 
-  async function createUser(email, password, name, surname) {
-    await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(async (value) => {
-        let uid = value.user.uid;
-
-        await firebase
-          .firestore()
-          .collection("users")
-          .doc(uid)
-          .set({
-            name: name,
-            surname: surname,
-            photo: null,
-          })
-          .then(() => {
-            let data = {
-              uid: uid,
-              name: name,
-              surname: surname,
-              email: value.user.email,
-              photo: null,
-            };
-
-            setLoggedUser(data);
-            storageUser(data);
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.log("erro ao criar cadastro", error);
-            setIsLoading(false);
-          });
-      });
-  }
-
-  const didLoginAnonymously = () => {
-    loginAnonymously();
-    setIsLoading(true);
-  };
-
-  async function loginAnonymously() {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(() => {
-        console.log("User logged in anonymously successfully");
-      })
-      .catch((error) => {
-        console.log("User didn't log in", error);
-      });
-  }
-
-  /*const didProvideAuthentication = (event) => {
-    event.preventDefault();
-    var credential = firebase.auth.EmailAuthProvider.credential(
+  async function authenticateUser(email, password, name, surname) {
+    const credential = firebase.auth.EmailAuthProvider.credential(
       email,
       password
     );
-    provideAuthentication(credential);
-  };
 
-  async function provideAuthentication(credential) {
-    firebase
+    await firebase
       .auth()
       .currentUser.linkWithCredential(credential)
-      .then((usercred) => {
-        var user = usercred.user;
-        console.log("Anonymous account successfully upgraded", user);
+      .then(async (value) => {
+        let uid = value.user.uid;
+
+        storingNewUser(uid, name, surname);
       })
       .catch((error) => {
+        console.log("Error on linking credentials", error);
+        setIsLoading(false);
         setFirstTry(false);
         displayConfirmationMessage(error.message);
-        console.log("Error upgrading anonymous account", error);
       });
-  }*/
+  }
+
+  async function storingNewUser(uid, name, surname) {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(uid)
+      .set({
+        name: name,
+        surname: surname,
+        photo: null,
+      })
+      .then(() => {
+        setIsLoading(false);
+
+        sendEmailVerification();
+      })
+      .catch((error) => {
+        console.log("Error on setting new user", error);
+        setIsLoading(false);
+      });
+  }
+
+  async function sendEmailVerification() {
+    const user = await firebase.auth().currentUser;
+    user
+      .sendEmailVerification()
+      .then(() => {
+        console.log("Email verification sent successfully.");
+      })
+      .catch((error) => {
+        console.log("Error, email verification not sent.", error);
+      });
+  }
 
   useEffect(() => {
     if (signInMethod) {
@@ -268,7 +231,7 @@ const LoginPopUp = observer(({ signInMethod }) => {
                 <button
                   type="submit"
                   className="modal-input-button"
-                  onClick={userDidSignIn}
+                  onClick={userDidAuthenticate}
                 >
                   Sign In
                 </button>
@@ -289,7 +252,6 @@ const LoginPopUp = observer(({ signInMethod }) => {
               <p className="login-popup-options">Do not have an account?</p>
               <div className="other-login-options">
                 <Barbutton onClick={displaySignIn}>Sign In</Barbutton>
-                <Barbutton onClick={didLoginAnonymously}>Anonymous</Barbutton>
               </div>
             </div>
           )}

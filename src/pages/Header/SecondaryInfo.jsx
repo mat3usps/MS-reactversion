@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const SecondaryInfo = observer(() => {
-  const { loggedUser, setLoggedUser, storageUser } = useUserStoreContext();
+  const { loggedUser } = useUserStoreContext();
 
   const [cep, setCEP] = useState(loggedUser && loggedUser.cep);
   const [firstTry, setFirstTry] = useState(true);
@@ -47,7 +47,7 @@ const SecondaryInfo = observer(() => {
         setStreet(data.data.street);
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error on getting API data.", error);
       });
   };
 
@@ -85,7 +85,9 @@ const SecondaryInfo = observer(() => {
     adressNumber,
     neighborhood,
     city,
-    state
+    state,
+    contactDDD,
+    contactNumber
   ) {
     await firebase
       .firestore()
@@ -98,35 +100,32 @@ const SecondaryInfo = observer(() => {
         neighborhood: neighborhood,
         city: city,
         state: state,
+        contactDDD: contactDDD,
+        contactNumber: contactNumber,
       })
       .then(() => {
-        let data = {
-          ...loggedUser,
-          cep: cep,
-          street: street,
-          adressNumber: adressNumber,
-          neighborhood: neighborhood,
-          city: city,
-          state: state,
-          cantactDDD: contactDDD,
-          contactNumber: contactNumber,
-        };
-
-        setLoggedUser(data);
-        storageUser(data);
         setAlertMessage("Successfully updated.");
         setInterval(() => {
           setAlertMessage("");
         }, [3000]);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error on updating profile info.", error);
       });
   }
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    updateProfile(cep, street, adressNumber, neighborhood, city, state);
+    updateProfile(
+      cep,
+      street,
+      adressNumber,
+      neighborhood,
+      city,
+      state,
+      contactDDD,
+      contactNumber
+    );
   };
 
   useEffect(() => {
@@ -138,7 +137,7 @@ const SecondaryInfo = observer(() => {
         if (valid) {
           setAlertMessage("");
         } else {
-          setAlertMessage("Use 8 numbers only.");
+          setAlertMessage("Use numbers only.");
         }
       }
     };

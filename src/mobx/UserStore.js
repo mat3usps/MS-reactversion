@@ -1,4 +1,6 @@
 import { makeObservable, observable, action } from "mobx";
+import firebase from "../components/firebaseConnection";
+import "firebase/auth";
 
 class UserStore {
   loggedUser = null;
@@ -15,16 +17,38 @@ class UserStore {
     this.loggedUser = user;
   };
 
-  storageUser = (object) => {
-    localStorage.setItem("loggedUser", JSON.stringify(object));
-  };
-
   async checkLogin() {
-    const storageUser = localStorage.getItem("loggedUser");
+    firebase.auth().onAuthStateChanged(async (value) => {
+      let user = value;
+      if (value) {
+        try {
+          const snapshot = await firebase
+            .firestore()
+            .collection("users")
+            .doc(value.uid)
+            .get();
+          user = {
+            ...value,
+            ...snapshot.data(),
+          };
+        } catch (error) {
+          console.error("onAuthStateChanged", error);
+        }
 
-    if (storageUser) {
-      this.setLoggedUser(JSON.parse(storageUser));
-    }
+        this.setLoggedUser(user);
+      } else {
+        try {
+          const anonymous = await firebase.auth().signInAnonymously();
+          user = {
+            ...anonymous.data(),
+          };
+        } catch (error) {
+          console.log("Anonymous user didn't log in", error);
+        }
+      }
+
+      this.setLoggedUser(user);
+    });
   }
 }
 

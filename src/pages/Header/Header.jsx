@@ -10,16 +10,14 @@ import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const Header = observer(() => {
-  const { loggedUser, setLoggedUser } = useUserStoreContext();
+  const { loggedUser } = useUserStoreContext();
+
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
   const [headerProfileOptions, setHeaderProfileOptions] = useState(false);
-  const [anonymousAuthentication, setAnonymousAuthentication] = useState(false);
 
   const didLogout = () => {
     firebase.auth().signOut();
-    localStorage.removeItem("loggedUser");
-    setLoggedUser(null);
   };
 
   const didCloseLoginPopup = () => {
@@ -53,13 +51,19 @@ const Header = observer(() => {
     setprofileManager(false);
   };
 
-  const provideAuthentication = () => {
-    setAnonymousAuthentication(true);
-  };
+  async function sendEmailVerification() {
+    const user = await firebase.auth().currentUser;
+    user
+      .sendEmailVerification()
+      .then(() => {
+        console.log("Email verification sent successfully.");
+      })
+      .catch((error) => {
+        console.log("Error, email verification not sent.", error);
+      });
+  }
 
-  const didCloseAnonymousAuthentication = () => {
-    setAnonymousAuthentication(false);
-  };
+  const anonymous = loggedUser ? loggedUser.isAnonymous : "";
 
   return (
     <header className="header">
@@ -67,33 +71,35 @@ const Header = observer(() => {
       <div>
         <h4>
           Welcome
-          {loggedUser && loggedUser !== undefined
+          {loggedUser && loggedUser.name !== undefined
             ? `, ${loggedUser.name}!`
             : ""}
         </h4>
       </div>
       <div className="header-login-state">
-        {loggedUser ? (
+        {!anonymous ? (
           <div className="header-login-state-button">
-            {loggedUser.isAnonymous && (
-              <BarButton onClick={provideAuthentication}>Sign In</BarButton>
-            )}
             <button
               className="header-profile-button btn-three"
               onClick={displayHiddenDiv}
             >
-              {loggedUser.photo === null ? (
-                <img src={avatar} alt="User's" />
-              ) : (
-                <img src={loggedUser.photo} alt="User's" />
-              )}
+              {loggedUser &&
+                (loggedUser.photo === null ? (
+                  <img src={avatar} alt="User's" />
+                ) : (
+                  <img src={loggedUser.photo} alt="User's" />
+                ))}
             </button>
             {headerProfileOptions && (
               <div className="header-profile-hidden-div">
-                {!loggedUser.isAnonymous && (
-                  <BarButton onClick={displayProfileManager}>Profile</BarButton>
-                )}
+                <BarButton onClick={displayProfileManager}>Profile</BarButton>
                 <BarButton onClick={didLogout}>Logout</BarButton>
+                {!loggedUser.emailVerified && (
+                  <BarButton onClick={sendEmailVerification}>
+                    <h6>Verify</h6>
+                    <h6>your email</h6>
+                  </BarButton>
+                )}
               </div>
             )}
           </div>
@@ -117,13 +123,6 @@ const Header = observer(() => {
         contentRelation="scroll"
       >
         <ProfileManager />
-      </Modal>
-      <Modal
-        isOpen={anonymousAuthentication}
-        didClose={didCloseAnonymousAuthentication}
-        contentRelation="fill-content"
-      >
-        <LoginPopup signInMethod={true} />
       </Modal>
     </header>
   );
