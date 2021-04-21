@@ -38,10 +38,7 @@ class UserStore {
         this.setLoggedUser(user);
       } else {
         try {
-          const anonymous = await firebase.auth().signInAnonymously();
-          user = {
-            ...anonymous.data(),
-          };
+          await firebase.auth().signInAnonymously();
         } catch (error) {
           console.log("Anonymous user didn't log in", error);
         }

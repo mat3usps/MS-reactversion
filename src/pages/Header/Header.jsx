@@ -8,8 +8,10 @@ import "firebase/auth";
 import ProfileManager from "./ProfileManager";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
+import SignInPopUp from "./SignInPopup";
+import userStore from "../../mobx/UserStore";
 
-const Header = observer(() => {
+const Header = observer((user) => {
   const { loggedUser } = useUserStoreContext();
 
   const [loginStatus, setLoginStatus] = useState(null);
@@ -19,6 +21,8 @@ const Header = observer(() => {
   const didLogout = () => {
     firebase.auth().signOut();
   };
+
+  console.log("user", loggedUser);
 
   const didCloseLoginPopup = () => {
     setLoginStatus(null);
@@ -79,22 +83,23 @@ const Header = observer(() => {
       <div className="header-login-state">
         {!anonymous ? (
           <div className="header-login-state-button">
-            <button
-              className="header-profile-button btn-three"
-              onClick={displayHiddenDiv}
-            >
-              {loggedUser &&
-                (loggedUser.photo === null ? (
+            {loggedUser && (
+              <button
+                className="header-profile-button btn-three"
+                onClick={displayHiddenDiv}
+              >
+                {loggedUser.photo === null ? (
                   <img src={avatar} alt="User's" />
                 ) : (
                   <img src={loggedUser.photo} alt="User's" />
-                ))}
-            </button>
+                )}
+              </button>
+            )}
             {headerProfileOptions && (
               <div className="header-profile-hidden-div">
                 <BarButton onClick={displayProfileManager}>Profile</BarButton>
                 <BarButton onClick={didLogout}>Logout</BarButton>
-                {!loggedUser.emailVerified && (
+                {loggedUser && !loggedUser.emailVerified && (
                   <BarButton onClick={sendEmailVerification}>
                     <h6>Verify</h6>
                     <h6>your email</h6>
@@ -115,7 +120,11 @@ const Header = observer(() => {
         didClose={didCloseLoginPopup}
         contentRelation="fill-content"
       >
-        <LoginPopup signInMethod={loginStatus === "signin"} />
+        {loginStatus === "signin" ? (
+          <SignInPopUp store={userStore} />
+        ) : (
+          <LoginPopup />
+        )}
       </Modal>
       <Modal
         isOpen={profileManager}
