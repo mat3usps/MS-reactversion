@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Arrow from "../../assets/Utility/arrow.svg";
 import Zoomer from "../../components/Zoomer";
+import BarButton from "../../components/BarButton";
 
 function Painting({
   image,
@@ -11,9 +12,20 @@ function Painting({
   superiorAction,
   inferiorAction,
   titleEgg,
-  priceAction,
+  priceAction1,
+  priceAction2,
 }) {
   const [showingEgg, manipulateEgg] = useState(false);
+  const [displayStoreOptions, setDisplayStoreOptions] = useState(false);
+
+  const handleStoreOptions = () => {
+    if (displayStoreOptions === false) {
+      setDisplayStoreOptions(true);
+    } else {
+      setDisplayStoreOptions(false);
+    }
+  };
+
   const displayTitleEgg = () => {
     if (showingEgg === false) {
       manipulateEgg(true);
@@ -64,9 +76,17 @@ function Painting({
           <img className="painting-egg" src={titleEgg} alt={titleEgg} />
         )}
         <p>{description}</p>
-        <button className="cart-button" type="text" onClick={priceAction}>
-          {"$ " + price}
-        </button>
+        <div>
+          <button className="cart-button" onClick={handleStoreOptions}>
+            {"$ " + price}
+          </button>
+          {displayStoreOptions && (
+            <div className="painting-hidden-div">
+              <BarButton onClick={priceAction1}>Add to cart</BarButton>
+              <BarButton onClick={priceAction2}>Buy now</BarButton>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

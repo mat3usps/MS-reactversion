@@ -28,18 +28,31 @@ const Thumbsup = observer(({ page, title }) => {
       .doc(loggedUser.uid);
 
     if (!liked) {
-      await ref
-        .set({
-          name: loggedUser.name,
-          photo: loggedUser.photo,
-          user: loggedUser.uid,
-        })
-        .then(() => {
-          console.log("Curtida gravada.");
-        })
-        .catch((error) => {
-          console.log("Algo deu errado", error.message);
-        });
+      if (!loggedUser.isAnonymous) {
+        await ref
+          .set({
+            name: loggedUser.name,
+            photo: loggedUser.photo,
+            user: loggedUser.uid,
+          })
+          .then(() => {
+            console.log("Liked successfully.");
+          })
+          .catch((error) => {
+            console.log("Couldn't handle like.", error.message);
+          });
+      } else {
+        await ref
+          .set({
+            user: loggedUser.uid,
+          })
+          .then(() => {
+            console.log("Liked successfully.");
+          })
+          .catch((error) => {
+            console.log("Couldn't handle like.", error.message);
+          });
+      }
     } else {
       await ref
         .delete()

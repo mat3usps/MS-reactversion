@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import avatar from "../../assets/Utility/avatar.png";
+import cart from "../../assets/Utility/cart.svg";
 import Modal from "../../components/Modal";
 import LoginPopup from "./LoginPopup";
 import BarButton from "../../components/BarButton";
@@ -9,10 +10,9 @@ import ProfileManager from "./ProfileManager";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 import SignInPopUp from "./SignInPopup";
-import userStore from "../../mobx/UserStore";
 
-const Header = observer((user) => {
-  const { loggedUser } = useUserStoreContext();
+const Header = observer(() => {
+  const { loggedUser, userCart, sendEmailVerification } = useUserStoreContext();
 
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
@@ -21,8 +21,6 @@ const Header = observer((user) => {
   const didLogout = () => {
     firebase.auth().signOut();
   };
-
-  console.log("user", loggedUser);
 
   const didCloseLoginPopup = () => {
     setLoginStatus(null);
@@ -55,17 +53,7 @@ const Header = observer((user) => {
     setprofileManager(false);
   };
 
-  async function sendEmailVerification() {
-    const user = await firebase.auth().currentUser;
-    user
-      .sendEmailVerification()
-      .then(() => {
-        console.log("Email verification sent successfully.");
-      })
-      .catch((error) => {
-        console.log("Error, email verification not sent.", error);
-      });
-  }
+  const openCart = () => {};
 
   const anonymous = loggedUser ? loggedUser.isAnonymous : "";
 
@@ -83,15 +71,27 @@ const Header = observer((user) => {
       <div className="header-login-state">
         {!anonymous ? (
           <div className="header-login-state-button">
+            {userCart.length !== 0 && (
+              <button
+                type="button"
+                className="header-profile-button btn-three"
+                onClick={openCart}
+              >
+                <span>{userCart.length}</span>
+                <br />
+                <img src={cart} alt="Cart" />
+              </button>
+            )}
             {loggedUser && (
               <button
+                type="button"
                 className="header-profile-button btn-three"
                 onClick={displayHiddenDiv}
               >
-                {loggedUser.photo === null ? (
-                  <img src={avatar} alt="User's" />
-                ) : (
+                {loggedUser.photo ? (
                   <img src={loggedUser.photo} alt="User's" />
+                ) : (
+                  <img src={avatar} alt="User's" />
                 )}
               </button>
             )}
@@ -120,11 +120,7 @@ const Header = observer((user) => {
         didClose={didCloseLoginPopup}
         contentRelation="fill-content"
       >
-        {loginStatus === "signin" ? (
-          <SignInPopUp store={userStore} />
-        ) : (
-          <LoginPopup />
-        )}
+        {loginStatus === "signin" ? <SignInPopUp /> : <LoginPopup />}
       </Modal>
       <Modal
         isOpen={profileManager}

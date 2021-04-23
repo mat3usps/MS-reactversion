@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Barbutton from "../../components/BarButton";
-import firebase from "../../components/firebaseConnection";
-import "firebase/auth";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
 import SignInPopUp from "./SignInPopup";
+import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const LoginPopUp = observer(() => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, isLoading, setIsLoading } = useUserStoreContext();
+
   const [displaySignIn, setDisplaySignIn] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -25,24 +25,13 @@ const LoginPopUp = observer(() => {
   const userDidLogin = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    signIn(email, password);
+    const error = signIn(email, password);
+    if (error) {
+      displayConfirmationMessage(error);
+    }
     setEmail("");
     setPassword("");
   };
-
-  async function signIn() {
-    await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log("User, did login.");
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        displayConfirmationMessage(error.message);
-        setIsLoading(false);
-      });
-  }
 
   return (
     <div>

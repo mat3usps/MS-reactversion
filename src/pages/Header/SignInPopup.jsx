@@ -1,13 +1,10 @@
 import { useState } from "react";
-import firebase from "../../components/firebaseConnection";
-import "firebase/auth";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const SignInPopUp = observer(() => {
-  const { setLoggedUser } = useUserStoreContext();
-  const [isLoading, setIsLoading] = useState(false);
+  const { authenticateUser, isLoading, setIsLoading } = useUserStoreContext();
 
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -60,89 +57,11 @@ const SignInPopUp = observer(() => {
     event.preventDefault();
     setIsLoading(true);
     setFirstTry(false);
-    authenticateUser(email, password, name, surname);
+    const error = authenticateUser(email, password, name, surname);
+    if (error) {
+      displayConfirmationMessage(error);
+    }
   };
-
-  async function authenticateUser(email, password, name, surname) {
-    const credential = firebase.auth.EmailAuthProvider.credential(
-      email,
-      password
-    );
-
-    const auth = firebase.auth();
-
-    auth.currentUser
-      .linkWithCredential(credential)
-      .then(async (value) => {
-        let uid = value.user.uid;
-
-        storingNewUser(uid, name, surname);
-      })
-      .catch((error) => {
-        console.log("Error on linking credentials", error);
-        setIsLoading(false);
-        setFirstTry(false);
-        displayConfirmationMessage(error.message);
-      });
-  }
-
-  async function storingNewUser(uid, name, surname) {
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(uid)
-      .set({
-        name: name,
-        surname: surname,
-        photo: null,
-      })
-      .then(() => {
-        setIsLoading(false);
-
-        sendEmailVerification();
-      })
-      .catch((error) => {
-        console.log("Error on setting new user", error);
-        setIsLoading(false);
-      });
-  }
-
-  async function sendEmailVerification() {
-    const user = await firebase.auth().currentUser;
-    user
-      .sendEmailVerification()
-      .then(() => {
-        console.log("Email verification sent successfully.");
-
-        userRefresh();
-      })
-      .catch((error) => {
-        console.log("Error, email verification not sent.", error);
-      });
-  }
-
-  async function userRefresh() {
-    firebase.auth().onAuthStateChanged(async (value) => {
-      let user = value;
-      if (value) {
-        try {
-          const snapshot = await firebase
-            .firestore()
-            .collection("users")
-            .doc(value.uid)
-            .get();
-          user = {
-            ...value,
-            ...snapshot.data(),
-          };
-        } catch (error) {
-          console.error("onAuthStateChanged", error);
-        }
-
-        setLoggedUser(user);
-      }
-    });
-  }
 
   return (
     <div className="login-popup">

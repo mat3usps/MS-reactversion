@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import firebase from "../../components/firebaseConnection";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const SecondaryInfo = observer(() => {
-  const { loggedUser } = useUserStoreContext();
+  const { loggedUser, updateProfile } = useUserStoreContext();
 
   const [cep, setCEP] = useState(loggedUser && loggedUser.cep);
   const [firstTry, setFirstTry] = useState(true);
@@ -78,41 +77,6 @@ const SecondaryInfo = observer(() => {
     const formattedDDD = `(${ddd})`;
     setContactDDD(formattedDDD);
   };
-
-  async function updateProfile(
-    cep,
-    street,
-    adressNumber,
-    neighborhood,
-    city,
-    state,
-    contactDDD,
-    contactNumber
-  ) {
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(loggedUser.uid)
-      .update({
-        cep: cep,
-        street: street,
-        adressNumber: adressNumber,
-        neighborhood: neighborhood,
-        city: city,
-        state: state,
-        contactDDD: contactDDD,
-        contactNumber: contactNumber,
-      })
-      .then(() => {
-        setAlertMessage("Successfully updated.");
-        setInterval(() => {
-          setAlertMessage("");
-        }, [3000]);
-      })
-      .catch((error) => {
-        console.log("Error on updating profile info.", error);
-      });
-  }
 
   const handleUpdate = (event) => {
     event.preventDefault();

@@ -8,9 +8,14 @@ import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const ProfileManager = observer(() => {
-  const { loggedUser } = useUserStoreContext();
+  const {
+    loggedUser,
+    handlePhotoUpload,
+    handleNameUpdate,
+    userDeleting,
+    isLoading,
+  } = useUserStoreContext();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [displaySecondaryInfo, setSecondaryInfo] = useState(false);
 
   const [nameToUpdate, setNameToUpdate] = useState(
@@ -25,8 +30,6 @@ const ProfileManager = observer(() => {
   const [currentPhoto, setCurrentPhoto] = useState(
     loggedUser && loggedUser.photo
   );
-
-  const fullName = nameToUpdate + surnameToUpdate;
 
   const [passwordUpdate, setPasswordUpdate] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -72,73 +75,11 @@ const ProfileManager = observer(() => {
     }
   };
 
-  async function handlePhotoUpload() {
-    setIsLoading(true);
-    const currentUid = loggedUser.uid;
-    await firebase
-      .storage()
-      .ref(`userPhotos/${currentUid}/${photoToUpdate.name}`)
-      .put(photoToUpdate)
-      .then(async () => {
-        await firebase
-          .storage()
-          .ref(`userPhotos/${currentUid}`)
-          .child(photoToUpdate.name)
-          .getDownloadURL()
-          .then(async (url) => {
-            await firebase
-              .firestore()
-              .collection("users")
-              .doc(loggedUser.uid)
-              .update({
-                photo: url,
-              })
-              .then(() => {
-                setIsLoading(false);
-                console.log("Successfully updated photo URL.");
-              })
-              .catch((error) => {
-                setIsLoading(false);
-                console.log("Error on updating photo URL.", error);
-              });
-          })
-          .catch((error) => {
-            setIsLoading(false);
-            console.log("Error on getting photo URL.", error);
-          });
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.log("Error on storing photo.", error);
-      });
-  }
   const didUploadPhoto = (event) => {
     event.preventDefault();
-    handlePhotoUpload();
+    handlePhotoUpload(photoToUpdate);
   };
 
-  async function handleNameUpdate() {
-    setIsLoading(true);
-
-    if (fullName !== "") {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(loggedUser.uid)
-        .update({
-          name: nameToUpdate,
-          surname: surnameToUpdate,
-        })
-        .then(() => {
-          console.log("Username successfully updated.");
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          console.log("Error on updating username", error);
-        });
-    }
-  }
   const didUpdateName = (event) => {
     event.preventDefault();
     handleNameUpdate();
@@ -158,30 +99,14 @@ const ProfileManager = observer(() => {
         });
     }
   }
+
   const resetPassword = (event) => {
     event.preventDefault();
     passwordReset(passwordUpdate);
   };
 
-  async function userDeleting() {
-    const currentUser = await firebase.auth().currentUser;
-
-    if (currentUser) {
-      currentUser
-        .delete()
-        .then(() => {
-          console.log("User successfully deleted.");
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log("Error, user not deleted", error);
-          setIsLoading(false);
-        });
-    }
-  }
   const deleteAccount = (event) => {
     event.preventDefault();
-    setIsLoading(true);
     userDeleting();
   };
 

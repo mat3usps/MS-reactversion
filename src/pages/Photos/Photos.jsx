@@ -1,11 +1,5 @@
-import Feed from "react-instagram-authless-feed";
-
 const Photos = () => {
-  return (
-    <div className="instagram-feed">
-      <Feed userName="mateusp.s" />
-    </div>
-  );
+  return <div className="instagram-feed"></div>;
 };
 
 export default Photos;
