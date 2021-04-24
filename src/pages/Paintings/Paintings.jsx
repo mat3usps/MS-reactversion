@@ -1,23 +1,16 @@
 import Painting from "./Painting";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Modal from "../../components/Modal";
-import PaintingStore from "./PaintingStore";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 
 const Paintings = observer(() => {
-  const { addToCart } = useUserStoreContext();
+  const { addToCart, setStore } = useUserStoreContext();
 
   const [paintings, setPaintings] = useState([]);
-  const [paintingStore, setPaintingStore] = useState(false);
 
   const buyNow = () => {
-    setPaintingStore(true);
-  };
-
-  const didClosePaintingStore = () => {
-    setPaintingStore(false);
+    setStore(true);
   };
 
   useEffect(() => {
@@ -68,13 +61,6 @@ const Paintings = observer(() => {
           {currentPainting.name}
         </Painting>
       )}
-      <Modal
-        isOpen={paintingStore}
-        didClose={didClosePaintingStore}
-        contentRelation="fill-content"
-      >
-        <PaintingStore />
-      </Modal>
     </div>
   );
 });

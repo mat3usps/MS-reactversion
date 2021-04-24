@@ -10,9 +10,16 @@ import ProfileManager from "./ProfileManager";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
 import SignInPopUp from "./SignInPopup";
+import Store from "./Store";
 
 const Header = observer(() => {
-  const { loggedUser, userCart, sendEmailVerification } = useUserStoreContext();
+  const {
+    loggedUser,
+    userCart,
+    sendEmailVerification,
+    store,
+    setStore,
+  } = useUserStoreContext();
 
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
@@ -53,7 +60,13 @@ const Header = observer(() => {
     setprofileManager(false);
   };
 
-  const openCart = () => {};
+  const didCloseStore = () => {
+    setStore(false);
+  };
+
+  const openCart = () => {
+    setStore(true);
+  };
 
   const anonymous = loggedUser ? loggedUser.isAnonymous : "";
 
@@ -128,6 +141,13 @@ const Header = observer(() => {
         contentRelation="scroll"
       >
         <ProfileManager />
+      </Modal>
+      <Modal
+        isOpen={store}
+        didClose={didCloseStore}
+        contentRelation="fill-content"
+      >
+        <Store />
       </Modal>
     </header>
   );

@@ -264,6 +264,23 @@ body {
   align-items: center;
 }
 
+.cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customer-info {
+  width: 350px;
+}
+
+.cart-display {
+  width: 350px;
+  border: 5px;
+  border-color: wheat;
+  border-radius: 7px;
+}
+
 .error {
   margin: 3rem;
   color: #ffffff;

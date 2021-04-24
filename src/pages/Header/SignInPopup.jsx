@@ -53,14 +53,18 @@ const SignInPopUp = observer(() => {
     }
   };
 
-  const userDidAuthenticate = (event) => {
-    event.preventDefault();
+  const didAuthenticate = async () => {
     setIsLoading(true);
     setFirstTry(false);
-    const error = authenticateUser(email, password, name, surname);
+    const error = await authenticateUser(email, password, name, surname);
     if (error) {
       displayConfirmationMessage(error);
     }
+  };
+
+  const userDidAuthenticate = (event) => {
+    event.preventDefault();
+    didAuthenticate();
   };
 
   return (

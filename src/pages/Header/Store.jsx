@@ -1,11 +1,12 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
-import SecondaryInfo from "../Header/SecondaryInfo";
-import SignInPopup from "../Header/SignInPopup";
+import SecondaryInfo from "./SecondaryInfo";
+import SignInPopup from "./SignInPopup";
+import CartDisplay from "./CartDisplay";
 
 const PaintingStore = observer(() => {
-  const { loggedUser } = useUserStoreContext();
+  const { loggedUser, userCart } = useUserStoreContext();
 
   const [checkedInfo, setCheckedInfo] = useState(false);
 
@@ -23,9 +24,18 @@ const PaintingStore = observer(() => {
         </div>
       ) : (
         <div>
-          <h3>Check and update your info.</h3>
+          <h3>Mateus' Store</h3>
           <br />
-          <SecondaryInfo />
+          <div className="cart">
+            <div className="customer-info">
+              <h6>Check your info</h6>
+              <SecondaryInfo />
+            </div>
+            <div className="cart-display">
+              <CartDisplay />
+            </div>
+          </div>
+
           <button
             type="button"
             className="modal-input-button"

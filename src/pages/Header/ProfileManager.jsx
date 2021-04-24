@@ -14,6 +14,7 @@ const ProfileManager = observer(() => {
     handleNameUpdate,
     userDeleting,
     isLoading,
+    passwordReseting,
   } = useUserStoreContext();
 
   const [displaySecondaryInfo, setSecondaryInfo] = useState(false);
@@ -34,6 +35,15 @@ const ProfileManager = observer(() => {
   const [passwordUpdate, setPasswordUpdate] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [passwordConfirming, setPasswordConfirming] = useState("");
+
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+
+  const displayConfirmationMessage = (message) => {
+    setConfirmationMessage(message);
+    setInterval(() => {
+      setConfirmationMessage("");
+    }, [5000]);
+  };
 
   const passwordValidation = () => {
     const userPassword = document.getElementById("password");
@@ -75,39 +85,52 @@ const ProfileManager = observer(() => {
     }
   };
 
-  const didUploadPhoto = (event) => {
-    event.preventDefault();
-    handlePhotoUpload(photoToUpdate);
-  };
-
-  const didUpdateName = (event) => {
-    event.preventDefault();
-    handleNameUpdate();
-  };
-
-  async function passwordReset(password) {
-    const currentUser = await firebase.auth().currentUser;
-
-    if (currentUser) {
-      currentUser
-        .updatePassword(password)
-        .then(() => {
-          console.log("password successfully changed");
-        })
-        .catch((error) => {
-          console.log("error, password was not updated", error.message);
-        });
+  const didUploadPhoto = async () => {
+    const error = await handlePhotoUpload(photoToUpdate);
+    if (error) {
+      displayConfirmationMessage(error);
     }
-  }
+  };
+
+  const uploadPhoto = (event) => {
+    event.preventDefault();
+    didUploadPhoto();
+  };
+
+  const didUpdateName = async () => {
+    const error = await handleNameUpdate(nameToUpdate, surnameToUpdate);
+    if (error) {
+      displayConfirmationMessage(error);
+    }
+  };
+
+  const updateName = (event) => {
+    event.preventDefault();
+    didUpdateName();
+  };
+
+  const didResetPassword = async () => {
+    const error = await passwordReseting(passwordUpdate);
+    if (error) {
+      displayConfirmationMessage(error);
+    }
+  };
 
   const resetPassword = (event) => {
     event.preventDefault();
-    passwordReset(passwordUpdate);
+    didResetPassword();
+  };
+
+  const didDeleteAccount = async () => {
+    const error = await userDeleting();
+    if (error) {
+      displayConfirmationMessage(error);
+    }
   };
 
   const deleteAccount = (event) => {
     event.preventDefault();
-    userDeleting();
+    didDeleteAccount();
   };
 
   if (isLoading) {
@@ -145,7 +168,7 @@ const ProfileManager = observer(() => {
             <button
               className="modal-input-button"
               type="submit"
-              onClick={didUploadPhoto}
+              onClick={uploadPhoto}
             >
               Upload Photo
             </button>
@@ -182,11 +205,13 @@ const ProfileManager = observer(() => {
             <button
               className="modal-input-button"
               type="submit"
-              onClick={didUpdateName}
+              onClick={updateName}
             >
               Update Name
             </button>
+            <p className="input-error">{confirmationMessage}</p>
           </form>
+          <br />
           <div className="profile-password-field">
             <input
               id="password"

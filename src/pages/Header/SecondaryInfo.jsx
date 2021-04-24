@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { observer } from "mobx-react";
 import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { brasilAPICEP } from "../../services/searchCEP";
 
 const SecondaryInfo = observer(() => {
   const { loggedUser, updateProfile } = useUserStoreContext();
@@ -27,27 +27,21 @@ const SecondaryInfo = observer(() => {
     loggedUser && loggedUser.contactDDD
   );
 
+  const didSearchCEP = async () => {
+    let data = {};
+
+    data = await brasilAPICEP(cep);
+
+    setState(data.data.state);
+    setCity(data.data.city);
+    setNeighborhood(data.data.neighborhood);
+    setStreet(data.data.street);
+  };
+
   const searchCEP = (event) => {
     event.preventDefault();
     setFirstTry(false);
-
-    axios
-      .get(`https://brasilapi.com.br/api/cep/v1/${cep}`)
-      .then((response) => {
-        let data = {};
-
-        data = {
-          ...response,
-        };
-
-        setState(data.data.state);
-        setCity(data.data.city);
-        setNeighborhood(data.data.neighborhood);
-        setStreet(data.data.street);
-      })
-      .catch((error) => {
-        console.log("Error on getting API data.", error);
-      });
+    didSearchCEP();
   };
 
   const numberFormatting = (number) => {
@@ -118,7 +112,7 @@ const SecondaryInfo = observer(() => {
               value={cep}
               id="CEP"
               type="text"
-              placeholder={loggedUser.cep}
+              placeholder={loggedUser && loggedUser.cep}
               maxLength="9"
               onChange={(e) => setCEP(e.target.value)}
             />
@@ -141,7 +135,7 @@ const SecondaryInfo = observer(() => {
             value={street}
             id="street"
             type="text"
-            placeholder={loggedUser.street}
+            placeholder={loggedUser && loggedUser.street}
             onChange={(e) => setStreet(e.target.value)}
           />
         </div>
@@ -154,7 +148,7 @@ const SecondaryInfo = observer(() => {
             id="adressNumber"
             type="text"
             maxLength="5"
-            placeholder={loggedUser.adressNumber}
+            placeholder={loggedUser && loggedUser.adressNumber}
             onChange={(e) => setAdressNumber(e.target.value)}
           />
 
@@ -164,7 +158,7 @@ const SecondaryInfo = observer(() => {
             value={neighborhood}
             id="neighborhood"
             type="text"
-            placeholder={loggedUser.neighborhood}
+            placeholder={loggedUser && loggedUser.neighborhood}
             onChange={(e) => setNeighborhood(e.target.value)}
           />
         </div>
@@ -176,7 +170,7 @@ const SecondaryInfo = observer(() => {
             value={city}
             id="city"
             type="text"
-            placeholder={loggedUser.city}
+            placeholder={loggedUser && loggedUser.city}
             onChange={(e) => setCity(e.target.value)}
           />
 
@@ -186,7 +180,7 @@ const SecondaryInfo = observer(() => {
             value={state}
             id="state"
             type="text"
-            placeholder={loggedUser.state}
+            placeholder={loggedUser && loggedUser.state}
             onChange={(e) => setState(e.target.value)}
           />
         </div>
@@ -201,7 +195,7 @@ const SecondaryInfo = observer(() => {
             id="contactDDD"
             type="text"
             maxLength="2"
-            placeholder={loggedUser.contactDDD}
+            placeholder={loggedUser && loggedUser.contactDDD}
             onChange={(e) => setContactDDD(e.target.value)}
             onBlur={() => dddFormatting(contactDDD)}
           />
@@ -211,7 +205,7 @@ const SecondaryInfo = observer(() => {
             id="contactNumber"
             type="text"
             maxLength="9"
-            placeholder={loggedUser.contactNumber}
+            placeholder={loggedUser && loggedUser.contactNumber}
             onChange={(e) => setContactNumber(e.target.value)}
             onBlur={() => numberFormatting(contactNumber)}
           />

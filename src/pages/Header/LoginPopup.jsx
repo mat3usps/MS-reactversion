@@ -22,15 +22,20 @@ const LoginPopUp = observer(() => {
     }, 5000);
   }
 
-  const userDidLogin = (event) => {
-    event.preventDefault();
+  const didSignIn = async () => {
     setIsLoading(true);
-    const error = signIn(email, password);
+    const error = await signIn(email, password);
+    console.log("error", error);
     if (error) {
       displayConfirmationMessage(error);
     }
     setEmail("");
     setPassword("");
+  };
+
+  const userDidLogin = (event) => {
+    event.preventDefault();
+    didSignIn();
   };
 
   return (
