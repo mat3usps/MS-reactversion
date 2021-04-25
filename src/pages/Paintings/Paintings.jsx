@@ -10,10 +10,6 @@ const Paintings = observer(() => {
 
   const [paintings, setPaintings] = useState([]);
 
-  const buyNow = () => {
-    setStore(true);
-  };
-
   useEffect(() => {
     axios
       .get("https://mp-reactversion-default-rtdb.firebaseio.com/painting.json")
@@ -25,20 +21,6 @@ const Paintings = observer(() => {
         console.log("error", error);
       });
   }, []);
-
-  const handleCart = (item) => {
-    const inCart =
-      userCart.length > 0
-        ? userCart.filter((object) => {
-            return object.name === item.name;
-          }).length > 0
-        : null;
-    if (inCart) {
-      removeFromCart(currentPainting);
-    } else {
-      addToCart(currentPainting);
-    }
-  };
 
   const [paintingIndex, changePainting] = useState(0);
   const superiorPainting = () => {
@@ -59,6 +41,29 @@ const Paintings = observer(() => {
 
   let currentPainting = paintings[paintingIndex];
 
+  console.log("cart", userCart);
+
+  const inCart = (item) => {
+    userCart.find((object) => {
+      return object.id === item.id;
+    });
+  };
+
+  const handleCart = (currentPainting) => {
+    if (inCart) {
+      removeFromCart(currentPainting.name);
+    } else {
+      addToCart(currentPainting);
+    }
+  };
+
+  const buyNow = (item) => {
+    if (!inCart) {
+      addToCart(item);
+    }
+    setStore(true);
+  };
+
   return (
     <div className="paintings">
       {paintings.length !== 0 && (
@@ -70,8 +75,9 @@ const Paintings = observer(() => {
           image={currentPainting.image}
           titleEgg={currentPainting.photo}
           largeImage={currentPainting.largeImage}
-          priceAction1={handleCart(currentPainting)}
-          priceAction2={buyNow}
+          priceAction1={() => handleCart(currentPainting)}
+          priceAction2={() => buyNow(currentPainting)}
+          inCart={inCart}
         >
           {currentPainting.name}
         </Painting>

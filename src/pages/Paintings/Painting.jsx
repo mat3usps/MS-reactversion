@@ -14,6 +14,7 @@ function Painting({
   titleEgg,
   priceAction1,
   priceAction2,
+  inCart,
 }) {
   const [showingEgg, manipulateEgg] = useState(false);
   const [displayStoreOptions, setDisplayStoreOptions] = useState(false);
@@ -82,7 +83,9 @@ function Painting({
           </button>
           {displayStoreOptions && (
             <div className="painting-hidden-div">
-              <BarButton onClick={priceAction1}>Add to cart</BarButton>
+              <BarButton onClick={priceAction1}>
+                {inCart ? "Remove" : "Add to cart"}
+              </BarButton>
               <BarButton onClick={priceAction2}>Buy now</BarButton>
             </div>
           )}

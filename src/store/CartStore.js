@@ -3,7 +3,7 @@ import { makeObservable, observable, action, computed } from "mobx";
 class CartStore {
   store = false;
   userCart = [
-    { name: "Painting", price: 500.0, description: "Painting", image: "" },
+    { name: "painting", price: 500, description: "Loren ipsum", image: "" },
   ];
 
   constructor() {

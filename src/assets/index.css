@@ -285,6 +285,7 @@ body {
 }
 
 .cart-item {
+  position: absolute;
   background-color: rgb(151, 118, 56);
   height: 75px;
   width: 100px;
@@ -1220,6 +1221,10 @@ img[alt="Visual explanation of a HTML tag"] {
   }
   .musings {
     left: 50%;
+  }
+
+  span {
+    font-size: large;
   }
 }
 @media (max-width: 991px) {
