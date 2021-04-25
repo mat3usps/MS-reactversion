@@ -2,20 +2,20 @@ import { useState } from "react";
 import SecondaryInfo from "./SecondaryInfo";
 import avatar from "../../assets/Utility/avatar.png";
 import upload from "../../assets/Utility/upload.svg";
-import firebase from "../../components/firebaseConnection";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 
 const ProfileManager = observer(() => {
+  const { userStore, authStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
   const {
-    loggedUser,
     handlePhotoUpload,
     handleNameUpdate,
     userDeleting,
     isLoading,
     passwordReseting,
-  } = useUserStoreContext();
+  } = authStore;
 
   const [displaySecondaryInfo, setSecondaryInfo] = useState(false);
 
@@ -45,23 +45,22 @@ const ProfileManager = observer(() => {
     }, [5000]);
   };
 
-  const passwordValidation = () => {
-    const userPassword = document.getElementById("password");
+  const passwordValidation = (event) => {
+    setPasswordUpdate(event.target.value);
 
-    userPassword.addEventListener("input", (event) => {
-      const pattern = /^[\w@-]{8,20}$/;
-      const currentValue = event.target.value;
-      const valid = pattern.test(currentValue);
+    const pattern = /^[\w@-]{8,20}$/;
+    const valid = pattern.test(event.target.value);
 
-      if (valid) {
-        setPasswordConfirming("");
-      } else {
-        setPasswordConfirming("Your password must have from 8 to 20 digits.");
-      }
-    });
+    if (valid) {
+      setPasswordConfirming("");
+    } else {
+      setPasswordConfirming("Your password must have from 8 to 20 digits.");
+    }
   };
 
   const confirmationValidation = (event) => {
+    setPasswordConfirmation(event.target.value);
+
     if (event.target.value !== passwordUpdate) {
       setPasswordConfirming("The confirmation is not equal to password.");
     } else {
@@ -219,8 +218,7 @@ const ProfileManager = observer(() => {
               type="password"
               placeholder="Password"
               value={passwordUpdate}
-              onChange={(event) => setPasswordUpdate(event.target.value)}
-              onFocus={passwordValidation}
+              onChange={passwordValidation}
             />
             <br />
             <input
@@ -228,8 +226,7 @@ const ProfileManager = observer(() => {
               className="modal-input"
               placeholder="Confirm password"
               value={passwordConfirmation}
-              onChange={(event) => setPasswordConfirmation(event.target.value)}
-              onFocus={confirmationValidation}
+              onChange={confirmationValidation}
             />
             <p className="input-error">{passwordConfirming}</p>
             <br />

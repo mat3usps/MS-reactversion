@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import Like from "../assets/Utility/thumbsup.svg";
 import firebase from "./firebaseConnection";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../contexts/userStoreContext";
+import { useMainStoreContext } from "../contexts/mainStoreContext";
 
 const Thumbsup = observer(({ page, title }) => {
-  const { loggedUser } = useUserStoreContext();
+  const { userStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
 
   const [totalLikes, setTotalLikes] = useState([]);
 

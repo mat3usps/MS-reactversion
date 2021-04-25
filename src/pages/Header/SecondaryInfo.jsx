@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 import { brasilAPICEP } from "../../services/searchCEP";
 
 const SecondaryInfo = observer(() => {
-  const { loggedUser, updateProfile } = useUserStoreContext();
+  const { authStore, userStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
+  const { updateProfile } = authStore;
 
   const [cep, setCEP] = useState(loggedUser && loggedUser.cep);
   const [firstTry, setFirstTry] = useState(true);

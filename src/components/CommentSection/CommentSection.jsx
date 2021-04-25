@@ -3,10 +3,11 @@ import Commentform from "./CommentForm";
 import React, { useState, useEffect } from "react";
 import firebase from "../firebaseConnection";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 
 const CommentSection = observer(({ selected, pathname }) => {
-  const { loggedUser } = useUserStoreContext();
+  const { userStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
 
   const [commentStorage, setComments] = useState([]);
 

@@ -8,18 +8,15 @@ import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 import ProfileManager from "./ProfileManager";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 import SignInPopUp from "./SignInPopup";
 import Store from "./Store";
 
 const Header = observer(() => {
-  const {
-    loggedUser,
-    userCart,
-    sendEmailVerification,
-    store,
-    setStore,
-  } = useUserStoreContext();
+  const { userStore, cartStore, authStore } = useMainStoreContext();
+  const { userCart, store, setStore } = cartStore;
+  const { loggedUser } = userStore;
+  const { sendEmailVerification } = authStore;
 
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
@@ -64,7 +61,8 @@ const Header = observer(() => {
     setStore(false);
   };
 
-  const openCart = () => {
+  const openCart = (event) => {
+    event.preventDefault();
     setStore(true);
   };
 
@@ -123,6 +121,17 @@ const Header = observer(() => {
           </div>
         ) : (
           <div className="header-login-state-button">
+            {userCart.length !== 0 && (
+              <button
+                type="button"
+                className="header-profile-button btn-three"
+                onClick={openCart}
+              >
+                <span>{userCart.length}</span>
+                <br />
+                <img src={cart} alt="Cart" />
+              </button>
+            )}
             <BarButton onClick={displayLogin}>Login</BarButton>
             <BarButton onClick={displaySignIn}>Sign In</BarButton>
           </div>

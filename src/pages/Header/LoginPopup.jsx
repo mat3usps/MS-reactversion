@@ -3,10 +3,11 @@ import Barbutton from "../../components/BarButton";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
 import SignInPopUp from "./SignInPopup";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 
 const LoginPopUp = observer(() => {
-  const { signIn, isLoading, setIsLoading } = useUserStoreContext();
+  const { authStore } = useMainStoreContext();
+  const { signIn, isLoading } = authStore;
 
   const [displaySignIn, setDisplaySignIn] = useState(false);
 
@@ -23,14 +24,13 @@ const LoginPopUp = observer(() => {
   }
 
   const didSignIn = async () => {
-    setIsLoading(true);
+    setEmail("");
+    setPassword("");
     const error = await signIn(email, password);
     console.log("error", error);
     if (error) {
       displayConfirmationMessage(error);
     }
-    setEmail("");
-    setPassword("");
   };
 
   const userDidLogin = (event) => {

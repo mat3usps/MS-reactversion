@@ -1,10 +1,11 @@
 import { useState } from "react";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 
 const SignInPopUp = observer(() => {
-  const { authenticateUser, isLoading, setIsLoading } = useUserStoreContext();
+  const { authStore } = useMainStoreContext();
+  const { authenticateUser, isLoading } = authStore;
 
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -54,7 +55,6 @@ const SignInPopUp = observer(() => {
   };
 
   const didAuthenticate = async () => {
-    setIsLoading(true);
     setFirstTry(false);
     const error = await authenticateUser(email, password, name, surname);
     if (error) {

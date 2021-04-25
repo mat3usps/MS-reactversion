@@ -1,15 +1,16 @@
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 import remove from "../../assets/Utility/removecart.svg";
 
 const CartDisplay = observer(({}) => {
-  const { userCart } = useUserStoreContext();
+  const { cartStore } = useMainStoreContext();
+  const { userCart, removeFromCart } = cartStore;
 
   return (
     <div className="cart-display">
-      {userCart.map((name, price, image, description) => {
+      {userCart.map(({ name, price, image, description }) => {
         <div className="cart-item" key={name}>
-          <button>
+          <button onClick={removeFromCart(name)}>
             <img src={remove} alt="remove from cart" />
           </button>
           <img src={image} alt={name} />

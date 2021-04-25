@@ -2,10 +2,11 @@ import Painting from "./Painting";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 
 const Paintings = observer(() => {
-  const { addToCart, setStore } = useUserStoreContext();
+  const { cartStore } = useMainStoreContext();
+  const { addToCart, setStore, removeFromCart, userCart } = cartStore;
 
   const [paintings, setPaintings] = useState([]);
 
@@ -24,6 +25,20 @@ const Paintings = observer(() => {
         console.log("error", error);
       });
   }, []);
+
+  const handleCart = (item) => {
+    const inCart =
+      userCart.length > 0
+        ? userCart.filter((object) => {
+            return object.name === item.name;
+          }).length > 0
+        : null;
+    if (inCart) {
+      removeFromCart(currentPainting);
+    } else {
+      addToCart(currentPainting);
+    }
+  };
 
   const [paintingIndex, changePainting] = useState(0);
   const superiorPainting = () => {
@@ -55,7 +70,7 @@ const Paintings = observer(() => {
           image={currentPainting.image}
           titleEgg={currentPainting.photo}
           largeImage={currentPainting.largeImage}
-          priceAction1={() => addToCart(currentPainting)}
+          priceAction1={handleCart(currentPainting)}
           priceAction2={buyNow}
         >
           {currentPainting.name}

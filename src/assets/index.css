@@ -267,18 +267,27 @@ body {
 .cart {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .customer-info {
-  width: 350px;
+  position: relative;
+  width: 300px;
+  border-radius: 7px;
 }
 
 .cart-display {
+  background-color: wheat;
+  position: relative;
   width: 350px;
-  border: 5px;
-  border-color: wheat;
+  height: 320px;
   border-radius: 7px;
+}
+
+.cart-item {
+  background-color: rgb(151, 118, 56);
+  height: 75px;
+  width: 100px;
 }
 
 .error {
