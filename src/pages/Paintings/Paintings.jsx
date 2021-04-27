@@ -49,16 +49,16 @@ const Paintings = observer(() => {
     });
   };
 
-  const handleCart = (currentPainting) => {
-    if (inCart) {
-      removeFromCart(currentPainting.name);
+  const handleCart = (item) => {
+    if (inCart(item)) {
+      removeFromCart(item.name);
     } else {
-      addToCart(currentPainting);
+      addToCart(item);
     }
   };
 
   const buyNow = (item) => {
-    if (!inCart) {
+    if (!inCart(item)) {
       addToCart(item);
     }
     setStore(true);
@@ -77,7 +77,7 @@ const Paintings = observer(() => {
           largeImage={currentPainting.largeImage}
           priceAction1={() => handleCart(currentPainting)}
           priceAction2={() => buyNow(currentPainting)}
-          inCart={inCart}
+          inCart={inCart(currentPainting)}
         >
           {currentPainting.name}
         </Painting>

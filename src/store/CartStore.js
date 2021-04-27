@@ -1,21 +1,21 @@
 import { makeObservable, observable, action, computed } from "mobx";
+import firebase from "../components/firebaseConnection";
+import UserStore from "./UserStore";
 
 class CartStore {
   store = false;
-  userCart = [
-    { name: "painting", price: 500, description: "Loren ipsum", image: "" },
-  ];
+  userCart = [];
 
   constructor() {
+    this.userStore = new UserStore();
     makeObservable(this, {
       store: observable,
       userCart: observable,
       setStore: action,
       setUserCart: action,
-      addToCart: action,
-      removeFromCart: action,
       totalPrice: computed,
     });
+    this.refreshCart();
   }
 
   setStore = (value) => {
@@ -26,15 +26,60 @@ class CartStore {
     this.userCart = value;
   };
 
-  addToCart = (item) => {
-    this.userCart.push(item);
+  refreshCart = async () => {
+    if (this.userStore.loggedUser) {
+      try {
+        const { cart } = await firebase
+          .firestore()
+          .collection("users")
+          .doc(this.userStore.uid)
+          .get();
+
+        this.setUserCart(cart);
+      } catch (error) {
+        console.log("Coundn't refresh cart.", error);
+      } finally {
+        this.refreshCart();
+      }
+    }
   };
 
-  removeFromCart = (name) => {
-    const itemRemoved = this.userCart.filter((object) => {
+  addToCart = async (item) => {
+    let currentCart = [];
+    currentCart = [...this.userCart, item];
+
+    try {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.userStore.uid)
+        .update({
+          cart: currentCart,
+        });
+    } catch (error) {
+      console.log("Coundn't add to cart.", error);
+    } finally {
+      this.refreshCart();
+    }
+  };
+
+  removeFromCart = async (name) => {
+    const currentCart = this.userCart;
+    const itemRemoved = currentCart.filter((object) => {
       return object.name !== name;
     });
-    this.setUserCart(itemRemoved);
+
+    try {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.userStore.uid)
+        .update({
+          cart: itemRemoved,
+        });
+    } catch (error) {
+      console.log("Coundn't remove from cart.", error);
+    }
   };
 
   get totalPrice() {

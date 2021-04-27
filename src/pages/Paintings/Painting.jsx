@@ -35,6 +35,13 @@ function Painting({
     }
   };
 
+  console.log("incart", inCart);
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   const [varZoomer, setZoomer] = useState(image);
 
   useEffect(() => {
@@ -79,13 +86,11 @@ function Painting({
         <p>{description}</p>
         <div>
           <button className="cart-button" onClick={handleStoreOptions}>
-            {"$ " + price}
+            {formatter.format(price)}
           </button>
           {displayStoreOptions && (
             <div className="painting-hidden-div">
-              <BarButton onClick={priceAction1}>
-                {inCart ? "Remove" : "Add to cart"}
-              </BarButton>
+              <BarButton onClick={priceAction1}>Add to cart</BarButton>
               <BarButton onClick={priceAction2}>Buy now</BarButton>
             </div>
           )}
