@@ -33,7 +33,7 @@ class AuthStore {
       const uid = user.uid;
 
       if (user.isAnonymous === false) {
-        this.userstore.setLoggedUser(user);
+        this.userStore.setLoggedUser(user);
         this.storingNewUser(uid, name, surname);
       }
     } catch (error) {
@@ -49,10 +49,9 @@ class AuthStore {
     this.setIsLoading(true);
 
     try {
-      await firebase.firestore().collection("users").doc(uid).set({
+      await firebase.firestore().collection("users").doc(uid).update({
         name: name,
         surname: surname,
-        photo: null,
       });
 
       this.sendEmailVerification();
@@ -101,7 +100,7 @@ class AuthStore {
     this.setIsLoading(true);
 
     try {
-      const currentUid = this.uid;
+      const currentUid = this.userStore.uid;
       await firebase
         .storage()
         .ref(`userPhotos/${currentUid}/${photoToUpload.name}`)
@@ -113,9 +112,13 @@ class AuthStore {
         .child(photoToUpload.name)
         .getDownloadURL();
 
-      await firebase.firestore().collection("users").doc(this.uid).update({
-        photo: url,
-      });
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.userStore.uid)
+        .update({
+          photo: url,
+        });
       console.log("Successfully updated photo URL.");
     } catch (error) {
       console.log("Error uploading photo.", error);
@@ -131,10 +134,14 @@ class AuthStore {
 
     if (name !== "" || surname !== "") {
       try {
-        await firebase.firestore().collection("users").doc(this.uid).update({
-          name: name,
-          surname: surname,
-        });
+        await firebase
+          .firestore()
+          .collection("users")
+          .doc(this.userStore.uid)
+          .update({
+            name: name,
+            surname: surname,
+          });
       } catch (error) {
         console.log("Error on updating username", error);
 
@@ -183,16 +190,20 @@ class AuthStore {
     }
 
     try {
-      await firebase.firestore().collection("users").doc(this.uid).update({
-        cep: cep,
-        street: street,
-        adressNumber: adressNumber,
-        neighborhood: neighborhood,
-        city: city,
-        state: state,
-        contactDDD: contactDDD,
-        contactNumber: contactNumber,
-      });
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.userStore.uid)
+        .update({
+          cep: cep,
+          street: street,
+          adressNumber: adressNumber,
+          neighborhood: neighborhood,
+          city: city,
+          state: state,
+          contactDDD: contactDDD,
+          contactNumber: contactNumber,
+        });
     } catch (error) {
       console.log("Error on updating profile info.", error);
 

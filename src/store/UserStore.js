@@ -42,6 +42,7 @@ class UserStore {
 
   setLoggedUser = (user) => {
     this.loggedUser = user;
+    console.log("uid", this.uid);
   };
 
   get uid() {
@@ -58,11 +59,29 @@ class UserStore {
       } else {
         try {
           await firebase.auth().signInAnonymously();
+
+          console.log("Did log in");
+          this.storeNewAccess();
         } catch (error) {
           console.log("Anonymous user didn't log in", error);
         }
       }
     });
+  };
+
+  storeNewAccess = async () => {
+    try {
+      await firebase.firestore().collection("users").doc(this.uid).set({
+        name: "",
+        surname: "",
+        photo: null,
+        cart: [],
+      });
+
+      console.log("Did store access");
+    } catch (error) {
+      console.log("Coundn't store access", error);
+    }
   };
 }
 

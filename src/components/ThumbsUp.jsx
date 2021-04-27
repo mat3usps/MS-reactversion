@@ -58,7 +58,7 @@ const Thumbsup = observer(({ page, title }) => {
       await ref
         .delete()
         .then(() => {
-          console.log("Curtida excluida.");
+          console.log("Desliked successfully.");
         })
         .catch((error) => {
           console.log("error", error.message);

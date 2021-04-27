@@ -74,7 +74,7 @@ const Header = observer(() => {
       <div>
         <h4>
           Welcome
-          {loggedUser && loggedUser.name !== undefined
+          {loggedUser && loggedUser.name !== undefined && loggedUser.name !== ""
             ? `, ${loggedUser.name}!`
             : ""}
         </h4>
