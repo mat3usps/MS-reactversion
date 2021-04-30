@@ -44,12 +44,16 @@ const Paintings = observer(() => {
   console.log("cart", userCart);
 
   const inCart = (item) => {
-    userCart.find((object) => {
-      return object.id === item.id;
-    });
+    if (userCart) {
+      userCart.find((object) => {
+        return object.id === item.id;
+      });
+    }
   };
 
   const handleCart = (item) => {
+    inCart(item);
+
     if (inCart(item)) {
       removeFromCart(item.name);
     } else {
@@ -58,6 +62,8 @@ const Paintings = observer(() => {
   };
 
   const buyNow = (item) => {
+    inCart(item);
+
     if (!inCart(item)) {
       addToCart(item);
     }

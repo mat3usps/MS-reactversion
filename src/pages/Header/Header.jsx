@@ -82,7 +82,7 @@ const Header = observer(() => {
       <div className="header-login-state">
         {!anonymous ? (
           <div className="header-login-state-button">
-            {userCart.length !== 0 && (
+            {userCart && userCart.length > 0 ? (
               <button
                 type="button"
                 className="header-profile-button btn-three"
@@ -92,6 +92,8 @@ const Header = observer(() => {
                 <br />
                 <img src={cart} alt="Cart" />
               </button>
+            ) : (
+              ""
             )}
             {loggedUser && (
               <button

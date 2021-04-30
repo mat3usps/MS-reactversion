@@ -29,13 +29,13 @@ class CartStore {
   refreshCart = async () => {
     if (this.userStore.loggedUser) {
       try {
-        const { cart } = await firebase
+        const user = await firebase
           .firestore()
           .collection("users")
           .doc(this.userStore.uid)
           .get();
 
-        this.setUserCart(cart);
+        this.setUserCart(user.data().cart);
       } catch (error) {
         console.log("Coundn't refresh cart.", error);
       } finally {
@@ -45,8 +45,8 @@ class CartStore {
   };
 
   addToCart = async (item) => {
-    let currentCart = [];
-    currentCart = [...this.userCart, item];
+    const currentCart = this.userCart;
+    let cartWithAddition = [...currentCart, item];
 
     try {
       await firebase
@@ -54,7 +54,7 @@ class CartStore {
         .collection("users")
         .doc(this.userStore.uid)
         .update({
-          cart: currentCart,
+          cart: cartWithAddition,
         });
     } catch (error) {
       console.log("Coundn't add to cart.", error);
@@ -79,6 +79,8 @@ class CartStore {
         });
     } catch (error) {
       console.log("Coundn't remove from cart.", error);
+    } finally {
+      this.refreshCart();
     }
   };
 

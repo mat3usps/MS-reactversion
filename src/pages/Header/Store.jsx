@@ -7,7 +7,7 @@ import CartDisplay from "./CartDisplay";
 
 const PaintingStore = observer(() => {
   const { cartStore } = useMainStoreContext();
-  const { loggedUser, userCart } = cartStore;
+  const { loggedUser } = cartStore;
 
   const [checkedInfo, setCheckedInfo] = useState(false);
 
@@ -17,13 +17,7 @@ const PaintingStore = observer(() => {
 
   return (
     <div>
-      {loggedUser && loggedUser.isAnonymous ? (
-        <div>
-          <h3>To buy a painting you need to have a profile.</h3>
-          <br />
-          <SignInPopup />
-        </div>
-      ) : (
+      {!checkedInfo ? (
         <div>
           <h3>Mateus' Store</h3>
           <br />
@@ -45,6 +39,16 @@ const PaintingStore = observer(() => {
           >
             Payment methods
           </button>
+        </div>
+      ) : loggedUser && loggedUser.isAnonymous ? (
+        <div>
+          <h3>To buy a painting you need to be signed.</h3>
+          <br />
+          <SignInPopup />
+        </div>
+      ) : (
+        <div>
+          <h3>Choose a payment method.</h3>
         </div>
       )}
     </div>
