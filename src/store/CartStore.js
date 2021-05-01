@@ -38,8 +38,6 @@ class CartStore {
         this.setUserCart(user.data().cart);
       } catch (error) {
         console.log("Coundn't refresh cart.", error);
-      } finally {
-        this.refreshCart();
       }
     }
   };

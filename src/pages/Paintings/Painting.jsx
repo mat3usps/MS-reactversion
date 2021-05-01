@@ -27,6 +27,10 @@ function Painting({
     }
   };
 
+  const dismissOptions = () => {
+    setDisplayStoreOptions(false);
+  };
+
   const displayTitleEgg = () => {
     if (showingEgg === false) {
       manipulateEgg(true);
@@ -89,7 +93,7 @@ function Painting({
             {formatter.format(price)}
           </button>
           {displayStoreOptions && (
-            <div className="painting-hidden-div">
+            <div className="painting-hidden-div" onBlur={dismissOptions}>
               <BarButton onClick={priceAction1}>Add to cart</BarButton>
               <BarButton onClick={priceAction2}>Buy now</BarButton>
             </div>

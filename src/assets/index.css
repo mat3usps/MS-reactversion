@@ -277,10 +277,9 @@ body {
   height: 320px;
   border-radius: 7px;
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   padding: 5px;
-  border: wheat;
-  border-width: 3px;
 }
 
 .cart-item {

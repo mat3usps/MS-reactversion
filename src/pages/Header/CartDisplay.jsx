@@ -15,7 +15,7 @@ const CartDisplay = observer(() => {
     <div className="cart-display">
       {userCart.map(({ name, price, image, description }) => (
         <div className="cart-item" key={name}>
-          <button onClick={removeFromCart(name)}>
+          <button onClick={() => removeFromCart(name)}>
             <img src={Remove} alt="remove from cart" />
           </button>
           <img src={image} alt={name} />

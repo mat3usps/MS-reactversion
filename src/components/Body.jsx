@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Photos from "../pages/Photos/Photos";
 import About from "../pages/About/About";
 import Games from "../pages/Games/Games";
-import Paintings from "../pages/Paintings/Paintings";
+import PaintingList from "../pages/Paintings/PaintingList";
 import Musings from "../pages/Musings/Musings";
 import Coding from "../pages/Coding/Coding";
 import Header from "../pages/Header/Header";
@@ -95,7 +95,7 @@ const Body = ({ appRoutes }) => {
     } else if (title === "Musings") {
       return <Musings />;
     } else if (title === "Paintings") {
-      return <Paintings />;
+      return <PaintingList />;
     } else if (title === "Photos") {
       return <Photos />;
     }

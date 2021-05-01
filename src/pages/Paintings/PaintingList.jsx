@@ -4,7 +4,7 @@ import axios from "axios";
 import { observer } from "mobx-react";
 import { useMainStoreContext } from "../../contexts/mainStoreContext";
 
-const Paintings = observer(() => {
+const PaintingList = observer(() => {
   const { cartStore } = useMainStoreContext();
   const { addToCart, setStore, removeFromCart, userCart } = cartStore;
 
@@ -45,15 +45,12 @@ const Paintings = observer(() => {
 
   const inCart = (item) => {
     if (userCart) {
-      userCart.find((object) => {
-        return object.id === item.id;
-      });
+      return userCart.find((object) => object.id === item.id) !== undefined;
     }
+    return false;
   };
 
   const handleCart = (item) => {
-    inCart(item);
-
     if (inCart(item)) {
       removeFromCart(item.name);
     } else {
@@ -62,8 +59,6 @@ const Paintings = observer(() => {
   };
 
   const buyNow = (item) => {
-    inCart(item);
-
     if (!inCart(item)) {
       addToCart(item);
     }
@@ -92,4 +87,4 @@ const Paintings = observer(() => {
   );
 });
 
-export default Paintings;
+export default PaintingList;
