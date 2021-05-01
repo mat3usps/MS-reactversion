@@ -6,8 +6,8 @@ import SignInPopup from "./SignInPopup";
 import CartDisplay from "./CartDisplay";
 
 const PaintingStore = observer(() => {
-  const { cartStore } = useMainStoreContext();
-  const { loggedUser } = cartStore;
+  const { userStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
 
   const [checkedInfo, setCheckedInfo] = useState(false);
 
