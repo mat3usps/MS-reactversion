@@ -278,12 +278,12 @@ body {
   border-radius: 7px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  align-items: center;
   padding: 5px;
 }
 
 .cart-item {
-  position: absolute;
+  position: relative;
   background-color: rgb(151, 118, 56);
   height: 100px;
   width: 97%;
