@@ -13,7 +13,7 @@ class Home extends Component {
 
   showLoginPopUp = (event) => {
     this.setState((prevstate) => ({
-      loginPopUp: true,
+      loginPopUp: false,
     }));
   };
 
