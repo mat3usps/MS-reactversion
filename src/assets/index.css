@@ -44,11 +44,23 @@ body {
 }
 
 .header-profile-button {
-  font-size: 2rem;
+  color: transparent;
   width: 50px;
   padding: 0;
   border: none;
   background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-profile-button span {
+  color: white;
+  z-index: 10;
+  position: absolute;
+  top: 15px;
+  left: 24px;
+  font-size: 0.7rem;
 }
 
 .header-login-state-button img {
@@ -250,6 +262,79 @@ body {
   width: 42%;
   display: flex;
   align-items: center;
+}
+
+.cart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-display {
+  background-color: #e7c38d;
+  position: relative;
+  width: 350px;
+  height: 320px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.cart-item {
+  position: relative;
+  background-color: rgb(151, 118, 56);
+  height: 100px;
+  width: 97%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 7px;
+  margin-bottom: 5px;
+}
+
+.cart-item button {
+  height: 50px;
+  width: 50px;
+  border: none;
+  border-radius: 5px;
+  background-color: #c5b090;
+  margin: 5px;
+}
+
+.cart-item button img {
+  height: 30px;
+  width: 30px;
+  opacity: 0.7;
+  transition: 0.5s;
+}
+
+.cart-item button img:hover {
+  opacity: 1;
+  height: 40px;
+  width: 40px;
+}
+
+.cart-item img {
+  height: 90px;
+}
+
+.cart-item div {
+  background-color: #c5b090;
+  padding: 5px;
+  width: 55%;
+  margin: 3px;
+  border-width: 7px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.cart-item div p {
+  font-size: small;
 }
 
 .error {
@@ -1022,24 +1107,33 @@ img[alt="Visual explanation of a HTML tag"] {
 .cart-button {
   padding: 0;
   border: none;
+  border-radius: 7px;
   background-color: transparent;
   width: 100%;
+  height: 40px;
+  overflow-y: hidden;
   text-align: center;
   font-size: 1.5rem;
+  transition: 1s;
+}
+
+.cart-button:hover span {
+  display: none;
+}
+
+.cart-button:hover:before {
+  content: "Buy Painting";
+  color: white;
 }
 
 .cart-button:hover {
-  stroke-width: 0.8px;
-  stroke: #000000;
-  stroke-dashoffset: 100;
-  stroke-dasharray: 100;
-  animation: svganimation 5s ease-in-out forwards infinite;
+  background-color: black;
 }
 
 .frameInfo {
   width: 15rem;
   height: 22rem;
-  background-color: rgba(255, 255, 255, 0.45);
+  background-color: #c5b090;
   border-radius: 10px;
   padding: 1rem;
   margin-top: 2.5rem;
@@ -1047,10 +1141,25 @@ img[alt="Visual explanation of a HTML tag"] {
   overflow-y: hidden;
 }
 
+.painting-hidden-div {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  position: absolute;
+  top: 56vh;
+  border-radius: 7px;
+  background: #c5b090;
+  z-index: 10;
+  transition: 1s;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Photos */
 
-.instagram-feed {
-  width: 80vw;
+.photos {
+  width: 45vw;
   margin-top: 2rem;
 }
 
@@ -1159,6 +1268,10 @@ img[alt="Visual explanation of a HTML tag"] {
   .musings {
     left: 50%;
   }
+
+  span {
+    font-size: large;
+  }
 }
 @media (max-width: 991px) {
   html {
@@ -1188,7 +1301,7 @@ img[alt="Visual explanation of a HTML tag"] {
   }
 
   .profile-manager {
-    width: 100%;
+    width: 500px;
     left: -2%;
   }
   .profile-secondary-info {

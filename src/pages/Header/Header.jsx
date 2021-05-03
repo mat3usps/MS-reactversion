@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import avatar from "../../assets/Utility/avatar.png";
+import cart from "../../assets/Utility/cart.svg";
 import Modal from "../../components/Modal";
 import LoginPopup from "./LoginPopup";
 import BarButton from "../../components/BarButton";
@@ -7,19 +8,22 @@ import firebase from "../../components/firebaseConnection";
 import "firebase/auth";
 import ProfileManager from "./ProfileManager";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
+import SignInPopUp from "./SignInPopup";
+import Store from "./Store";
 
 const Header = observer(() => {
-  const { loggedUser, setLoggedUser } = useUserStoreContext();
+  const { userStore, cartStore, authStore } = useMainStoreContext();
+  const { userCart, store, setStore } = cartStore;
+  const { loggedUser } = userStore;
+  const { sendEmailVerification } = authStore;
+
   const [loginStatus, setLoginStatus] = useState(null);
   const [profileManager, setprofileManager] = useState(false);
   const [headerProfileOptions, setHeaderProfileOptions] = useState(false);
-  const [anonymousAuthentication, setAnonymousAuthentication] = useState(false);
 
   const didLogout = () => {
     firebase.auth().signOut();
-    localStorage.removeItem("loggedUser");
-    setLoggedUser(null);
   };
 
   const didCloseLoginPopup = () => {
@@ -53,13 +57,16 @@ const Header = observer(() => {
     setprofileManager(false);
   };
 
-  const provideAuthentication = () => {
-    setAnonymousAuthentication(true);
+  const didCloseStore = () => {
+    setStore(false);
   };
 
-  const didCloseAnonymousAuthentication = () => {
-    setAnonymousAuthentication(false);
+  const openCart = (event) => {
+    event.preventDefault();
+    setStore(true);
   };
+
+  const anonymous = loggedUser ? loggedUser.isAnonymous : "";
 
   return (
     <header className="header">
@@ -67,38 +74,66 @@ const Header = observer(() => {
       <div>
         <h4>
           Welcome
-          {loggedUser && loggedUser !== undefined
+          {loggedUser && loggedUser.name !== undefined && loggedUser.name !== ""
             ? `, ${loggedUser.name}!`
             : ""}
         </h4>
       </div>
       <div className="header-login-state">
-        {loggedUser ? (
+        {!anonymous ? (
           <div className="header-login-state-button">
-            {loggedUser.isAnonymous && (
-              <BarButton onClick={provideAuthentication}>Sign In</BarButton>
+            {userCart && userCart.length > 0 ? (
+              <button
+                type="button"
+                className="header-profile-button btn-three"
+                onClick={openCart}
+              >
+                <span>{userCart.length}</span>
+                <br />
+                <img src={cart} alt="Cart" />
+              </button>
+            ) : (
+              ""
             )}
-            <button
-              className="header-profile-button btn-three"
-              onClick={displayHiddenDiv}
-            >
-              {loggedUser.photo === null ? (
-                <img src={avatar} alt="User's" />
-              ) : (
-                <img src={loggedUser.photo} alt="User's" />
-              )}
-            </button>
+            {loggedUser && (
+              <button
+                type="button"
+                className="header-profile-button btn-three"
+                onClick={displayHiddenDiv}
+              >
+                {loggedUser.photo ? (
+                  <img src={loggedUser.photo} alt="User's" />
+                ) : (
+                  <img src={avatar} alt="User's" />
+                )}
+              </button>
+            )}
             {headerProfileOptions && (
               <div className="header-profile-hidden-div">
-                {!loggedUser.isAnonymous && (
-                  <BarButton onClick={displayProfileManager}>Profile</BarButton>
-                )}
+                <BarButton onClick={displayProfileManager}>Profile</BarButton>
                 <BarButton onClick={didLogout}>Logout</BarButton>
+                {loggedUser && !loggedUser.emailVerified && (
+                  <BarButton onClick={sendEmailVerification}>
+                    <h6>Verify</h6>
+                    <h6>your email</h6>
+                  </BarButton>
+                )}
               </div>
             )}
           </div>
         ) : (
           <div className="header-login-state-button">
+            {userCart.length !== 0 && (
+              <button
+                type="button"
+                className="header-profile-button btn-three"
+                onClick={openCart}
+              >
+                <span>{userCart.length}</span>
+                <br />
+                <img src={cart} alt="Cart" />
+              </button>
+            )}
             <BarButton onClick={displayLogin}>Login</BarButton>
             <BarButton onClick={displaySignIn}>Sign In</BarButton>
           </div>
@@ -109,7 +144,7 @@ const Header = observer(() => {
         didClose={didCloseLoginPopup}
         contentRelation="fill-content"
       >
-        <LoginPopup signInMethod={loginStatus === "signin"} />
+        {loginStatus === "signin" ? <SignInPopUp /> : <LoginPopup />}
       </Modal>
       <Modal
         isOpen={profileManager}
@@ -119,11 +154,11 @@ const Header = observer(() => {
         <ProfileManager />
       </Modal>
       <Modal
-        isOpen={anonymousAuthentication}
-        didClose={didCloseAnonymousAuthentication}
+        isOpen={store}
+        didClose={didCloseStore}
         contentRelation="fill-content"
       >
-        <LoginPopup signInMethod={true} />
+        <Store />
       </Modal>
     </header>
   );

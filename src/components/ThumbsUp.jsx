@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import Like from "../assets/Utility/thumbsup.svg";
 import firebase from "./firebaseConnection";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../contexts/userStoreContext";
+import { useMainStoreContext } from "../contexts/mainStoreContext";
 
 const Thumbsup = observer(({ page, title }) => {
-  const { loggedUser } = useUserStoreContext();
+  const { userStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
 
   const [totalLikes, setTotalLikes] = useState([]);
 
@@ -28,23 +29,36 @@ const Thumbsup = observer(({ page, title }) => {
       .doc(loggedUser.uid);
 
     if (!liked) {
-      await ref
-        .set({
-          name: loggedUser.name,
-          photo: loggedUser.photo,
-          user: loggedUser.uid,
-        })
-        .then(() => {
-          console.log("Curtida gravada.");
-        })
-        .catch((error) => {
-          console.log("Algo deu errado", error.message);
-        });
+      if (!loggedUser.isAnonymous) {
+        await ref
+          .set({
+            name: loggedUser.name,
+            photo: loggedUser.photo,
+            user: loggedUser.uid,
+          })
+          .then(() => {
+            console.log("Liked successfully.");
+          })
+          .catch((error) => {
+            console.log("Couldn't handle like.", error.message);
+          });
+      } else {
+        await ref
+          .set({
+            user: loggedUser.uid,
+          })
+          .then(() => {
+            console.log("Liked successfully.");
+          })
+          .catch((error) => {
+            console.log("Couldn't handle like.", error.message);
+          });
+      }
     } else {
       await ref
         .delete()
         .then(() => {
-          console.log("Curtida excluida.");
+          console.log("Desliked successfully.");
         })
         .catch((error) => {
           console.log("error", error.message);

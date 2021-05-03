@@ -2,16 +2,22 @@ import { useState } from "react";
 import SecondaryInfo from "./SecondaryInfo";
 import avatar from "../../assets/Utility/avatar.png";
 import upload from "../../assets/Utility/upload.svg";
-import firebase from "../../components/firebaseConnection";
 import LoadingSVG from "../../components/LoadingSVG";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
 
 const ProfileManager = observer(() => {
-  const { loggedUser, setLoggedUser, storageUser } = useUserStoreContext();
+  const { userStore, authStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
+  const {
+    handlePhotoUpload,
+    handleNameUpdate,
+    userDeleting,
+    isLoading,
+    passwordReseting,
+  } = authStore;
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [displaySecondaryInfo, setSecondaryInfo] = useState(true);
+  const [displaySecondaryInfo, setSecondaryInfo] = useState(false);
 
   const [nameToUpdate, setNameToUpdate] = useState(
     loggedUser && loggedUser.name
@@ -26,118 +32,105 @@ const ProfileManager = observer(() => {
     loggedUser && loggedUser.photo
   );
 
-  const fullName = nameToUpdate + surnameToUpdate;
-
   const [passwordUpdate, setPasswordUpdate] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [passwordConfirming, setPasswordConfirming] = useState("");
 
-  const updatingPassword = (event) => setPasswordUpdate(event.target.value);
-  const confirmingPassword = (event) =>
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+
+  const displayConfirmationMessage = (message) => {
+    setConfirmationMessage(message);
+    setInterval(() => {
+      setConfirmationMessage("");
+    }, [5000]);
+  };
+
+  const passwordValidation = (event) => {
+    setPasswordUpdate(event.target.value);
+
+    const pattern = /^[\w@-]{8,20}$/;
+    const valid = pattern.test(event.target.value);
+
+    if (valid) {
+      setPasswordConfirming("");
+    } else {
+      setPasswordConfirming("Your password must have from 8 to 20 digits.");
+    }
+  };
+
+  const confirmationValidation = (event) => {
     setPasswordConfirmation(event.target.value);
 
-  function handleFile(e) {
-    e.preventDefault();
-    if (e.target.files[0]) {
-      const image = e.target.files[0];
+    if (event.target.value !== passwordUpdate) {
+      setPasswordConfirming("The confirmation is not equal to password.");
+    } else {
+      setPasswordConfirming("");
+    }
+  };
+
+  const handleFile = (event) => {
+    event.preventDefault();
+    if (event.target.files[0]) {
+      const image = event.target.files[0];
 
       if (image.type === "image/jpeg" || image.type === "image/png") {
         setPhotoToUpdate(image);
-        setCurrentPhoto(URL.createObjectURL(e.target.files[0]));
+        setCurrentPhoto(URL.createObjectURL(event.target.files[0]));
       } else {
         alert("Envie uma imagem do tipo PNG ou JPEG");
         setPhotoToUpdate(null);
         return null;
       }
     }
-  }
+  };
 
-  async function handleUpload() {
-    setIsLoading(true);
-    const currentUid = loggedUser.uid;
-    await firebase
-      .storage()
-      .ref(`userPhotos/${currentUid}/${photoToUpdate.name}`)
-      .put(photoToUpdate)
-      .then(async () => {
-        await firebase
-          .storage()
-          .ref(`userPhotos/${currentUid}`)
-          .child(photoToUpdate.name)
-          .getDownloadURL()
-          .then(async (url) => {
-            let urlPhoto = url;
-
-            await firebase
-              .firestore()
-              .collection("users")
-              .doc(loggedUser.uid)
-              .update({
-                photo: urlPhoto,
-                name: nameToUpdate,
-                surname: surnameToUpdate,
-              })
-              .then(() => {
-                setIsLoading(false);
-
-                let data = {
-                  ...loggedUser,
-                  photo: urlPhoto,
-                  name: nameToUpdate,
-                  surname: surnameToUpdate,
-                };
-
-                setLoggedUser(data);
-                storageUser(data);
-              })
-              .catch((error) => {
-                setIsLoading(false);
-                console.log("error", error);
-              });
-          })
-          .catch((error) => {
-            setIsLoading(false);
-            console.log("error", error);
-          });
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.log("error", error);
-      });
-  }
-
-  async function handleSave(e) {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (photoToUpdate === null && fullName !== "") {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(loggedUser.uid)
-        .update({
-          name: nameToUpdate,
-          surname: surnameToUpdate,
-        })
-        .then(() => {
-          setIsLoading(false);
-
-          let data = {
-            ...loggedUser,
-            name: nameToUpdate,
-            surname: surnameToUpdate,
-          };
-
-          setLoggedUser(data);
-          storageUser(data);
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          console.log(error);
-        });
-    } else if (fullName !== "" && photoToUpdate !== null) {
-      handleUpload();
+  const didUploadPhoto = async () => {
+    const error = await handlePhotoUpload(photoToUpdate);
+    if (error) {
+      displayConfirmationMessage(error);
     }
-  }
+  };
+
+  const uploadPhoto = (event) => {
+    event.preventDefault();
+    didUploadPhoto();
+  };
+
+  const didUpdateName = async () => {
+    const error = await handleNameUpdate(nameToUpdate, surnameToUpdate);
+    if (error) {
+      displayConfirmationMessage(error);
+    }
+  };
+
+  const updateName = (event) => {
+    event.preventDefault();
+    didUpdateName();
+  };
+
+  const didResetPassword = async () => {
+    const error = await passwordReseting(passwordUpdate);
+    if (error) {
+      displayConfirmationMessage(error);
+    }
+  };
+
+  const resetPassword = (event) => {
+    event.preventDefault();
+    didResetPassword();
+  };
+
+  const didDeleteAccount = async () => {
+    const error = await userDeleting();
+    if (error) {
+      displayConfirmationMessage(error);
+    }
+  };
+
+  const deleteAccount = (event) => {
+    event.preventDefault();
+    didDeleteAccount();
+  };
 
   if (isLoading) {
     return (
@@ -158,7 +151,7 @@ const ProfileManager = observer(() => {
           >
             More Info
           </button>
-          <form className="form-profile" onSubmit={handleSave}>
+          <form className="form-profile">
             <label className="label-avatar">
               <input type="file" accept="image/*" onChange={handleFile} />
               <span>
@@ -171,6 +164,13 @@ const ProfileManager = observer(() => {
                 <img src={currentPhoto} width="300" height="300" alt="User's" />
               )}
             </label>
+            <button
+              className="modal-input-button"
+              type="submit"
+              onClick={uploadPhoto}
+            >
+              Upload Photo
+            </button>
 
             <div>
               <div className="name-input-group">
@@ -183,7 +183,7 @@ const ProfileManager = observer(() => {
                   type="text"
                   value={nameToUpdate}
                   placeholder="Name"
-                  onChange={(e) => setNameToUpdate(e.target.value)}
+                  onChange={(event) => setNameToUpdate(event.target.value)}
                 ></input>
               </div>
               <div className="name-input-group">
@@ -196,35 +196,55 @@ const ProfileManager = observer(() => {
                   type="text"
                   value={surnameToUpdate}
                   placeholder="Surname"
-                  onChange={(e) => setSurnameToUpdate(e.target.value)}
+                  onChange={(event) => setSurnameToUpdate(event.target.value)}
                 ></input>
               </div>
             </div>
 
-            <button className="modal-input-button" type="submit">
-              Update
+            <button
+              className="modal-input-button"
+              type="submit"
+              onClick={updateName}
+            >
+              Update Name
             </button>
+            <p className="input-error">{confirmationMessage}</p>
           </form>
+          <br />
           <div className="profile-password-field">
             <input
-              disabled={true}
               id="password"
               className="modal-input"
               type="password"
               placeholder="Password"
               value={passwordUpdate}
-              onChange={updatingPassword}
-            ></input>
+              onChange={passwordValidation}
+            />
             <br />
             <input
-              disabled={true}
               type="password"
               className="modal-input"
               placeholder="Confirm password"
               value={passwordConfirmation}
-              onChange={confirmingPassword}
-            ></input>
+              onChange={confirmationValidation}
+            />
+            <p className="input-error">{passwordConfirming}</p>
+            <br />
+            <button
+              type="button"
+              className="modal-input-button"
+              onClick={resetPassword}
+            >
+              Reset Password
+            </button>
           </div>
+          <button
+            type="button"
+            className="modal-input-button"
+            onClick={deleteAccount}
+          >
+            Delete Account
+          </button>
         </div>
       ) : (
         <div>

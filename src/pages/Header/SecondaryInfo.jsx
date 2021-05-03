@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import firebase from "../../components/firebaseConnection";
 import { observer } from "mobx-react";
-import { useUserStoreContext } from "../../contexts/userStoreContext";
+import { useMainStoreContext } from "../../contexts/mainStoreContext";
+import { brasilAPICEP } from "../../services/searchCEP";
 
 const SecondaryInfo = observer(() => {
-  const { loggedUser, setLoggedUser, storageUser } = useUserStoreContext();
+  const { authStore, userStore } = useMainStoreContext();
+  const { loggedUser } = userStore;
+  const { updateProfile } = authStore;
 
   const [cep, setCEP] = useState(loggedUser && loggedUser.cep);
   const [firstTry, setFirstTry] = useState(true);
@@ -28,27 +29,21 @@ const SecondaryInfo = observer(() => {
     loggedUser && loggedUser.contactDDD
   );
 
+  const didSearchCEP = async () => {
+    let data = {};
+
+    data = await brasilAPICEP(cep);
+
+    setState(data.data.state);
+    setCity(data.data.city);
+    setNeighborhood(data.data.neighborhood);
+    setStreet(data.data.street);
+  };
+
   const searchCEP = (event) => {
     event.preventDefault();
     setFirstTry(false);
-
-    axios
-      .get(`https://brasilapi.com.br/api/cep/v1/${cep}`)
-      .then((response) => {
-        let data = {};
-
-        data = {
-          ...response,
-        };
-
-        setState(data.data.state);
-        setCity(data.data.city);
-        setNeighborhood(data.data.neighborhood);
-        setStreet(data.data.street);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
+    didSearchCEP();
   };
 
   const numberFormatting = (number) => {
@@ -79,54 +74,18 @@ const SecondaryInfo = observer(() => {
     setContactDDD(formattedDDD);
   };
 
-  async function updateProfile(
-    cep,
-    street,
-    adressNumber,
-    neighborhood,
-    city,
-    state
-  ) {
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(loggedUser.uid)
-      .update({
-        cep: cep,
-        street: street,
-        adressNumber: adressNumber,
-        neighborhood: neighborhood,
-        city: city,
-        state: state,
-      })
-      .then(() => {
-        let data = {
-          ...loggedUser,
-          cep: cep,
-          street: street,
-          adressNumber: adressNumber,
-          neighborhood: neighborhood,
-          city: city,
-          state: state,
-          cantactDDD: contactDDD,
-          contactNumber: contactNumber,
-        };
-
-        setLoggedUser(data);
-        storageUser(data);
-        setAlertMessage("Successfully updated.");
-        setInterval(() => {
-          setAlertMessage("");
-        }, [3000]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   const handleUpdate = (event) => {
     event.preventDefault();
-    updateProfile(cep, street, adressNumber, neighborhood, city, state);
+    updateProfile(
+      cep,
+      street,
+      adressNumber,
+      neighborhood,
+      city,
+      state,
+      contactDDD,
+      contactNumber
+    );
   };
 
   useEffect(() => {
@@ -138,7 +97,7 @@ const SecondaryInfo = observer(() => {
         if (valid) {
           setAlertMessage("");
         } else {
-          setAlertMessage("Use 8 numbers only.");
+          setAlertMessage("Use numbers only.");
         }
       }
     };
@@ -155,7 +114,7 @@ const SecondaryInfo = observer(() => {
               value={cep}
               id="CEP"
               type="text"
-              placeholder={loggedUser.cep}
+              placeholder={loggedUser && loggedUser.cep}
               maxLength="9"
               onChange={(e) => setCEP(e.target.value)}
             />
@@ -178,7 +137,7 @@ const SecondaryInfo = observer(() => {
             value={street}
             id="street"
             type="text"
-            placeholder={loggedUser.street}
+            placeholder={loggedUser && loggedUser.street}
             onChange={(e) => setStreet(e.target.value)}
           />
         </div>
@@ -191,7 +150,7 @@ const SecondaryInfo = observer(() => {
             id="adressNumber"
             type="text"
             maxLength="5"
-            placeholder={loggedUser.adressNumber}
+            placeholder={loggedUser && loggedUser.adressNumber}
             onChange={(e) => setAdressNumber(e.target.value)}
           />
 
@@ -201,7 +160,7 @@ const SecondaryInfo = observer(() => {
             value={neighborhood}
             id="neighborhood"
             type="text"
-            placeholder={loggedUser.neighborhood}
+            placeholder={loggedUser && loggedUser.neighborhood}
             onChange={(e) => setNeighborhood(e.target.value)}
           />
         </div>
@@ -213,7 +172,7 @@ const SecondaryInfo = observer(() => {
             value={city}
             id="city"
             type="text"
-            placeholder={loggedUser.city}
+            placeholder={loggedUser && loggedUser.city}
             onChange={(e) => setCity(e.target.value)}
           />
 
@@ -223,7 +182,7 @@ const SecondaryInfo = observer(() => {
             value={state}
             id="state"
             type="text"
-            placeholder={loggedUser.state}
+            placeholder={loggedUser && loggedUser.state}
             onChange={(e) => setState(e.target.value)}
           />
         </div>
@@ -238,7 +197,7 @@ const SecondaryInfo = observer(() => {
             id="contactDDD"
             type="text"
             maxLength="2"
-            placeholder={loggedUser.contactDDD}
+            placeholder={loggedUser && loggedUser.contactDDD}
             onChange={(e) => setContactDDD(e.target.value)}
             onBlur={() => dddFormatting(contactDDD)}
           />
@@ -248,7 +207,7 @@ const SecondaryInfo = observer(() => {
             id="contactNumber"
             type="text"
             maxLength="9"
-            placeholder={loggedUser.contactNumber}
+            placeholder={loggedUser && loggedUser.contactNumber}
             onChange={(e) => setContactNumber(e.target.value)}
             onBlur={() => numberFormatting(contactNumber)}
           />

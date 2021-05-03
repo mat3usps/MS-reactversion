@@ -3,14 +3,15 @@ import ReactDOM from "react-dom";
 import "./assets/index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import UserStore from "./mobx/UserStore";
-import { UserStoreContext } from "./contexts/userStoreContext";
+import MainStore from "./store/MainStore";
+import { MainStoreContext } from "./contexts/mainStoreContext";
+const store = new MainStore();
 
 ReactDOM.render(
   <BrowserRouter>
-    <UserStoreContext.Provider value={new UserStore()}>
+    <MainStoreContext.Provider value={{ ...store }}>
       <App />
-    </UserStoreContext.Provider>
+    </MainStoreContext.Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );
